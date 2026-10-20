@@ -54,14 +54,17 @@ export type Moment = {
   image?: string
 }
 
-/** Snacking moments — one per persona in the strategy deck. */
+/**
+ * Snacking moments — one per persona in the strategy deck. Keep them in the order of a day
+ * (morning → late night) so the horizontal scroll reads like a timeline.
+ */
 export const moments: Moment[] = [
   {
-    time: '4:00 pm',
-    title: 'The desk slump',
-    body: 'Swap the biscuit packet for something with crunch you won’t regret at 6.',
-    persona: 'For the guilty snacker',
-    tone: 'sage',
+    time: '7:45 am',
+    title: 'The lunchbox pack',
+    body: 'Cheese & Herbs in a 30 g pack. Comes back empty, every time.',
+    persona: 'For the family planner',
+    tone: 'terracotta',
   },
   {
     time: '11:30 am',
@@ -71,17 +74,10 @@ export const moments: Moment[] = [
     tone: 'mustard',
   },
   {
-    time: '7:45 am',
-    title: 'The lunchbox pack',
-    body: 'Cheese & Herbs in a 30 g pack. Comes back empty, every time.',
-    persona: 'For the family planner',
-    tone: 'terracotta',
-  },
-  {
-    time: '1:00 am',
-    title: 'Assignment o’clock',
-    body: '₹49 trial packs. Bold flavours worth passing around the room.',
-    persona: 'For the student',
+    time: '4:00 pm',
+    title: 'The desk slump',
+    body: 'Swap the biscuit packet for something with crunch you won’t regret at 6.',
+    persona: 'For the guilty snacker',
     tone: 'sage',
   },
   {
@@ -90,5 +86,12 @@ export const moments: Moment[] = [
     body: 'Exact serving sizes and honest macros, so it fits your plan.',
     persona: 'For the optimiser',
     tone: 'mustard',
+  },
+  {
+    time: '1:00 am',
+    title: 'Assignment o’clock',
+    body: '₹49 trial packs. Bold flavours worth passing around the room.',
+    persona: 'For the student',
+    tone: 'sage',
   },
 ]

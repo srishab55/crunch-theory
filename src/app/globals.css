@@ -1,0 +1,157 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+ * Design tokens — sampled from the Crunch Theory pouch artwork.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-cream: #f4eee3;
+  --color-paper: #fbf8f2;
+  --color-sand: #e6dccb;
+  --color-forest: #2f4a2c;
+  --color-forest-deep: #1d301c;
+  --color-olive: #8a7a48;
+  --color-terracotta: #c4755a;
+  --color-sage: #9fb18f;
+  --color-mustard: #d7a44f;
+  --color-ink: #24231e;
+  --color-muted: #69655a;
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 24s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-2deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(2deg);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Lenis drives scrolling when active; native smooth-scroll would fight it. */
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-forest;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-mustard/40 text-forest-deep;
+  }
+
+  :focus-visible {
+    @apply rounded-sm outline-2 outline-offset-4 outline-forest;
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+}
+
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-[0.22em] text-olive uppercase;
+}
+
+/* Subtle film grain to give flat colour the pouch's paper texture. */
+@utility grain {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Hero entrance — CSS-only so the headline animates before hydration (better LCP). */
+.hero-word {
+  animation: hero-word 1s var(--ease-out-expo) both;
+}
+.hero-fade {
+  animation: hero-fade 1s var(--ease-out-expo) both;
+}
+@keyframes hero-word {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Animated <details> (progressive enhancement; falls back to instant toggle). */
+.faq::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.5s var(--ease-out-expo),
+    content-visibility 0.5s allow-discrete;
+}
+.faq[open]::details-content {
+  block-size: auto;
+}
+:root {
+  interpolate-size: allow-keywords;
+}

@@ -35,6 +35,22 @@ a cream wall, and a small pile of makhana in front.
 
 **After saving**, open `src/data/flavours.ts` and add `image: '/images/pouch-<slug>.jpg',` to that flavour.
 
+> **Status (Oct 2026):** all three are in use. The source PNGs are kept in `content/pouches/`, and the
+> site uses square JPG crops, which also cut out the Gemini watermark.
+>
+> **⚠ Regenerate before launch:** the generated packs misspell the brand as **"CRU₹NCH THEORY"**
+> (with a rupee sign), and their charcoal wordmark doesn't match the green/olive one on the Pink Salt
+> & Pepper pack. Add this to each prompt above and attach `content/image1.png` as the style reference:
+>
+> _"The brand name must read exactly CRUNCH THEORY in two lines, spelled C-R-U-N-C-H, with no
+> symbols, currency signs or extra letters. Copy the typography and colours from the reference pack
+> exactly: 'CRUNCH' in deep forest green (#2F4A2C) and 'THEORY' in olive gold (#8A7A48), in the same
+> classic serif capitals. Keep the same layout, 16:9 frame, centred pouch and stone tabletop as the
+> reference."_
+>
+> Then export each image, run the crop again (centre 1536 × 1536 → `public/images/pouch-<slug>.jpg`,
+> and a portrait 1100 × 1340 crop scaled to 520 px wide → `src/assets/og/<slug>.jpg`), and redeploy.
+
 ---
 
 ## 2. Snacking moments (portrait 3:4, 1536 × 2048)

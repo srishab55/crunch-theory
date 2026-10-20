@@ -40,7 +40,7 @@ export function SiteHeader() {
         )}
       >
         <Link href="/" aria-label="Crunch Theory — home" onClick={() => setMenuOpen(false)}>
-          <Logo className="text-lg sm:text-xl" />
+          <Logo className="text-[1.45rem] sm:text-[1.6rem]" />
         </Link>
 
         <nav aria-label="Primary" className="hidden md:block">
@@ -126,7 +126,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
-                    className="block py-2 font-display text-3xl text-forest"
+                    className="block py-2 font-display text-4xl font-extrabold tracking-[-0.04em] text-forest"
                   >
                     {item.label}
                   </Link>

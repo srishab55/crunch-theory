@@ -32,7 +32,7 @@ export function ContactForm() {
   if (state.status === 'success') {
     return (
       <div role="status" className="rounded-3xl bg-sage/25 p-10 text-center">
-        <p className="font-display text-3xl text-forest">Message received.</p>
+        <p className="font-display text-3xl font-bold text-forest">Message received.</p>
         <p className="mt-3 text-muted">{state.message}</p>
       </div>
     )

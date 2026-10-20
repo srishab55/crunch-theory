@@ -37,7 +37,7 @@ export default function HomePage() {
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <SectionHeading
               eyebrow="The lineup"
-              title="Four flavours. Zero boring."
+              title="Four flavours. *Zero* boring."
               lede="From clean pink salt to smoky peri peri — pick your crunch."
             />
             <ButtonLink

@@ -12,7 +12,7 @@ export function Stats() {
       <div className="container-page">
         <SectionHeading
           eyebrow="Why makhana?"
-          title="A tiny lotus seed with a big crunch."
+          title="A tiny lotus seed with a *big crunch.*"
           lede="Makhana — also called fox nut or lotus seed — is the popped seed of the Euryale fox lotus, grown in the ponds of Bihar. Roasted, it turns light and crisp: the perfect base for a snack that tastes indulgent without the deep-fryer."
         />
         <div className="mt-16 grid auto-rows-[minmax(13rem,auto)] gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -31,7 +31,7 @@ export function Stats() {
               {i === 0 && <Makhana className="absolute -right-10 -bottom-10 size-72 opacity-90" />}
               <p
                 className={cn(
-                  'relative font-display leading-none font-medium tracking-tight',
+                  'relative font-display leading-none font-extrabold tracking-[-0.05em]',
                   i === 0 ? 'text-[7rem] text-mustard sm:text-[10rem]' : 'text-6xl text-forest',
                 )}
               >

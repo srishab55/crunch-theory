@@ -19,7 +19,7 @@ export default function FaqPage() {
     <>
       <PageHero
         eyebrow="FAQ"
-        title="Questions, answered honestly."
+        title="Questions, answered *honestly.*"
         lede="Everything you might want to know about makhana, our ingredients, nutrition and where to buy Crunch Theory. Can’t find your answer? Write to us — a real person replies."
         crumbs={[{ name: 'FAQ', path: '/faq' }]}
       />
@@ -35,7 +35,7 @@ export default function FaqPage() {
           </section>
         ))}
         <div className="rounded-[2rem] bg-sand/60 p-10 text-center">
-          <p className="font-display text-3xl text-forest">Still curious?</p>
+          <p className="font-display text-3xl font-bold text-forest">Still curious?</p>
           <ButtonLink href="/contact" className="mt-6" trackLabel="FAQ contact" trackLocation="faq">
             Ask us anything
           </ButtonLink>

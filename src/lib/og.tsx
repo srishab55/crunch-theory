@@ -3,18 +3,39 @@ import { join } from 'node:path'
 
 import { ImageResponse } from 'next/og'
 
+import { featuredFlavour } from '@/data/flavours'
 import { site } from '@/data/site'
 
 export const ogSize = { width: 1200, height: 630 }
 
-const pouchDataUrl = async () => {
-  const buf = await readFile(join(process.cwd(), 'src/assets/og/pouch.jpg'))
+const asset = (...parts: string[]) => readFile(join(process.cwd(), 'src/assets', ...parts))
+
+/** Portrait pouch crops live in src/assets/og/<slug>.jpg (see docs/IMAGE_PROMPTS.md). */
+const pouchDataUrl = async (slug: string) => {
+  const buf = await asset('og', `${slug}.jpg`)
   return `data:image/jpeg;base64,${buf.toString('base64')}`
 }
 
+/** Static brand fonts — next/og can't read the variable/woff2 files next/font serves. */
+export async function loadOgFonts() {
+  const [display, displaySemi, accent] = await Promise.all([
+    asset('fonts', 'bricolage-grotesque-latin-800-normal.woff'),
+    asset('fonts', 'bricolage-grotesque-latin-600-normal.woff'),
+    asset('fonts', 'fraunces-latin-600-italic.woff'),
+  ])
+  return [
+    { name: 'Bricolage', data: display, weight: 800 as const, style: 'normal' as const },
+    { name: 'Bricolage', data: displaySemi, weight: 600 as const, style: 'normal' as const },
+    { name: 'Fraunces', data: accent, weight: 600 as const, style: 'italic' as const },
+  ]
+}
+
+type OgInput = { eyebrow: string; title: string; pouchSlug?: string }
+
 /** Branded Open Graph card shared by every route's opengraph-image. */
-export async function renderOgImage({ eyebrow, title }: { eyebrow: string; title: string }) {
-  const pouch = await pouchDataUrl()
+export async function renderOgImage({ eyebrow, title, pouchSlug = featuredFlavour.slug }: OgInput) {
+  const [pouch, fonts] = await Promise.all([pouchDataUrl(pouchSlug), loadOgFonts()])
+
   return new ImageResponse(
     <div
       style={{
@@ -22,7 +43,7 @@ export async function renderOgImage({ eyebrow, title }: { eyebrow: string; title
         height: '100%',
         display: 'flex',
         background: '#f4eee3',
-        fontFamily: 'Georgia, serif',
+        fontFamily: 'Bricolage',
       }}
     >
       <div
@@ -35,25 +56,39 @@ export async function renderOgImage({ eyebrow, title }: { eyebrow: string; title
         }}
       >
         <div
-          style={{ fontSize: 22, letterSpacing: 4, color: '#8a7a48', textTransform: 'uppercase' }}
+          style={{
+            fontSize: 22,
+            fontWeight: 600,
+            letterSpacing: 4,
+            color: '#8a7a48',
+            textTransform: 'uppercase',
+          }}
         >
           {eyebrow}
         </div>
-        <div style={{ fontSize: 76, lineHeight: 1.02, color: '#2f4a2c', marginTop: 24 }}>
-          {title}
-        </div>
         <div
           style={{
-            display: 'flex',
-            marginTop: 40,
-            fontSize: 30,
-            color: '#2f4a2c',
-            letterSpacing: 4,
+            fontSize: 80,
+            fontWeight: 800,
+            lineHeight: 0.98,
+            letterSpacing: -2,
+            color: '#1d301c',
+            marginTop: 24,
           }}
         >
-          CRUNCH <span style={{ color: '#8a7a48', marginLeft: 12 }}>THEORY</span>
+          {title}
         </div>
-        <div style={{ fontSize: 24, color: '#69655a', marginTop: 8 }}>{site.tagline}</div>
+        <div style={{ display: 'flex', alignItems: 'baseline', marginTop: 44, fontSize: 40 }}>
+          <span style={{ fontWeight: 800, color: '#2f4a2c', letterSpacing: -1 }}>crunch</span>
+          <span
+            style={{ fontFamily: 'Fraunces', fontStyle: 'italic', color: '#c4755a', marginLeft: 6 }}
+          >
+            theory
+          </span>
+        </div>
+        <div style={{ fontSize: 24, fontWeight: 600, color: '#69655a', marginTop: 6 }}>
+          {site.tagline}
+        </div>
       </div>
       <div
         style={{
@@ -65,9 +100,9 @@ export async function renderOgImage({ eyebrow, title }: { eyebrow: string; title
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse requires <img> */}
-        <img src={pouch} width={400} height={523} alt="" style={{ borderRadius: 28 }} />
+        <img src={pouch} width={400} height={487} alt="" style={{ borderRadius: 28 }} />
       </div>
     </div>,
-    ogSize,
+    { ...ogSize, fonts },
   )
 }

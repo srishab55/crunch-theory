@@ -29,8 +29,9 @@ export function SectionHeading({
       <RevealText
         as={as}
         text={title}
+        accentClassName={inverted ? 'text-mustard' : undefined}
         className={cn(
-          'mt-4 text-4xl leading-[1.02] font-medium tracking-tight sm:text-5xl lg:text-6xl',
+          'mt-4 text-4xl leading-[0.98] font-extrabold tracking-[-0.035em] sm:text-5xl lg:text-6xl',
           inverted && 'text-paper',
         )}
       />

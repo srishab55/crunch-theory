@@ -2,6 +2,7 @@
 
 The brand site for **Crunch Theory**, which sells roasted makhana snacks: _The Smart Way to Snack._
 It is built with Next.js 16 (App Router, Cache Components), TypeScript, Tailwind CSS v4, Motion and Lenis.
+The type is Bricolage Grotesque for display and the logo, Fraunces italic for accent words, and Manrope for body text.
 Analytics run on GA4 with Consent Mode v2, and the site deploys to Vercel.
 
 ## Quick start

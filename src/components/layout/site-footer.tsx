@@ -93,7 +93,7 @@ export function SiteFooter() {
       {/* Oversized wordmark — decorative */}
       <p
         aria-hidden="true"
-        className="pointer-events-none -mb-[0.22em] text-center font-display text-[22vw] leading-none tracking-tight text-paper/[0.04] select-none"
+        className="pointer-events-none -mb-[0.22em] text-center font-display text-[22vw] leading-none font-extrabold tracking-[-0.06em] text-paper/[0.05] select-none"
       >
         crunch
       </p>

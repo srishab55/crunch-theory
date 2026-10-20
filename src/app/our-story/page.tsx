@@ -60,7 +60,7 @@ export default function OurStoryPage() {
     <>
       <PageHero
         eyebrow="Our story"
-        title="We love snacks. We just wanted better ones."
+        title="We love snacks. We just wanted *better* ones."
         lede={summary}
         crumbs={[{ name: 'Our Story', path: '/our-story' }]}
       />
@@ -99,7 +99,7 @@ export default function OurStoryPage() {
         <div className="container-page">
           <SectionHeading
             eyebrow="From pond to pouch"
-            title="How makhana becomes Crunch Theory."
+            title="How makhana becomes *Crunch Theory.*"
             inverted
           />
           <ol className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -109,7 +109,9 @@ export default function OurStoryPage() {
                   delay={i * 0.08}
                   className="h-full rounded-[2rem] border border-paper/10 p-8"
                 >
-                  <span className="font-display text-5xl text-mustard">0{i + 1}</span>
+                  <span className="font-display text-5xl font-extrabold text-mustard">
+                    0{i + 1}
+                  </span>
                   <h3 className="mt-6 text-2xl text-paper">{p.title}</h3>
                   <p className="mt-3 text-paper/70">{p.body}</p>
                 </Reveal>
@@ -120,7 +122,7 @@ export default function OurStoryPage() {
       </section>
 
       <section aria-labelledby="promises-title" className="container-page py-28">
-        <SectionHeading eyebrow="Our promises" title="Four things we’ll never compromise on." />
+        <SectionHeading eyebrow="Our promises" title="Four things we’ll *never* compromise on." />
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {promises.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.06} className="rounded-[2rem] bg-paper p-8 sm:p-10">

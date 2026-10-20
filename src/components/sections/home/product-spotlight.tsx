@@ -82,7 +82,7 @@ export function ProductSpotlight() {
           <RevealText
             id="spotlight-title"
             text={featuredFlavour.name}
-            className="mt-4 text-5xl leading-[0.98] font-medium tracking-tight text-paper sm:text-6xl"
+            className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.035em] text-paper sm:text-6xl"
           />
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">
@@ -96,7 +96,9 @@ export function ProductSpotlight() {
                 .map((n) => (
                   <div key={n.label} className="bg-forest px-4 py-5">
                     <dt className="text-xs tracking-wider text-paper/60 uppercase">{n.label}</dt>
-                    <dd className="mt-1 font-display text-2xl text-paper">{n.perServing}</dd>
+                    <dd className="mt-1 font-display text-2xl font-bold text-paper">
+                      {n.perServing}
+                    </dd>
                   </div>
                 ))}
             </dl>

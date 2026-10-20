@@ -19,8 +19,8 @@ export function Theory() {
           <p className="eyebrow">The Crunch Theory</p>
           <RevealText
             id="theory-title"
-            text="Wanting to snack better is easy. Actually doing it is the hard part."
-            className="mt-4 text-4xl leading-[1.05] font-medium tracking-tight sm:text-5xl"
+            text="Wanting to snack better is easy. Actually *doing it* is the hard part."
+            className="mt-4 text-4xl leading-[1.05] font-extrabold tracking-[-0.035em] sm:text-5xl"
           />
           <p className="mt-6 max-w-md text-lg text-muted">
             So we built a snack around four simple ideas — the theory behind every pouch.

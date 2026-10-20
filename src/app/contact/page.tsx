@@ -25,7 +25,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Say hello."
+        title="Say *hello.*"
         lede={`Email ${site.email} or use the form — we reply within two working days.`}
         crumbs={[{ name: 'Contact', path: '/contact' }]}
       />
@@ -39,7 +39,7 @@ export default function ContactPage() {
           ))}
           <a
             href={`mailto:${site.email}`}
-            className="block font-display text-2xl text-olive underline underline-offset-8"
+            className="block font-display text-2xl font-bold text-olive underline underline-offset-8"
           >
             {site.email}
           </a>

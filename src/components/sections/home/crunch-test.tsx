@@ -22,8 +22,8 @@ export function CrunchTest() {
         <p className="eyebrow">The blind crunch test</p>
         <RevealText
           id="crunch-test-title"
-          text="Think healthy snacks taste bland? Prove us wrong."
-          className="mx-auto mt-4 max-w-4xl text-5xl leading-[1] font-medium tracking-tight sm:text-7xl"
+          text="Think healthy snacks taste bland? Prove us *wrong.*"
+          className="mx-auto mt-4 max-w-4xl text-5xl leading-[1] font-extrabold tracking-[-0.04em] sm:text-7xl"
         />
         <Reveal delay={0.15}>
           <p className="mx-auto mt-6 max-w-xl text-lg text-ink/70">

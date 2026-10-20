@@ -1,9 +1,12 @@
 import { ImageResponse } from 'next/og'
 
+import { loadOgFonts } from '@/lib/og'
+
 export const size = { width: 180, height: 180 }
 export const contentType = 'image/png'
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const fonts = await loadOgFonts()
   return new ImageResponse(
     <div
       style={{
@@ -14,16 +17,16 @@ export default function AppleIcon() {
         alignItems: 'center',
         justifyContent: 'center',
         background: '#2f4a2c',
-        color: '#f4eee3',
-        fontFamily: 'Georgia, serif',
-        fontSize: 34,
-        letterSpacing: 3,
-        lineHeight: 1,
+        lineHeight: 0.9,
       }}
     >
-      <div>CRUNCH</div>
-      <div style={{ color: '#d7a44f', marginTop: 6 }}>THEORY</div>
+      <div style={{ fontFamily: 'Bricolage', fontWeight: 800, fontSize: 46, color: '#f4eee3' }}>
+        crunch
+      </div>
+      <div style={{ fontFamily: 'Fraunces', fontStyle: 'italic', fontSize: 40, color: '#d7a44f' }}>
+        theory
+      </div>
     </div>,
-    size,
+    { ...size, fonts },
   )
 }

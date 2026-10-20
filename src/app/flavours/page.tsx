@@ -18,7 +18,7 @@ export default function FlavoursPage() {
     <>
       <PageHero
         eyebrow="Shop the lineup"
-        title="Pick your crunch."
+        title="Pick your *crunch.*"
         lede="Crunch Theory comes in four roasted makhana flavours, each in ₹49 trial packs, 75 g everyday pouches and family multipacks. All are roasted, never fried, and gluten-free."
         crumbs={[{ name: 'Flavours', path: '/flavours' }]}
       />

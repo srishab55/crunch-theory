@@ -56,9 +56,9 @@ export function Moments() {
             <p className="eyebrow">Snack o’clock, any o’clock</p>
             <h2
               id="moments-title"
-              className="mt-4 text-4xl leading-[1.02] font-medium tracking-tight sm:text-5xl lg:text-6xl"
+              className="mt-4 text-4xl leading-[1.02] font-extrabold tracking-[-0.035em] sm:text-5xl lg:text-6xl"
             >
-              Made for your moments.
+              Made for your <span className="accent text-terracotta">moments.</span>
             </h2>
           </div>
           <p className="hidden max-w-xs text-muted md:block">
@@ -104,7 +104,12 @@ function MomentCard({ moment, index }: { moment: Moment; index: number }) {
           <Makhana className="absolute top-40 right-36 size-14 -rotate-45" />
         </div>
       )}
-      <p className={cn('font-display text-5xl', moment.image ? 'text-paper' : 'text-forest/80')}>
+      <p
+        className={cn(
+          'font-display text-5xl font-extrabold tracking-[-0.04em]',
+          moment.image ? 'text-paper' : 'text-forest/80',
+        )}
+      >
         {moment.time}
       </p>
       <div>

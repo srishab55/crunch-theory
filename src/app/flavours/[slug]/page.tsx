@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { TrackViewItem } from '@/components/analytics/track-view-item'
-import { BuyLinks } from '@/components/flavour/buy-links'
+import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
 import { FlavourGrid } from '@/components/flavour/flavour-grid'
 import { FlavourVisual } from '@/components/flavour/flavour-visual'
 import { HeatMeter } from '@/components/flavour/heat-meter'
@@ -57,7 +57,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
             <RevealText
               as="h1"
               text={flavour.name}
-              className="mt-4 text-5xl leading-[0.98] font-medium tracking-tight sm:text-6xl"
+              className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-6xl"
             />
             <p className="mt-6 text-lg leading-relaxed text-muted">{flavour.description}</p>
 
@@ -68,16 +68,21 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
               {flavour.packs.map((p) => (
                 <li key={p.label} className="rounded-2xl border border-forest/10 bg-paper p-4">
                   <p className="text-sm text-muted">{p.label}</p>
-                  <p className="mt-1 font-display text-2xl text-forest">₹{p.priceInr}</p>
+                  <p className="mt-1 font-display text-2xl font-bold text-forest">₹{p.priceInr}</p>
                   <p className="text-xs text-muted">{p.weight}</p>
                 </li>
               ))}
             </ul>
 
-            <h2 className="mt-10 font-sans text-sm font-bold tracking-wider text-forest uppercase">
-              Buy now
-            </h2>
-            <BuyLinks flavour={flavour.name} location="flavour-page" className="mt-4" />
+            <div id="buy" className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-2 px-1 pb-4">
+                <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
+                  Get it in <span className="accent text-terracotta">10 minutes</span>
+                </h2>
+                <p className="text-sm text-muted">Pick your app ↓</p>
+              </div>
+              <MarketplaceTiles flavour={flavour.name} location="flavour-page" variant="compact" />
+            </div>
 
             <div className="mt-12 grid gap-8 sm:grid-cols-2">
               <div>

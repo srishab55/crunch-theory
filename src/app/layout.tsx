@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Manrope } from 'next/font/google'
+import { Bricolage_Grotesque, Fraunces, Manrope } from 'next/font/google'
 
 import { ConsentBanner } from '@/components/analytics/consent-banner'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
@@ -13,10 +13,19 @@ import { organizationSchema, websiteSchema } from '@/lib/seo'
 
 import './globals.css'
 
+/** Display + logo: a characterful grotesque with optical sizing for punchy headlines. */
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-bricolage',
+  axes: ['opsz', 'wdth'],
+  display: 'swap',
+})
+
+/** Accent: serif italic for single highlighted words (e.g. "the *smart* way"). */
 const fraunces = Fraunces({
   subsets: ['latin'],
   variable: '--font-fraunces',
-  axes: ['opsz', 'SOFT'],
+  style: 'italic',
   display: 'swap',
 })
 
@@ -82,7 +91,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang={site.language} className={`${fraunces.variable} ${manrope.variable}`}>
+    <html
+      lang={site.language}
+      className={`${bricolage.variable} ${fraunces.variable} ${manrope.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"

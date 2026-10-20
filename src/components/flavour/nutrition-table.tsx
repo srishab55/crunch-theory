@@ -6,7 +6,7 @@ export function NutritionTable({ flavour }: { flavour: Flavour }) {
     <div className="overflow-hidden rounded-3xl border border-forest/10 bg-paper">
       <table className="w-full text-left text-sm">
         <caption className="border-b border-forest/10 px-6 py-4 text-left">
-          <span className="font-display text-xl text-forest">Nutrition information</span>
+          <span className="font-display text-xl font-bold text-forest">Nutrition information</span>
           <span className="mt-1 block text-xs text-muted">Serving size {flavour.servingSize}</span>
         </caption>
         <thead className="text-xs tracking-wider text-muted uppercase">

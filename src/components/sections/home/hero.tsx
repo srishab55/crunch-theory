@@ -6,6 +6,7 @@ import { useRef, useState } from 'react'
 
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
 import { Magnetic } from '@/components/ui/magnetic'
+import { cn } from '@/lib/cn'
 
 const headline = ['The', 'smart', 'way', 'to', 'snack.']
 
@@ -71,12 +72,21 @@ export function Hero() {
         </p>
         <h1
           id="hero-title"
-          className="mt-5 max-w-3xl text-[clamp(3.2rem,9vw,7.5rem)] leading-[0.92] font-medium tracking-[-0.03em]"
+          className="mt-5 max-w-3xl text-[clamp(3.4rem,9.5vw,8rem)] leading-[0.9] font-extrabold tracking-[-0.045em]"
         >
           {headline.map((word, i) => (
-            <span key={word} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+            <span
+              key={word}
+              className={cn(
+                'inline-block overflow-hidden pb-[0.1em] align-bottom',
+                word === 'smart' && '-mr-[0.08em] pr-[0.08em]',
+              )}
+            >
               <span
-                className={`hero-word inline-block ${word === 'smart' ? 'text-olive italic' : ''}`}
+                className={cn(
+                  'hero-word inline-block',
+                  word === 'smart' && 'accent text-terracotta',
+                )}
                 style={{ animationDelay: `${0.2 + i * 0.08}s` }}
               >
                 {word}

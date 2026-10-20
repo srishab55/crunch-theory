@@ -24,7 +24,7 @@ export function PageHero({ eyebrow, title, lede, crumbs }: Props) {
         <RevealText
           as="h1"
           text={title}
-          className="mt-4 max-w-4xl text-5xl leading-[0.98] font-medium tracking-tight sm:text-7xl"
+          className="mt-4 max-w-4xl text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-7xl"
         />
         <Reveal delay={0.15}>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{lede}</p>

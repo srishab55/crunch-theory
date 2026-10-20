@@ -12,7 +12,7 @@ export function Marquee({ items, className, durationSeconds = 30 }: Props) {
     <ul className="flex shrink-0 items-center gap-10 pr-10" aria-hidden={hidden || undefined}>
       {items.map((item) => (
         <Fragment key={item}>
-          <li className="font-display text-2xl whitespace-nowrap italic sm:text-4xl">{item}</li>
+          <li className="accent text-2xl whitespace-nowrap sm:text-4xl">{item}</li>
           <li aria-hidden="true">
             <Makhana className="size-8 sm:size-10" />
           </li>

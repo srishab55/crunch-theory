@@ -13,7 +13,7 @@ import { cn } from '@/lib/cn'
 import { usePrefersReducedMotion } from '@/lib/use-media-query'
 
 /** Time each flavour stays on screen while autoplaying. */
-const AUTOPLAY_MS = 6000
+const AUTOPLAY_MS = 4000
 const SWIPE_THRESHOLD_PX = 60
 
 type Method = AnalyticsEventParams<'spotlight_view'>['method']

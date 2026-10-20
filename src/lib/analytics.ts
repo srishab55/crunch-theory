@@ -12,9 +12,12 @@ type AnalyticsEvents = {
   /** Primary call-to-action clicks across the site. */
   cta_click: { label: string; location: string }
   faq_open: { question: string }
+  /** Flavour spotlight slider changed slide. */
+  spotlight_view: { flavour: string; method: 'arrow' | 'tab' | 'swipe' | 'key' }
 }
 
 export type AnalyticsEventName = keyof AnalyticsEvents
+export type AnalyticsEventParams<E extends AnalyticsEventName> = AnalyticsEvents[E]
 
 /** Dispatched by the GA bootstrap script once consent defaults and config are in place. */
 export const GA_READY_EVENT = 'ct:ga-ready'

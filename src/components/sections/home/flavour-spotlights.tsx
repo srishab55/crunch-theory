@@ -1,60 +1,242 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react'
-import { useRef, useSyncExternalStore, type CSSProperties } from 'react'
+import { motion, useDragControls, useInView, type PanInfo, type Variants } from 'motion/react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 
 import { FlavourVisual } from '@/components/flavour/flavour-visual'
 import { Makhana } from '@/components/illustrations/makhana'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
-import { Reveal, RevealText } from '@/components/ui/reveal'
 import { flavours, type Flavour } from '@/data/flavours'
+import { trackEvent, type AnalyticsEventParams } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
+import { usePrefersReducedMotion } from '@/lib/use-media-query'
 
-const DESKTOP_QUERY = '(min-width: 1024px)'
+/** Time each flavour stays on screen while autoplaying. */
+const AUTOPLAY_MS = 6000
+const SWIPE_THRESHOLD_PX = 60
 
-/** Client-only media query; `false` during prerender so the server HTML is the mobile layout. */
-function useIsDesktop() {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mql = window.matchMedia(DESKTOP_QUERY)
-      mql.addEventListener('change', onChange)
-      return () => mql.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(DESKTOP_QUERY).matches,
-    () => false,
-  )
+type Method = AnalyticsEventParams<'spotlight_view'>['method']
+type SlideState = 'active' | 'before' | 'after'
+
+const ease = [0.16, 1, 0.3, 1] as const
+
+/** Slides left of the active one wait off to the left, later ones to the right. */
+const slideVariants: Variants = {
+  active: { opacity: 1, transition: { duration: 0.5, staggerChildren: 0.08, delayChildren: 0.1 } },
+  before: { opacity: 0, transition: { duration: 0.35 } },
+  after: { opacity: 0, transition: { duration: 0.35 } },
+}
+const packVariants: Variants = {
+  active: { x: 0, rotate: -3, scale: 1, transition: { duration: 0.8, ease } },
+  before: { x: -140, rotate: -14, scale: 0.92, transition: { duration: 0.5, ease } },
+  after: { x: 140, rotate: 10, scale: 0.92, transition: { duration: 0.5, ease } },
+}
+const copyVariants: Variants = {
+  active: { x: 0, opacity: 1, transition: { duration: 0.7, ease } },
+  before: { x: -40, opacity: 0, transition: { duration: 0.35 } },
+  after: { x: 40, opacity: 0, transition: { duration: 0.35 } },
+}
+const badgeVariants: Variants = {
+  active: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 260, damping: 18 } },
+  before: { opacity: 0, scale: 0.6 },
+  after: { opacity: 0, scale: 0.6 },
 }
 
 /**
- * One full-screen spotlight per flavour. On desktop the panels are sticky, so each new flavour
- * slides up over the previous one like a deck of cards (the covered card shrinks and dims).
- * On smaller screens they simply stack. All copy stays in the DOM for search and AI crawlers.
+ * Auto-playing flavour slider with arrows, pills, swipe and ←/→ keys. Autoplay pauses on hover,
+ * focus, when off-screen or in a hidden tab, via the pause button, and is off entirely for
+ * reduced-motion users (WCAG 2.2.2). Every slide stays in the DOM (inactive ones are inert), so
+ * the height never jumps and crawlers see all four flavours.
  */
 export function FlavourSpotlights() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isDesktop = useIsDesktop()
-  const reduceMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
+  const rootRef = useRef<HTMLElement>(null)
+  const [active, setActive] = useState(0)
+  const [userPaused, setUserPaused] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [tabHidden, setTabHidden] = useState(false)
+  const inView = useInView(rootRef, { amount: 0.35 })
+  const reduceMotion = usePrefersReducedMotion()
+  const dragControls = useDragControls()
+  // Set while a swipe is in progress so the release doesn't also "click" a link under the finger.
+  const swiping = useRef(false)
+
+  const total = flavours.length
+  const current = flavours[active]
+  const autoplay = !reduceMotion
+  const running = autoplay && !userPaused && !hovered && !focused && !tabHidden && inView
+
+  useEffect(() => {
+    const onVisibility = () => setTabHidden(document.hidden)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
+
+  const goTo = useCallback(
+    (index: number, method?: Method) => {
+      const next = (index + total) % total
+      setActive(next)
+      if (method) trackEvent('spotlight_view', { flavour: flavours[next].slug, method })
+    },
+    [total],
+  )
+
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.x < -SWIPE_THRESHOLD_PX) goTo(active + 1, 'swipe')
+    else if (info.offset.x > SWIPE_THRESHOLD_PX) goTo(active - 1, 'swipe')
+    window.setTimeout(() => (swiping.current = false), 0)
+  }
 
   return (
-    <section aria-labelledby="spotlights-title" className="relative bg-forest-deep">
+    <motion.section
+      ref={rootRef}
+      aria-roledescription="carousel"
+      aria-labelledby="spotlights-title"
+      animate={{ backgroundColor: current.spotlight.bg }}
+      initial={false}
+      transition={{ duration: 0.8, ease: 'easeInOut' }}
+      style={{ '--panel-accent': current.spotlight.accent } as CSSProperties}
+      className="grain relative isolate overflow-hidden py-24 text-paper sm:py-28"
+      onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      // Pause for keyboard focus only; a mouse click on an arrow shouldn't stop autoplay.
+      onFocus={(e) => e.target.matches(':focus-visible') && setFocused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false)
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowRight') goTo(active + 1, 'key')
+        if (e.key === 'ArrowLeft') goTo(active - 1, 'key')
+      }}
+    >
       <h2 id="spotlights-title" className="sr-only">
         Meet the flavours
       </h2>
-      <div ref={ref} className="relative">
-        {flavours.map((f, i) => (
-          <SpotlightPanel
-            key={f.slug}
-            flavour={f}
-            index={i}
-            total={flavours.length}
-            progress={scrollYProgress}
-            animateStack={isDesktop && !reduceMotion}
-          />
-        ))}
+
+      {/* Ambient makhana */}
+      {[
+        'top-[8%] left-[3%] size-12',
+        'top-[12%] right-[4%] size-16',
+        'top-[58%] left-[47%] size-10',
+      ].map((spot, i) => (
+        <Makhana
+          key={spot}
+          aria-hidden="true"
+          className={cn('absolute -z-10 hidden animate-float opacity-60 lg:block', spot)}
+          style={{ animationDelay: `${-i * 1.4}s` }}
+        />
+      ))}
+
+      <div className="container-page">
+        {/* Stage: every slide shares one grid cell, so the tallest sets the height. */}
+        {/* Swipe is touch-only, so desktop users can still select text. */}
+        <motion.div
+          className="grid touch-pan-y"
+          drag="x"
+          dragListener={false}
+          dragControls={dragControls}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.15}
+          dragSnapToOrigin
+          onPointerDown={(e) => e.pointerType !== 'mouse' && dragControls.start(e)}
+          onDragStart={() => (swiping.current = true)}
+          onDragEnd={onDragEnd}
+          onClickCapture={(e) => {
+            if (swiping.current) {
+              e.preventDefault()
+              e.stopPropagation()
+            }
+          }}
+        >
+          {flavours.map((f, i) => (
+            <Slide
+              key={f.slug}
+              flavour={f}
+              index={i}
+              total={total}
+              state={i === active ? 'active' : i < active ? 'before' : 'after'}
+            />
+          ))}
+        </motion.div>
+
+        {/* Controls */}
+        <div className="mt-12 flex flex-col-reverse gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+            role="group"
+            aria-label="Choose a flavour"
+          >
+            {flavours.map((f, i) => {
+              const isActive = i === active
+              return (
+                <button
+                  key={f.slug}
+                  type="button"
+                  onClick={() => goTo(i, 'tab')}
+                  aria-current={isActive ? 'true' : undefined}
+                  aria-label={`Show ${f.name}`}
+                  className={cn(
+                    'relative shrink-0 overflow-hidden rounded-full border px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors duration-300',
+                    isActive
+                      ? 'border-transparent bg-paper text-forest-deep'
+                      : 'border-paper/25 text-paper/75 hover:border-paper/60 hover:text-paper',
+                  )}
+                >
+                  <span className="relative z-10">{f.shortName}</span>
+                  {/* Autoplay progress — its animation end advances the slider */}
+                  {isActive && autoplay && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-y-0 left-0 bg-[var(--panel-accent)]/45"
+                      style={{
+                        animation: `spotlight-progress ${AUTOPLAY_MS}ms linear forwards`,
+                        animationPlayState: running ? 'running' : 'paused',
+                      }}
+                      onAnimationEnd={() => goTo(active + 1)}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="flex items-center gap-3 self-end sm:self-auto">
+            <p
+              className="mr-2 font-display text-sm font-bold text-paper/60 tabular-nums"
+              aria-hidden="true"
+            >
+              {String(active + 1).padStart(2, '0')}
+              <span className="text-paper/30"> / {String(total).padStart(2, '0')}</span>
+            </p>
+            {autoplay && (
+              <button
+                type="button"
+                onClick={() => setUserPaused((p) => !p)}
+                aria-label={userPaused ? 'Play slideshow' : 'Pause slideshow'}
+                className="grid size-11 place-items-center rounded-full border border-paper/25 text-paper/80 transition-colors hover:border-paper hover:text-paper"
+              >
+                {userPaused ? <PlayIcon /> : <PauseIcon />}
+              </button>
+            )}
+            <ArrowButton
+              direction="prev"
+              label={`Previous flavour: ${flavours[(active - 1 + total) % total].name}`}
+              onClick={() => goTo(active - 1, 'arrow')}
+            />
+            <ArrowButton
+              direction="next"
+              label={`Next flavour: ${flavours[(active + 1) % total].name}`}
+              onClick={() => goTo(active + 1, 'arrow')}
+            />
+          </div>
+        </div>
+
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          Showing {active + 1} of {total}: {current.name}
+        </p>
       </div>
-    </section>
+    </motion.section>
   )
 }
 
@@ -64,163 +246,172 @@ const badgeSpots = [
   'bottom-[10%] left-[6%]',
 ] as const
 
-const floaterSpots = [
-  'top-[12%] left-[6%] size-14',
-  'top-[22%] right-[8%] size-20',
-  'bottom-[16%] left-[14%] size-10',
-  'bottom-[10%] right-[18%] size-16',
-] as const
+type SlideProps = { flavour: Flavour; index: number; total: number; state: SlideState }
 
-type PanelProps = {
-  flavour: Flavour
-  index: number
-  total: number
-  progress: MotionValue<number>
-  animateStack: boolean
-}
-
-function SpotlightPanel({ flavour: f, index, total, progress, animateStack }: PanelProps) {
-  // While the next panel slides over this one (one viewport of scroll), shrink and dim it.
-  const span = Math.max(total - 1, 1)
-  const range = [index / span, (index + 1) / span]
-  const scale = useTransform(progress, range, [1, 0.92])
-  const dim = useTransform(progress, range, [0, 0.5])
-  const covered = animateStack && index < total - 1
-
-  const flip = index % 2 === 1
+function Slide({ flavour: f, index, total, state }: SlideProps) {
+  const isActive = state === 'active'
   const badges = [...f.spotlight.badges, `${f.ingredients.length} ingredients`]
   const stats = f.nutrition.filter((n) => ['Energy', 'Protein', 'Dietary fibre'].includes(n.label))
   const titleId = `spotlight-${f.slug}`
 
   return (
     <motion.article
+      role="group"
+      aria-roledescription="slide"
       aria-labelledby={titleId}
-      style={
-        {
-          backgroundColor: f.spotlight.bg,
-          '--panel-accent': f.spotlight.accent,
-          ...(covered && { scale }),
-        } as CSSProperties
-      }
+      aria-hidden={!isActive || undefined}
+      inert={!isActive}
+      variants={slideVariants}
+      initial={false}
+      animate={state}
       className={cn(
-        'grain relative isolate flex origin-top items-center overflow-hidden py-24 text-paper sm:py-28 lg:sticky lg:top-0 lg:h-[100svh] lg:py-0',
-        index > 0 && 'lg:rounded-t-[2.5rem] lg:shadow-[0_-30px_60px_-30px_rgb(0_0_0/0.6)]',
+        'col-start-1 row-start-1 grid items-center gap-12 lg:grid-cols-2 lg:gap-20',
+        !isActive && 'pointer-events-none',
       )}
     >
-      {covered && (
-        <motion.div
-          aria-hidden="true"
-          style={{ opacity: dim }}
-          className="pointer-events-none absolute inset-0 z-20 bg-black"
+      {/* Pack shot */}
+      <div className="relative mx-auto w-full max-w-[min(26rem,80vw)]">
+        <WatercolorBlob
+          color={f.palette.primary}
+          className="absolute -top-10 -left-10 w-3/4 opacity-60"
         />
-      )}
-
-      {floaterSpots.map((spot, i) => (
-        <Makhana
-          key={spot}
-          aria-hidden="true"
-          className={cn('absolute -z-10 animate-float opacity-70', spot)}
-          style={{ animationDelay: `${-(index * 2 + i * 1.3)}s` }}
+        <WatercolorBlob
+          color={f.palette.secondary}
+          variant={1}
+          className="absolute -right-8 -bottom-8 w-2/3 opacity-50"
         />
-      ))}
-
-      <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-        {/* Pack shot */}
-        <div
-          className={cn(
-            'relative mx-auto w-full max-w-[min(26rem,80vw)] lg:max-w-[min(28rem,56svh)]',
-            flip && 'lg:order-2',
-          )}
-        >
-          <WatercolorBlob
-            color={f.palette.primary}
-            className="absolute -top-10 -left-10 w-3/4 opacity-60"
-          />
-          <WatercolorBlob
-            color={f.palette.secondary}
-            variant={1}
-            className="absolute -right-8 -bottom-8 w-2/3 opacity-50"
-          />
-          <div
-            className={cn('relative animate-float', flip ? 'rotate-3' : '-rotate-3')}
-            style={{ animationDelay: `${-index * 1.5}s` }}
-          >
+        <motion.div variants={packVariants} className="relative">
+          <div className="animate-float">
             <FlavourVisual
               flavour={f}
-              sizes="(min-width: 1024px) 28rem, 80vw"
-              className="rounded-[2rem] shadow-[0_40px_80px_-20px_rgb(0_0_0/0.55)]"
+              sizes="(min-width: 1024px) 26rem, 80vw"
+              priority={index === 0}
+              className="pointer-events-none rounded-[2rem] shadow-[0_40px_80px_-20px_rgb(0_0_0/0.55)] select-none"
             />
           </div>
-          {badges.map((label, i) => (
-            <motion.span
-              key={label}
-              initial={{ opacity: 0, scale: 0.6 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 + i * 0.15, type: 'spring', stiffness: 260, damping: 18 }}
-              className={cn(
-                'absolute z-10 rounded-full bg-paper px-4 py-2 text-sm font-semibold whitespace-nowrap text-forest-deep shadow-lg',
-                badgeSpots[i],
-              )}
-            >
-              {label}
-            </motion.span>
-          ))}
-        </div>
-
-        {/* Copy */}
-        <div className={cn(flip && 'lg:order-1')}>
-          <p className="flex items-center gap-3 eyebrow !text-[var(--panel-accent)]">
-            {f.spotlight.label}
-            <span aria-hidden="true" className="text-paper/40">
-              {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-            </span>
-          </p>
-          <RevealText
-            as="h3"
-            id={titleId}
-            text={f.name}
-            className="mt-4 text-5xl leading-[0.95] font-extrabold tracking-[-0.04em] text-paper sm:text-6xl xl:text-7xl"
-          />
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">{f.description}</p>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <dl className="mt-8 grid max-w-lg grid-cols-3 divide-x divide-paper/15 overflow-hidden rounded-2xl border border-paper/15">
-              {stats.map((n) => (
-                <div key={n.label} className="px-4 py-4">
-                  <dt className="text-xs tracking-wider text-paper/60 uppercase">{n.label}</dt>
-                  <dd className="mt-1 font-display text-2xl font-bold text-paper">
-                    {n.perServing}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-3 text-xs text-paper/50">Per {f.servingSize} serving.</p>
-          </Reveal>
-          <Reveal delay={0.3} className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink
-              href={`/flavours/${f.slug}`}
-              variant="light"
-              size="lg"
-              trackLabel={`Spotlight details: ${f.shortName}`}
-              trackLocation="spotlight"
-            >
-              Ingredients & nutrition <ArrowIcon />
-            </ButtonLink>
-            <ButtonLink
-              href={`/flavours/${f.slug}#buy`}
-              variant="secondary"
-              size="lg"
-              className="border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-forest-deep"
-              trackLabel={`Spotlight order: ${f.shortName}`}
-              trackLocation="spotlight"
-            >
-              Order now
-            </ButtonLink>
-          </Reveal>
-        </div>
+        </motion.div>
+        {badges.map((label, i) => (
+          <motion.span
+            key={label}
+            variants={badgeVariants}
+            className={cn(
+              'absolute z-10 rounded-full bg-paper px-4 py-2 text-sm font-semibold whitespace-nowrap text-forest-deep shadow-lg',
+              badgeSpots[i],
+            )}
+          >
+            {label}
+          </motion.span>
+        ))}
       </div>
+
+      {/* Copy */}
+      <motion.div variants={copyVariants}>
+        <p className="flex items-center gap-3 eyebrow" style={{ color: f.spotlight.accent }}>
+          {f.spotlight.label}
+          <span aria-hidden="true" className="text-paper/40">
+            {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </span>
+        </p>
+        <h3
+          id={titleId}
+          className="mt-4 text-5xl leading-[0.95] font-extrabold tracking-[-0.04em] text-paper sm:text-6xl xl:text-7xl"
+        >
+          {f.name}
+        </h3>
+        <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">{f.description}</p>
+        <dl className="mt-8 grid max-w-lg grid-cols-3 divide-x divide-paper/15 overflow-hidden rounded-2xl border border-paper/15">
+          {stats.map((n) => (
+            <div key={n.label} className="px-3 py-4 sm:px-4">
+              <dt className="text-[0.65rem] tracking-wider text-paper/60 uppercase sm:text-xs">
+                {n.label}
+              </dt>
+              <dd className="mt-1 font-display text-xl font-bold whitespace-nowrap text-paper sm:text-2xl">
+                {n.perServing}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-3 text-xs text-paper/50">Per {f.servingSize} serving.</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <ButtonLink
+            href={`/flavours/${f.slug}`}
+            variant="light"
+            size="lg"
+            draggable={false}
+            trackLabel={`Spotlight details: ${f.shortName}`}
+            trackLocation="spotlight"
+          >
+            Ingredients & nutrition <ArrowIcon />
+          </ButtonLink>
+          <ButtonLink
+            href={`/flavours/${f.slug}#buy`}
+            variant="secondary"
+            size="lg"
+            draggable={false}
+            className="border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-forest-deep"
+            trackLabel={`Spotlight order: ${f.shortName}`}
+            trackLocation="spotlight"
+          >
+            Order now
+          </ButtonLink>
+        </div>
+      </motion.div>
     </motion.article>
+  )
+}
+
+function ArrowButton({
+  direction,
+  label,
+  onClick,
+}: {
+  direction: 'prev' | 'next'
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="group grid size-14 place-items-center rounded-full bg-paper text-forest-deep shadow-lg transition-[transform,background-color] duration-300 ease-out-expo hover:scale-105 hover:bg-[var(--panel-accent)] active:scale-95"
+    >
+      <svg
+        viewBox="0 0 20 20"
+        fill="none"
+        aria-hidden="true"
+        className={cn(
+          'size-5 transition-transform duration-300',
+          direction === 'prev'
+            ? 'rotate-180 group-hover:-translate-x-0.5'
+            : 'group-hover:translate-x-0.5',
+        )}
+      >
+        <path
+          d="M4 10h12m0 0-5-5m5 5-5 5"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  )
+}
+
+function PauseIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" fill="currentColor">
+      <rect x="3.5" y="2.5" width="3" height="11" rx="1" />
+      <rect x="9.5" y="2.5" width="3" height="11" rx="1" />
+    </svg>
+  )
+}
+
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" fill="currentColor">
+      <path d="M4.5 2.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L5.7 2.1a.8.8 0 0 0-1.2.7Z" />
+    </svg>
   )
 }

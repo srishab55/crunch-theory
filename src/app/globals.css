@@ -145,6 +145,14 @@
     transform: translateY(16px);
   }
 }
+@keyframes spotlight-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
 @keyframes scroll-cue {
   0% {
     transform: scaleY(0);

@@ -16,9 +16,47 @@ type AnalyticsEvents = {
 
 export type AnalyticsEventName = keyof AnalyticsEvents
 
+/** Dispatched by the GA bootstrap script once consent defaults and config are in place. */
+export const GA_READY_EVENT = 'ct:ga-ready'
+
+type QueuedCall = [name: string, params: Record<string, unknown>]
+const queue: QueuedCall[] = []
+let listening = false
+
+/**
+ * Sends a GA4 event, queueing it until the bootstrap has run. This keeps every hit behind the
+ * consent default and ensures effects that fire during hydration (e.g. the first page_view)
+ * aren't lost.
+ */
+function send(name: string, params: Record<string, unknown>) {
+  if (typeof window === 'undefined') return
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', name, params)
+    return
+  }
+  queue.push([name, params])
+  if (listening) return
+  listening = true
+  window.addEventListener(
+    GA_READY_EVENT,
+    () => {
+      for (const [n, p] of queue.splice(0)) window.gtag?.('event', n, p)
+    },
+    { once: true },
+  )
+}
+
 export function trackEvent<E extends AnalyticsEventName>(name: E, params: AnalyticsEvents[E]) {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return
-  window.gtag('event', name, params)
+  send(name, params)
+}
+
+/** Manual page_view for every route, including client-side navigations. */
+export function trackPageView() {
+  send('page_view', {
+    page_location: window.location.href,
+    page_path: window.location.pathname,
+    page_title: document.title,
+  })
 }
 
 export const CONSENT_STORAGE_KEY = 'ct-consent'

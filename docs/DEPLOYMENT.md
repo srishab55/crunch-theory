@@ -42,7 +42,9 @@ git push -u origin main
 1. Open [analytics.google.com](https://analytics.google.com) and go to **Admin → Create → Property**.
    Name it _Crunch Theory_, set the time zone to _India_ and the currency to _INR_.
 2. Go to **Data streams → Add stream → Web** and enter your site URL. You can change the URL later.
-3. Leave **Enhanced measurement** ON.
+3. Leave **Enhanced measurement** ON, then click its ⚙️ → **Page views → Show advanced settings**
+   and turn **off** "Page changes based on browser history events". The site sends its own page
+   views for every navigation; this setting would only risk double-counting.
 4. Copy the **Measurement ID**, which looks like `G-ABC123XYZ`.
 
 ## 4. Import the project into Vercel

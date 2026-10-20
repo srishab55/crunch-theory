@@ -1,12 +1,16 @@
 import Script from 'next/script'
 
-import { CONSENT_STORAGE_KEY } from '@/lib/analytics'
+import { PageViewTracker } from './page-view-tracker'
+
+import { CONSENT_STORAGE_KEY, GA_READY_EVENT } from '@/lib/analytics'
 import { env } from '@/lib/env'
 
 /**
  * GA4 via gtag.js with Google Consent Mode v2. Analytics storage defaults to "denied" until the
- * visitor accepts in the consent banner; GA then sends cookieless pings only. Page views for
- * client-side navigations are captured by GA4 Enhanced Measurement (history events).
+ * visitor accepts in the consent banner; GA then sends cookieless pings only.
+ *
+ * Automatic page views are disabled (`send_page_view: false`): GA's history listener does not see
+ * App Router navigations, so <PageViewTracker /> sends one page_view per route instead.
  */
 export function GoogleAnalytics() {
   const id = env.gaMeasurementId
@@ -26,7 +30,8 @@ gtag('consent', 'default', {
   wait_for_update: 500
 });
 gtag('js', new Date());
-gtag('config', '${id}');
+gtag('config', '${id}', { send_page_view: false });
+window.dispatchEvent(new Event('${GA_READY_EVENT}'));
 `
 
   return (
@@ -39,6 +44,7 @@ gtag('config', '${id}');
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
       />
+      <PageViewTracker />
     </>
   )
 }

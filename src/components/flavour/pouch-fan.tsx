@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { flavours } from '@/data/flavours'
+import { flavours, type Flavour } from '@/data/flavours'
 
 // Each card's left edge sits at the container's centre, so x = -50% centres it; the fan
 // offsets are ±27% and ±80% of a card's width around that.
@@ -17,7 +17,9 @@ const spread = [
 
 /** The lineup as a hand of cards: stacked at first, fanning out when scrolled into view. */
 export function PouchFan() {
-  const lineup = flavours.filter((f) => f.image).slice(0, spread.length)
+  const lineup = flavours
+    .filter((f): f is Flavour & Required<Pick<Flavour, 'image'>> => Boolean(f.image))
+    .slice(0, spread.length)
 
   return (
     <div className="relative mx-auto h-[13rem] w-full max-w-xl sm:h-[24rem]">
@@ -37,10 +39,8 @@ export function PouchFan() {
             className="block overflow-hidden rounded-[1.6rem] shadow-[0_30px_50px_-20px_rgb(0_0_0/0.55)] ring-1 ring-paper/10"
           >
             <Image
-              src={f.image!}
+              src={f.image}
               alt={`${f.name} pouch`}
-              width={600}
-              height={600}
               sizes="(min-width: 640px) 240px, 42vw"
               className="aspect-square w-full object-cover"
             />

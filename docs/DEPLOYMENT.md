@@ -115,7 +115,7 @@ they count as conversions.
 ## 8. Day-to-day updates
 
 ```bash
-# edit copy in src/data/*, add images to public/images, etc.
+# edit copy in src/data/*; new pack shots → content/pouches/ then `npm run images`
 npm run check && npm run build
 git add -A
 git commit -m "Update flavour prices"

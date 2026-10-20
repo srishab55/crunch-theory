@@ -1,3 +1,10 @@
+import type { StaticImageData } from 'next/image'
+
+import cheeseHerbs from '@/assets/pouches/cheese-herbs.jpg'
+import pinkSaltPepper from '@/assets/pouches/himalayan-pink-salt-pepper.jpg'
+import periPeriKick from '@/assets/pouches/peri-peri-kick.jpg'
+import pudinaChatpata from '@/assets/pouches/pudina-chatpata.jpg'
+
 export type NutritionRow = {
   label: string
   perServing: string
@@ -17,8 +24,11 @@ export type Flavour = {
   heat: 0 | 1 | 2 | 3
   /** Tailwind-safe CSS colour tokens for the illustrated pouch and accents. */
   palette: { primary: string; secondary: string }
-  /** Pack photo in /public. When absent, an illustrated pouch is rendered instead. */
-  image?: string
+  /**
+   * Pack photo, imported so it gets a content-hashed URL (regenerate with `npm run images`).
+   * When absent, an illustrated pouch is rendered instead.
+   */
+  image?: StaticImageData
   ingredients: string[]
   allergens: string
   servingSize: string
@@ -62,7 +72,7 @@ export const flavours: Flavour[] = [
       'Roasted makhana seasoned with Himalayan pink salt and freshly cracked black pepper. Roasted, not fried, gluten-free and made with six simple ingredients — the everyday swap for chips at your desk.',
     heat: 1,
     palette: { primary: 'var(--color-sage)', secondary: 'var(--color-terracotta)' },
-    image: '/images/pouch-pink-salt-pepper.jpg',
+    image: pinkSaltPepper,
     ingredients: [
       'Makhana (fox nuts)',
       'Rice bran oil',
@@ -88,7 +98,7 @@ export const flavours: Flavour[] = [
       'Roasted makhana tossed in a smoky peri peri blend of chilli, garlic and paprika. Bold, shareable heat without the deep-fryer — roasted, gluten-free and portion-friendly.',
     heat: 3,
     palette: { primary: 'var(--color-terracotta)', secondary: 'var(--color-mustard)' },
-    image: '/images/pouch-peri-peri-kick.jpg',
+    image: periPeriKick,
     ingredients: [
       'Makhana (fox nuts)',
       'Rice bran oil',
@@ -112,7 +122,7 @@ export const flavours: Flavour[] = [
       'Roasted makhana with a real cheese seasoning and Italian herbs. A familiar, kid-approved flavour for lunchboxes and evening snacking — roasted, never fried.',
     heat: 0,
     palette: { primary: 'var(--color-mustard)', secondary: 'var(--color-sage)' },
-    image: '/images/pouch-cheese-herbs.jpg',
+    image: cheeseHerbs,
     ingredients: [
       'Makhana (fox nuts)',
       'Rice bran oil',
@@ -137,7 +147,7 @@ export const flavours: Flavour[] = [
       'Roasted makhana with fresh pudina (mint), amchur and chaat masala. A tangy, cooling desi flavour that tastes like a street-side snack — without the frying.',
     heat: 1,
     palette: { primary: 'var(--color-sage)', secondary: 'var(--color-mustard)' },
-    image: '/images/pouch-pudina-chatpata.jpg',
+    image: pudinaChatpata,
     ingredients: [
       'Makhana (fox nuts)',
       'Rice bran oil',

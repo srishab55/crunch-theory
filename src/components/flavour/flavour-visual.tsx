@@ -13,9 +13,8 @@ export function FlavourVisual({ flavour, sizes, priority, className }: Props) {
       <Image
         src={flavour.image}
         alt={`Crunch Theory ${flavour.name} roasted makhana pouch`}
-        width={1200}
-        height={1200}
         sizes={sizes}
+        placeholder="blur"
         priority={priority}
         className={cn('aspect-square w-full rounded-[1.75rem] object-cover', className)}
       />

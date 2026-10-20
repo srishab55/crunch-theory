@@ -82,7 +82,7 @@ export function productSchema(flavour: Flavour): WithContext<Product> {
     name: `${site.name} Roasted Makhana — ${flavour.name}`,
     description: flavour.description,
     url,
-    image: absoluteUrl(flavour.image ?? `/flavours/${flavour.slug}/opengraph-image`),
+    image: absoluteUrl(flavour.image?.src ?? `/flavours/${flavour.slug}/opengraph-image`),
     brand: { '@type': 'Brand', name: site.name },
     category: 'Snacks > Roasted Makhana',
     sku: `CT-${flavour.slug}`,

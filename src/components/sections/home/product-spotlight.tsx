@@ -53,14 +53,15 @@ export function ProductSpotlight() {
           />
           <motion.div style={{ rotate, y }} className="relative">
             <div className="animate-float">
-              <Image
-                src={featuredFlavour.image ?? '/images/pouch-pink-salt-pepper.jpg'}
-                alt={`Crunch Theory ${featuredFlavour.name} roasted makhana pouch`}
-                width={900}
-                height={900}
-                sizes="(min-width: 1024px) 28rem, 80vw"
-                className="aspect-square rounded-[2rem] object-cover shadow-[0_40px_80px_-20px_rgb(0_0_0/0.5)]"
-              />
+              {featuredFlavour.image && (
+                <Image
+                  src={featuredFlavour.image}
+                  alt={`Crunch Theory ${featuredFlavour.name} roasted makhana pouch`}
+                  sizes="(min-width: 1024px) 28rem, 80vw"
+                  placeholder="blur"
+                  className="aspect-square rounded-[2rem] object-cover shadow-[0_40px_80px_-20px_rgb(0_0_0/0.5)]"
+                />
+              )}
             </div>
           </motion.div>
           {badges.map((b, i) => (

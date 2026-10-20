@@ -27,29 +27,26 @@ if your tool supports it).
 Same scene as `image1.png`: the pouch centred on a stone tabletop, a soft blurred plant shadow on
 a cream wall, and a small pile of makhana in front.
 
-| #   | Save to                                   | Prompt                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1a  | `public/images/pouch-peri-peri-kick.jpg`  | A matte cream stand-up pouch labelled "CRUNCH THEORY — ROASTED MAKHANA — The Smart Way to Snack", flavour name "PERI PERI KICK" in olive serif capitals, watercolour illustration of makhana with terracotta and mustard paint splashes and small red chillies, four round badges "100% Natural", "Roasted, Not Fried", "Gluten-Free", "No Palm Oil". It stands on a light stone surface with roasted makhana dusted in red peri peri seasoning and two dried red chillies in front. |
-| 1b  | `public/images/pouch-cheese-herbs.jpg`    | The same pouch design with flavour name "CHEESE & HERBS", watercolour makhana with mustard-yellow and sage splashes and sprigs of oregano and basil. In front: makhana with a light golden cheese coating and fresh basil leaves.                                                                                                                                                                                                                                                    |
-| 1c  | `public/images/pouch-pudina-chatpata.jpg` | The same pouch design with flavour name "PUDINA CHATPATA", watercolour makhana with sage-green and mustard splashes and mint leaves. In front: makhana with green mint seasoning, fresh pudina leaves and a small bowl of chaat masala.                                                                                                                                                                                                                                              |
+| #   | Save to                                     | Prompt                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1a  | `content/pouches/pouch-peri-peri-kick.png`  | A matte cream stand-up pouch labelled "CRUNCH THEORY — ROASTED MAKHANA — The Smart Way to Snack", flavour name "PERI PERI KICK" in olive serif capitals, watercolour illustration of makhana with terracotta and mustard paint splashes and small red chillies, four round badges "100% Natural", "Roasted, Not Fried", "Gluten-Free", "No Palm Oil". It stands on a light stone surface with roasted makhana dusted in red peri peri seasoning and two dried red chillies in front. |
+| 1b  | `content/pouches/pouch-cheese-herbs.png`    | The same pouch design with flavour name "CHEESE & HERBS", watercolour makhana with mustard-yellow and sage splashes and sprigs of oregano and basil. In front: makhana with a light golden cheese coating and fresh basil leaves.                                                                                                                                                                                                                                                    |
+| 1c  | `content/pouches/pouch-pudina-chatpata.png` | The same pouch design with flavour name "PUDINA CHATPATA", watercolour makhana with sage-green and mustard splashes and mint leaves. In front: makhana with green mint seasoning, fresh pudina leaves and a small bowl of chaat masala.                                                                                                                                                                                                                                              |
 
-**After saving**, open `src/data/flavours.ts` and add `image: '/images/pouch-<slug>.jpg',` to that flavour.
+**After saving**, run `npm run images`. For a brand-new flavour, also import `src/assets/pouches/<slug>.jpg` in `src/data/flavours.ts` and set it as that flavour's `image`.
 
-> **Status (Oct 2026):** all three are in use. The source PNGs are kept in `content/pouches/`, and the
-> site uses square JPG crops, which also cut out the Gemini watermark.
+> **Status (21 Oct 2026):** all three are in use, regenerated with the correct "CRUNCH THEORY"
+> spelling. The source PNGs are in `content/pouches/`. The site uses square JPG crops, which
+> also cut out the Gemini watermark.
 >
-> **⚠ Regenerate before launch:** the generated packs misspell the brand as **"CRU₹NCH THEORY"**
-> (with a rupee sign), and their charcoal wordmark doesn't match the green/olive one on the Pink Salt
-> & Pepper pack. Add this to each prompt above and attach `content/image1.png` as the style reference:
+> The regenerated Pudina pack still had a faint ghost "R" ("CRURNCH"). The "CRUNCH" word was
+> transplanted from the Cheese & Herbs pack, which uses the identical pixel-aligned layout. The
+> untouched file is kept as `pouch-pudina-chatpata.original.png`.
 >
-> _"The brand name must read exactly CRUNCH THEORY in two lines, spelled C-R-U-N-C-H, with no
-> symbols, currency signs or extra letters. Copy the typography and colours from the reference pack
-> exactly: 'CRUNCH' in deep forest green (#2F4A2C) and 'THEORY' in olive gold (#8A7A48), in the same
-> classic serif capitals. Keep the same layout, 16:9 frame, centred pouch and stone tabletop as the
-> reference."_
->
-> Then export each image, run the crop again (centre 1536 × 1536 → `public/images/pouch-<slug>.jpg`,
-> and a portrait 1100 × 1340 crop scaled to 520 px wide → `src/assets/og/<slug>.jpg`), and redeploy.
+> **To replace a pack image:** save the new PNG as `content/pouches/pouch-<slug>.png` (keep the
+> same name) and run `npm run images`, then commit and push. Pack images are imported, so each new
+> picture gets a new hashed URL, and no CDN or browser can keep showing the old one. Don't put
+> files in `public/images/` for packs.
 
 ---
 

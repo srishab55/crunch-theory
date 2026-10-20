@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     },
   },
   formatDetection: { telephone: false, address: false, email: false },
-  ...(env.googleSiteVerification && {
+  ...(env.googleSiteVerification.length > 0 && {
     verification: { google: env.googleSiteVerification },
   }),
 }

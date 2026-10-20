@@ -24,10 +24,26 @@ function resolveGaId(): string {
   return process.env.VERCEL_ENV === 'production' ? GA_MEASUREMENT_ID : ''
 }
 
+/**
+ * Google Search Console ownership tokens (public: they're rendered into every page's <head>).
+ * Add the `content` value of each Search Console "HTML tag", or the part after
+ * `google-site-verification=` for a DNS-style code. NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+ * (comma-separated) adds more without a code change.
+ */
+const GOOGLE_SITE_VERIFICATION = ['b0dY5GuZpm9d0OG2FTh6oxviQi4GjvRnBw2YlBvfkI8']
+
+function resolveGoogleVerification(): string[] {
+  const extra = (process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? '')
+    .split(',')
+    .map((t) => t.trim().replace(/^google-site-verification=/, ''))
+    .filter(Boolean)
+  return [...new Set([...GOOGLE_SITE_VERIFICATION, ...extra])]
+}
+
 export const env = {
   siteUrl: resolveSiteUrl(),
   gaMeasurementId: resolveGaId(),
-  googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? '',
+  googleSiteVerification: resolveGoogleVerification(),
 } as const
 
 export const absoluteUrl = (path = '/') => new URL(path, env.siteUrl).toString()

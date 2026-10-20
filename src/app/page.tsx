@@ -1,9 +1,9 @@
 import { FlavourGrid } from '@/components/flavour/flavour-grid'
 import { CrunchTest } from '@/components/sections/home/crunch-test'
+import { FlavourSpotlights } from '@/components/sections/home/flavour-spotlights'
 import { Hero } from '@/components/sections/home/hero'
 import { HomeFaq } from '@/components/sections/home/home-faq'
 import { Moments } from '@/components/sections/home/moments'
-import { ProductSpotlight } from '@/components/sections/home/product-spotlight'
 import { Stats } from '@/components/sections/home/stats'
 import { Theory } from '@/components/sections/home/theory'
 import { WhereToBuy } from '@/components/sections/home/where-to-buy'
@@ -29,7 +29,7 @@ export default function HomePage() {
       </div>
 
       <Theory />
-      <ProductSpotlight />
+      <FlavourSpotlights />
       <Stats />
 
       <section aria-labelledby="flavours-title" className="bg-sand/40 py-28 sm:py-36">

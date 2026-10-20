@@ -37,6 +37,15 @@ export type Flavour = {
   nutritionIsIndicative: boolean
   packs: { label: string; weight: string; priceInr: number }[]
   pairsWith: string
+  /** Home-page spotlight panel: a dark brand colour, an accent that reads on it, and callouts. */
+  spotlight: {
+    label: string
+    /** Deep panel background; paper-coloured text must stay readable on it. */
+    bg: string
+    accent: string
+    /** Two callouts; the ingredient count is added automatically as a third. */
+    badges: [string, string]
+  }
   featured?: boolean
 }
 
@@ -87,6 +96,12 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Afternoon chai, a long spreadsheet, the 4 pm slump.',
+    spotlight: {
+      label: 'Bestseller',
+      bg: '#2f4a2c',
+      accent: '#d7a44f',
+      badges: ['Roasted, not fried', 'Gluten-free'],
+    },
     featured: true,
   },
   {
@@ -112,6 +127,12 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Match nights, group study, the friend who says “just one”.',
+    spotlight: {
+      label: 'For heat seekers',
+      bg: '#76301f',
+      accent: '#f2b25c',
+      badges: ['Smoky chilli heat', 'Roasted, not fried'],
+    },
   },
   {
     slug: 'cheese-herbs',
@@ -137,6 +158,12 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'School lunchboxes, road trips, family movie night.',
+    spotlight: {
+      label: 'Kid-approved',
+      bg: '#5e4a12',
+      accent: '#f4d27a',
+      badges: ['Zero chilli heat', 'Roasted, not fried'],
+    },
   },
   {
     slug: 'pudina-chatpata',
@@ -162,6 +189,12 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Monsoon evenings, post-workout cravings, travel bags.',
+    spotlight: {
+      label: 'Desi classic',
+      bg: '#24493b',
+      accent: '#b9dba6',
+      badges: ['Mint + chaat masala', 'Roasted, not fried'],
+    },
   },
 ]
 

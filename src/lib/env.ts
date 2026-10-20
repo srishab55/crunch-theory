@@ -11,9 +11,22 @@ function resolveSiteUrl(): string {
   return 'http://localhost:3000'
 }
 
+/** GA4 web-stream ID. Public by design (it ships to every browser), so it is safe to commit. */
+const GA_MEASUREMENT_ID = 'G-T0HTG7NX71'
+
+/**
+ * The env var wins when set. Otherwise only Vercel production builds track, so local dev and
+ * preview deployments don't pollute analytics.
+ */
+function resolveGaId(): string {
+  const explicit = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+  if (explicit !== undefined) return explicit
+  return process.env.VERCEL_ENV === 'production' ? GA_MEASUREMENT_ID : ''
+}
+
 export const env = {
   siteUrl: resolveSiteUrl(),
-  gaMeasurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? '',
+  gaMeasurementId: resolveGaId(),
   googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? '',
 } as const
 

@@ -51,7 +51,8 @@ and `llms.txt` all update from it automatically.
 ## Visit tracking (Google Analytics 4)
 
 1. In GA4, create a property, then a **Web data stream**, and copy the Measurement ID (`G-…`).
-2. Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local` and in Vercel (Project → Settings → Environment Variables).
+2. The ID `G-T0HTG7NX71` is built in for Vercel **production** deployments (`src/lib/env.ts`). To test
+   locally, set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`. Setting it in Vercel overrides the default.
 3. Leave **Enhanced measurement** on. It tracks page views on client-side navigation, scrolls and outbound clicks.
 
 Custom events (`src/lib/analytics.ts`):

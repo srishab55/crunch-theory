@@ -54,7 +54,7 @@ git push -u origin main
    | Name                                   | Value                                                              | Required |
    | -------------------------------------- | ------------------------------------------------------------------ | -------- |
    | `NEXT_PUBLIC_SITE_URL`                 | `https://<your-project>.vercel.app`, or your custom domain later   | Yes      |
-   | `NEXT_PUBLIC_GA_MEASUREMENT_ID`        | `G-XXXXXXXXXX` from step 3                                         | Yes      |
+   | `NEXT_PUBLIC_GA_MEASUREMENT_ID`        | Already built in (`G-T0HTG7NX71`); set only to override            | No       |
    | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Token from step 7                                                  | Optional |
    | `RESEND_API_KEY`                       | Your Resend API key                                                | Optional |
    | `CONTACT_TO_EMAIL`                     | The inbox that receives form messages                              | Optional |
@@ -128,10 +128,10 @@ git push            # Vercel redeploys automatically
 
 ## Troubleshooting
 
-| Problem                                              | Fix                                                                                                                                                          |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The build fails on Vercel but works locally          | Run `npm run build` locally and fix any error it reports. Check that the Node version is 20.9 or newer (Vercel → Settings → General).                        |
-| No data in GA4                                       | Check that `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set, and redeploy (it is read at build time). Accept the cookie banner. Turn off any ad-blocker while testing. |
-| Canonical links or the sitemap show the wrong domain | Update `NEXT_PUBLIC_SITE_URL` and redeploy.                                                                                                                  |
-| The hero video doesn't play on a phone               | iOS Low Power Mode blocks autoplay. The poster image is shown instead, which is expected.                                                                    |
-| Contact emails don't arrive                          | Check the Resend dashboard, and make sure `CONTACT_FROM_EMAIL` uses a domain verified in Resend.                                                             |
+| Problem                                              | Fix                                                                                                                                                                                                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The build fails on Vercel but works locally          | Run `npm run build` locally and fix any error it reports. Check that the Node version is 20.9 or newer (Vercel → Settings → General).                                                                                                         |
+| No data in GA4                                       | Only **production** deploys track by default (not previews). If you set `NEXT_PUBLIC_GA_MEASUREMENT_ID`, make sure it isn't empty, then redeploy (it is read at build time). Accept the cookie banner. Turn off any ad-blocker while testing. |
+| Canonical links or the sitemap show the wrong domain | Update `NEXT_PUBLIC_SITE_URL` and redeploy.                                                                                                                                                                                                   |
+| The hero video doesn't play on a phone               | iOS Low Power Mode blocks autoplay. The poster image is shown instead, which is expected.                                                                                                                                                     |
+| Contact emails don't arrive                          | Check the Resend dashboard, and make sure `CONTACT_FROM_EMAIL` uses a domain verified in Resend.                                                                                                                                              |

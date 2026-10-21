@@ -67,13 +67,18 @@ export function Hero() {
         style={reduceMotion ? undefined : { y: contentY, opacity: contentOpacity }}
         className="relative container-page flex h-full flex-col justify-end pb-24 md:justify-center md:pb-0"
       >
-        <p className="hero-fade eyebrow" style={{ animationDelay: '0.1s' }}>
-          Roasted makhana · Made in India
-        </p>
         <h1
           id="hero-title"
-          className="mt-5 max-w-3xl text-[clamp(3.4rem,9.5vw,8rem)] leading-[0.9] font-extrabold tracking-[-0.045em]"
+          className="max-w-3xl text-[clamp(3.4rem,9.5vw,8rem)] leading-[0.9] font-extrabold tracking-[-0.045em]"
         >
+          {/* Brand name inside the H1 (styled as the eyebrow) — the strongest on-page signal for
+              ranking on the brand query "crunch theory". */}
+          <span
+            className="hero-fade mb-5 block font-sans eyebrow leading-normal"
+            style={{ animationDelay: '0.1s' }}
+          >
+            Crunch Theory · Roasted makhana · Made in India
+          </span>
           {headline.map((word, i) => (
             <span
               key={word}

@@ -4,6 +4,8 @@
  */
 export const site = {
   name: 'Crunch Theory',
+  /** Other ways people search for or write the brand; used as schema.org alternateName. */
+  alternateNames: ['CrunchTheory', 'Crunch Theory Makhana', 'Crunch Theory Snacks'],
   legalName: 'Crunch Theory Foods',
   tagline: 'The Smart Way to Snack',
   description:

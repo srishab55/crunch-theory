@@ -40,7 +40,7 @@ export function SiteHeader() {
         )}
       >
         <Link href="/" aria-label="Crunch Theory — home" onClick={() => setMenuOpen(false)}>
-          <Logo className="text-[1.45rem] sm:text-[1.6rem]" />
+          <Logo eager className="text-[1.45rem] sm:text-[1.6rem]" />
         </Link>
 
         <nav aria-label="Primary" className="hidden md:block">

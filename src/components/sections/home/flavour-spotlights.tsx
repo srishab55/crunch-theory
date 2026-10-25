@@ -285,7 +285,6 @@ function Slide({ flavour: f, index, total, state }: SlideProps) {
             <FlavourVisual
               flavour={f}
               sizes="(min-width: 1024px) 26rem, 80vw"
-              priority={index === 0}
               className="pointer-events-none rounded-[2rem] shadow-[0_40px_80px_-20px_rgb(0_0_0/0.55)] select-none"
             />
           </div>

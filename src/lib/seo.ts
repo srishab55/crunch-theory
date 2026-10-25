@@ -10,6 +10,7 @@ import type {
   WithContext,
 } from 'schema-dts'
 
+import brandMark from '@/assets/brand/mark.png'
 import type { Faq } from '@/data/faqs'
 import type { Flavour } from '@/data/flavours'
 import { site } from '@/data/site'
@@ -47,7 +48,7 @@ export function organizationSchema(): WithContext<Organization> {
     alternateName: [...site.alternateNames],
     legalName: site.legalName,
     url: absoluteUrl('/'),
-    logo: absoluteUrl('/icon.svg'),
+    logo: absoluteUrl(brandMark.src),
     slogan: site.tagline,
     description: site.description,
     email: site.email,

@@ -11,7 +11,7 @@ import { cn } from '@/lib/cn'
 const headline = ['The', 'smart', 'way', 'to', 'snack.']
 
 /**
- * Full-bleed video hero. The poster is rendered with next/image (priority) so it is the LCP
+ * Full-bleed video hero. The poster is rendered with next/image (preload) so it is the LCP
  * element; the video fades in over it once it can play. Headline animation is pure CSS so text
  * is visible before hydration.
  */
@@ -40,7 +40,7 @@ export function Hero() {
           src="/media/hero-poster.jpg"
           alt=""
           fill
-          priority
+          preload
           sizes="100vw"
           className="object-cover object-[65%_center]"
         />

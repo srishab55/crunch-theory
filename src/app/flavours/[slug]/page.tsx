@@ -49,7 +49,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
 
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
           <Reveal className="lg:sticky lg:top-28 lg:self-start">
-            <FlavourVisual flavour={flavour} sizes="(min-width: 1024px) 50vw, 100vw" priority />
+            <FlavourVisual flavour={flavour} sizes="(min-width: 1024px) 50vw, 100vw" preload />
           </Reveal>
 
           <div>

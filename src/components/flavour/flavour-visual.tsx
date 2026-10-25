@@ -4,10 +4,10 @@ import { PouchArt } from '@/components/illustrations/pouch-art'
 import type { Flavour } from '@/data/flavours'
 import { cn } from '@/lib/cn'
 
-type Props = { flavour: Flavour; sizes: string; priority?: boolean; className?: string }
+type Props = { flavour: Flavour; sizes: string; preload?: boolean; className?: string }
 
 /** Pack photo when available, otherwise the illustrated pouch in the flavour's palette. */
-export function FlavourVisual({ flavour, sizes, priority, className }: Props) {
+export function FlavourVisual({ flavour, sizes, preload, className }: Props) {
   if (flavour.image) {
     return (
       <Image
@@ -15,7 +15,7 @@ export function FlavourVisual({ flavour, sizes, priority, className }: Props) {
         alt={`Crunch Theory ${flavour.name} roasted makhana pouch`}
         sizes={sizes}
         placeholder="blur"
-        priority={priority}
+        preload={preload}
         className={cn('aspect-square w-full rounded-[1.75rem] object-cover', className)}
       />
     )

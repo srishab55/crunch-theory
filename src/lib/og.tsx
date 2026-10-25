@@ -16,6 +16,12 @@ const pouchDataUrl = async (slug: string) => {
   return `data:image/jpeg;base64,${buf.toString('base64')}`
 }
 
+/** Transparent logo parts built by `npm run logo`. */
+const brandDataUrl = async (file: string) => {
+  const buf = await asset('brand', file)
+  return `data:image/png;base64,${buf.toString('base64')}`
+}
+
 /** Static brand fonts — next/og can't read the variable/woff2 files next/font serves. */
 export async function loadOgFonts() {
   const [display, displaySemi, accent] = await Promise.all([
@@ -34,7 +40,12 @@ type OgInput = { eyebrow: string; title: string; pouchSlug?: string }
 
 /** Branded Open Graph card shared by every route's opengraph-image. */
 export async function renderOgImage({ eyebrow, title, pouchSlug = featuredFlavour.slug }: OgInput) {
-  const [pouch, fonts] = await Promise.all([pouchDataUrl(pouchSlug), loadOgFonts()])
+  const [pouch, mark, wordmark, fonts] = await Promise.all([
+    pouchDataUrl(pouchSlug),
+    brandDataUrl('mark.png'),
+    brandDataUrl('wordmark.png'),
+    loadOgFonts(),
+  ])
 
   return new ImageResponse(
     <div
@@ -78,15 +89,13 @@ export async function renderOgImage({ eyebrow, title, pouchSlug = featuredFlavou
         >
           {title}
         </div>
-        <div style={{ display: 'flex', alignItems: 'baseline', marginTop: 44, fontSize: 40 }}>
-          <span style={{ fontWeight: 800, color: '#2f4a2c', letterSpacing: -1 }}>crunch</span>
-          <span
-            style={{ fontFamily: 'Fraunces', fontStyle: 'italic', color: '#c4755a', marginLeft: 6 }}
-          >
-            theory
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: 40 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse requires <img> */}
+          <img src={mark} height={92} width={99} alt="" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse requires <img> */}
+          <img src={wordmark} height={58} width={108} alt="" style={{ marginLeft: 14 }} />
         </div>
-        <div style={{ fontSize: 24, fontWeight: 600, color: '#69655a', marginTop: 6 }}>
+        <div style={{ fontSize: 24, fontWeight: 600, color: '#69655a', marginTop: 12 }}>
           {site.tagline}
         </div>
       </div>

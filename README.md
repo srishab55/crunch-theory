@@ -13,15 +13,16 @@ cp .env.example .env.local   # then fill in your values
 npm run dev                   # http://localhost:3000
 ```
 
-| Script                        | What it does                                                     |
-| ----------------------------- | ---------------------------------------------------------------- |
-| `npm run dev`                 | Starts the dev server (Turbopack)                                |
-| `npm run build` / `npm start` | Builds for production and serves the build                       |
-| `npm run typecheck`           | Generates route types, then runs `tsc`                           |
-| `npm run lint`                | Runs ESLint (Next core-web-vitals and TypeScript rules)          |
-| `npm run format`              | Formats with Prettier (with Tailwind class sorting)              |
-| `npm run check`               | Runs typecheck, lint and the format check, as CI would           |
-| `npm run images`              | Rebuilds site and share-image crops from `content/pouches/*.png` |
+| Script                        | What it does                                                        |
+| ----------------------------- | ------------------------------------------------------------------- |
+| `npm run dev`                 | Starts the dev server (Turbopack)                                   |
+| `npm run build` / `npm start` | Builds for production and serves the build                          |
+| `npm run typecheck`           | Generates route types, then runs `tsc`                              |
+| `npm run lint`                | Runs ESLint (Next core-web-vitals and TypeScript rules)             |
+| `npm run format`              | Formats with Prettier (with Tailwind class sorting)                 |
+| `npm run check`               | Runs typecheck, lint and the format check, as CI would              |
+| `npm run images`              | Rebuilds site and share-image crops from `content/pouches/*.png`    |
+| `npm run logo`                | Rebuilds logo, wordmark, favicon and app icons from `content/logo/` |
 
 ## Project structure
 
@@ -32,6 +33,7 @@ docs/               IMAGE_PROMPTS.md (AI prompts for the remaining photography)
 public/media        Hero video (watermark removed, webm + mp4) and poster
 public/images       Lifestyle / story images (served as-is)
 src/assets/pouches  Pack shots, imported for hashed URLs (generate with npm run images)
+src/assets/brand    Transparent logo mark + wordmarks (generate with npm run logo)
 src/
   app/              Routes, metadata routes (sitemap, robots, manifest, OG images, llms.txt)
   actions/          Server Actions (newsletter, contact)

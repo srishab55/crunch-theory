@@ -64,7 +64,11 @@ export function trackPageView() {
   })
 }
 
-export const CONSENT_STORAGE_KEY = 'ct-consent'
+/**
+ * Versioned: v2 added Google Ads measurement to what "Sounds good" allows, so visitors who agreed
+ * under the old analytics-only wording are asked again rather than opted in silently.
+ */
+export const CONSENT_STORAGE_KEY = 'ct-consent-v2'
 /** Dispatch on window to reopen the cookie banner (footer "Cookie settings"). */
 export const CONSENT_OPEN_EVENT = 'ct:consent-open'
 export type ConsentChoice = 'granted' | 'denied'
@@ -75,12 +79,35 @@ export function updateConsent(choice: ConsentChoice) {
   } catch {
     // Storage can be unavailable (private mode); consent then lasts for this page view only.
   }
-  window.gtag?.('consent', 'update', {
+  window.gtag?.('consent', 'update', consentState(choice))
+}
+
+/**
+ * Consent Mode v2 signals for a choice. Accepting allows analytics and ad *measurement*
+ * (conversions); ad personalisation / remarketing always stays off.
+ */
+export function consentState(choice: ConsentChoice) {
+  return {
     analytics_storage: choice,
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-  })
+    ad_storage: choice,
+    ad_user_data: choice,
+    ad_personalization: 'denied' as const,
+  }
+}
+
+/**
+ * Google Ads conversion. Every on-site lead action (newsletter signup, contact message,
+ * "I'm interested", flavour page view) reports to the one conversion action configured in
+ * env.googleAdsConversion. No-op outside production (the tag sets window.ctAdsConversion).
+ */
+export function trackAdsConversion() {
+  if (typeof window === 'undefined') return
+  const fire = () => {
+    if (window.ctAdsConversion)
+      window.gtag?.('event', 'conversion', { send_to: window.ctAdsConversion })
+  }
+  if (typeof window.gtag === 'function') fire()
+  else window.addEventListener(GA_READY_EVENT, fire, { once: true })
 }
 
 export function readConsent(): ConsentChoice | null {

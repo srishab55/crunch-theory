@@ -22,12 +22,19 @@ export default function PrivacyPage() {
       />
       <article className="container-page max-w-3xl space-y-8 pb-28 text-lg leading-relaxed text-muted [&_h2]:text-3xl [&_h2]:text-forest">
         <section>
-          <h2>Analytics</h2>
+          <h2>Analytics and ad measurement</h2>
           <p className="mt-3">
             With your consent we use Google Analytics 4 to understand which pages and products
-            visitors find useful. Without consent, analytics cookies are disabled and only
-            anonymous, cookieless signals are sent (Google Consent Mode). We do not use advertising
-            cookies.
+            visitors find useful, and Google Ads conversion tracking to measure whether our ads lead
+            to sign-ups, messages or product interest. We don’t use ad personalisation or
+            remarketing, and we never sell your data.
+          </p>
+          <p className="mt-3">
+            Without consent, analytics and advertising cookies stay off and Google only receives
+            anonymous, cookieless signals (Google Consent Mode v2). When you tap “I’m interested”,
+            we record an anonymous count for that flavour — no cookie, no account, and your IP
+            address isn’t passed on. You can change your choice anytime via “Cookie settings” in the
+            footer.
           </p>
         </section>
         <section>

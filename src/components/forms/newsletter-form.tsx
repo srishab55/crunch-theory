@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useId } from 'react'
 
 import { subscribeToNewsletter } from '@/actions/forms'
-import { trackEvent } from '@/lib/analytics'
+import { trackAdsConversion, trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 import { initialFormState } from '@/lib/validation'
 
@@ -18,7 +18,9 @@ export function NewsletterForm({ location, inverted = false, className }: Props)
     state.fieldErrors?.email?.[0] ?? (state.status === 'error' ? state.message : undefined)
 
   useEffect(() => {
-    if (state.status === 'success') trackEvent('generate_lead', { form: 'newsletter', location })
+    if (state.status !== 'success') return
+    trackEvent('generate_lead', { form: 'newsletter', location })
+    trackAdsConversion()
   }, [state, location])
 
   if (state.status === 'success') {

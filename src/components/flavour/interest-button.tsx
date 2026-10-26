@@ -5,7 +5,7 @@ import { useSyncExternalStore } from 'react'
 
 import { recordInterest } from '@/actions/interest'
 import { buttonStyles } from '@/components/ui/button'
-import { trackEvent } from '@/lib/analytics'
+import { trackAdsConversion, trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 import type { InterestLocation } from '@/lib/interest'
 
@@ -72,6 +72,7 @@ export function InterestButton({
   const onClick = () => {
     if (interested) return
     remember(flavour) // instant feedback; tracking happens in the background
+    trackAdsConversion() // browser-only: Ads attributes conversions to the ad click
     const viaBrowser = () => trackEvent('interest_click', { flavour, location })
     recordInterest(flavour, location)
       .then(({ handled }) => {

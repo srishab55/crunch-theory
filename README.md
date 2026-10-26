@@ -101,6 +101,14 @@ counted once per flavour.
    of people: every tap gets a fresh anonymous ID, so _Total users_ equals taps. For a per-flavour
    table, use **Explore → Free form** with rows = `flavour`.
 
+**Google Ads conversions:** the Ads account `AW-18536526605` shares the site's single Google
+tag (production only). Four actions fire the conversion `AW-18536526605/Z62nCMSJn6odEI3m84ZF`
+through `trackAdsConversion()` in `src/lib/analytics.ts`: newsletter signup, contact message,
+"I'm interested", and a flavour page view. In Google Ads, set that conversion action's **Count**
+to **One**, so one ad click counts once even if the visitor does several of these. "Sounds good"
+on the cookie banner allows analytics and ad _measurement_; ad personalisation and remarketing
+always stay off. The consent choice is stored under `ct-consent-v2`.
+
 **Launch switch:** `availability` in `src/data/site.ts` is `'coming-soon'` before launch: store
 tiles show "Coming soon" (no links), buy CTAs become "Get notified" / "I'm interested", and product
 schema omits prices. Set it to `'live'` on launch day and redeploy; everything switches back.

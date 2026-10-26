@@ -23,6 +23,17 @@ function resolveGaId(): string {
   return process.env.VERCEL_ENV === 'production' ? GA_MEASUREMENT_ID : ''
 }
 
+/** Google Ads account and its conversion action label (public IDs, rendered into the page). */
+const GOOGLE_ADS_ID = 'AW-18536526605'
+const GOOGLE_ADS_CONVERSION_LABEL = 'Z62nCMSJn6odEI3m84ZF'
+
+/** Same rules as GA: env override, otherwise production builds only. */
+function resolveAdsId(): string {
+  const explicit = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
+  if (explicit !== undefined) return explicit
+  return process.env.VERCEL_ENV === 'production' ? GOOGLE_ADS_ID : ''
+}
+
 /**
  * Google Search Console ownership tokens (public: they're rendered into every page's <head>).
  * Add the `content` value of each Search Console "HTML tag", or the part after
@@ -42,6 +53,9 @@ function resolveGoogleVerification(): string[] {
 export const env = {
   siteUrl: resolveSiteUrl(),
   gaMeasurementId: resolveGaId(),
+  googleAdsId: resolveAdsId(),
+  /** `send_to` for the Google Ads conversion action ("Page view (1)"). */
+  googleAdsConversion: resolveAdsId() ? `${resolveAdsId()}/${GOOGLE_ADS_CONVERSION_LABEL}` : '',
   googleSiteVerification: resolveGoogleVerification(),
 } as const
 

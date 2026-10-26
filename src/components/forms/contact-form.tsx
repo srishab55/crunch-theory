@@ -3,7 +3,7 @@
 import { useActionState, useEffect, type ReactNode } from 'react'
 
 import { submitContactForm } from '@/actions/forms'
-import { trackEvent } from '@/lib/analytics'
+import { trackAdsConversion, trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 import { contactTopics, initialFormState } from '@/lib/validation'
 
@@ -18,8 +18,9 @@ export function ContactForm() {
   const err = (field: string) => state.fieldErrors?.[field]?.[0]
 
   useEffect(() => {
-    if (state.status === 'success')
-      trackEvent('generate_lead', { form: 'contact', location: 'contact-page' })
+    if (state.status !== 'success') return
+    trackEvent('generate_lead', { form: 'contact', location: 'contact-page' })
+    trackAdsConversion()
   }, [state])
 
   if (state.status === 'success') {

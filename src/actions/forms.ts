@@ -53,6 +53,6 @@ export async function submitContactForm(_prev: FormState, formData: FormData): P
     return { status: 'success', message: 'Thanks — we reply within two working days.' }
   } catch (error) {
     console.error('[contact] delivery failed', error)
-    return { status: 'error', message: 'Something went wrong. Please email us directly.' }
+    return { status: 'error', message: 'Something went wrong. Please try again in a minute.' }
   }
 }

@@ -10,7 +10,7 @@ These steps take the site from your laptop to a live URL in about 15 minutes. Ev
 - A [Google Analytics](https://analytics.google.com) account, for visit tracking
 - Node.js 20.9 or newer, if you want to run the site locally (`node -v`)
 
-Optional: a domain name (for example `crunchtheory.in`) and a [Resend](https://resend.com) account,
+Optional: a domain name (for example `crunchtheory.store`) and a [Resend](https://resend.com) account,
 which emails you each form submission.
 
 ---
@@ -86,13 +86,13 @@ they count as conversions.
 
 ## 6. Add a custom domain (optional)
 
-1. In Vercel, go to **Project → Settings → Domains → Add** and enter `crunchtheory.in`. Add
-   `www.crunchtheory.in` too, and redirect one to the other.
+1. In Vercel, go to **Project → Settings → Domains → Add** and enter `crunchtheory.store`. Add
+   `www.crunchtheory.store` too, and redirect one to the other.
 2. At your domain registrar (GoDaddy, Namecheap, Hostinger…), add the DNS records Vercel shows.
    These are usually an `A` record for the root domain pointing to `76.76.21.21`, and a `CNAME`
    for `www` pointing to `cname.vercel-dns.com`.
 3. Wait for Vercel to show **Valid Configuration**. HTTPS is set up automatically.
-4. Update `NEXT_PUBLIC_SITE_URL` to `https://www.crunchtheory.in`, then go to
+4. Update `NEXT_PUBLIC_SITE_URL` to `https://www.crunchtheory.store`, then go to
    **Deployments → ⋯ → Redeploy**.
 5. Update the GA4 data stream URL to the new domain.
 
@@ -130,10 +130,10 @@ git push            # Vercel redeploys automatically
 
 ## Troubleshooting
 
-| Problem                                              | Fix                                                                                                                                                                                                                                           |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The build fails on Vercel but works locally          | Run `npm run build` locally and fix any error it reports. Check that the Node version is 20.9 or newer (Vercel → Settings → General).                                                                                                         |
-| No data in GA4                                       | Only **production** deploys track by default (not previews). If you set `NEXT_PUBLIC_GA_MEASUREMENT_ID`, make sure it isn't empty, then redeploy (it is read at build time). Accept the cookie banner. Turn off any ad-blocker while testing. |
-| Canonical links or the sitemap show the wrong domain | Update `NEXT_PUBLIC_SITE_URL` and redeploy.                                                                                                                                                                                                   |
-| The hero video doesn't play on a phone               | iOS Low Power Mode blocks autoplay. The poster image is shown instead, which is expected.                                                                                                                                                     |
-| Contact emails don't arrive                          | Check the Resend dashboard, and make sure `CONTACT_FROM_EMAIL` uses a domain verified in Resend.                                                                                                                                              |
+| Problem                                              | Fix                                                                                                                                                                                                                                                                  |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The build fails on Vercel but works locally          | Run `npm run build` locally and fix any error it reports. Check that the Node version is 20.9 or newer (Vercel → Settings → General).                                                                                                                                |
+| No data in GA4                                       | Only **production** deploys track by default (not previews). If you set `NEXT_PUBLIC_GA_MEASUREMENT_ID`, make sure it isn't empty, then redeploy (it is read at build time). Accept the cookie banner. Turn off any ad-blocker while testing.                        |
+| Canonical links or the sitemap show the wrong domain | Update `NEXT_PUBLIC_SITE_URL` and redeploy.                                                                                                                                                                                                                          |
+| The hero video doesn't play on a phone               | iOS Low Power Mode blocks autoplay. The poster image is shown instead, which is expected.                                                                                                                                                                            |
+| Contact emails don't arrive                          | In Vercel → Logs, search `[mail]` / `Resend responded`. Without a verified domain, `CONTACT_TO_EMAIL` must be the email you signed up to Resend with. Leave `CONTACT_FROM_EMAIL` empty until the domain is verified in Resend. Redeploy after changing any variable. |

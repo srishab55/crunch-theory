@@ -14,7 +14,12 @@ export const site = {
   locale: 'en_IN',
   language: 'en-IN',
   country: 'IN',
-  email: 'hello@crunchtheory.in',
+  /**
+   * Public inbox shown on the site and in structured data. Leave empty until a real mailbox exists
+   * (crunchtheory.store has no email/MX set up yet) — the contact form is the main channel and is
+   * delivered by Resend. Set e.g. 'hello@crunchtheory.store' and it appears everywhere.
+   */
+  email: '' as string,
   social: {
     instagram: 'https://www.instagram.com/crunchtheory',
     youtube: 'https://www.youtube.com/@crunchtheory',

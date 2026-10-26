@@ -26,7 +26,11 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Say *hello.*"
-        lede={`Email ${site.email} or use the form — we reply within two working days.`}
+        lede={
+          site.email
+            ? `Email ${site.email} or use the form — we reply within two working days.`
+            : 'Send us a message with the form — a real person replies within two working days.'
+        }
         crumbs={[{ name: 'Contact', path: '/contact' }]}
       />
       <section className="container-page grid gap-16 pb-28 lg:grid-cols-12">
@@ -37,12 +41,14 @@ export default function ContactPage() {
               <p className="mt-2 text-muted">{r.body}</p>
             </Reveal>
           ))}
-          <a
-            href={`mailto:${site.email}`}
-            className="block font-display text-2xl font-bold text-olive underline underline-offset-8"
-          >
-            {site.email}
-          </a>
+          {site.email && (
+            <a
+              href={`mailto:${site.email}`}
+              className="block font-display text-2xl font-bold text-olive underline underline-offset-8"
+            >
+              {site.email}
+            </a>
+          )}
         </div>
         <Reveal className="lg:col-span-7 lg:col-start-6">
           <ContactForm />

@@ -51,13 +51,14 @@ export function organizationSchema(): WithContext<Organization> {
     logo: absoluteUrl(brandMark.src),
     slogan: site.tagline,
     description: site.description,
-    email: site.email,
+    ...(site.email && { email: site.email }),
     areaServed: { '@type': 'Country', name: 'India' },
     sameAs: Object.values(site.social),
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer support',
-      email: site.email,
+      url: absoluteUrl('/contact'),
+      ...(site.email && { email: site.email }),
       availableLanguage: ['English', 'Hindi'],
     },
   }

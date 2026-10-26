@@ -53,6 +53,13 @@ src/
 To change copy, prices, flavours or FAQs, edit `src/data/*`. Pages, structured data, the sitemap
 and `llms.txt` all update from it automatically.
 
+## Design system
+
+The theme (colours, type, spacing, surfaces) and the motion rules (one easing curve, duration
+scale, hover vocabulary, reduced motion) are documented in
+[`.claude/skills/crunch-theory-design/`](.claude/skills/crunch-theory-design/SKILL.md). Claude Code
+loads it automatically for UI work. Humans should read it before adding a section or animation.
+
 ## Visit tracking (Google Analytics 4)
 
 1. In GA4, create a property, then a **Web data stream**, and copy the Measurement ID (`G-…`).

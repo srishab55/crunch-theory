@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { PageHero } from '@/components/layout/page-hero'
 import { site } from '@/data/site'
 import { buildMetadata } from '@/lib/seo'
@@ -39,11 +41,24 @@ export default function PrivacyPage() {
           <h2>Your rights</h2>
           <p className="mt-3">
             Under India’s Digital Personal Data Protection Act, 2023, you can ask us to access,
-            correct or erase your data. Email{' '}
-            <a className="text-forest underline" href={`mailto:${site.email}`}>
-              {site.email}
-            </a>
-            .
+            correct or erase your data.{' '}
+            {site.email ? (
+              <>
+                Email{' '}
+                <a className="text-forest underline" href={`mailto:${site.email}`}>
+                  {site.email}
+                </a>
+                .
+              </>
+            ) : (
+              <>
+                Write to us through the{' '}
+                <Link className="text-forest underline" href="/contact">
+                  contact form
+                </Link>
+                .
+              </>
+            )}
           </p>
         </section>
       </article>

@@ -53,14 +53,16 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                href={`mailto:${site.email}`}
-                className="text-paper/75 transition-colors hover:text-paper"
-              >
-                {site.email}
-              </a>
-            </li>
+            {site.email && (
+              <li>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-paper/75 transition-colors hover:text-paper"
+                >
+                  {site.email}
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

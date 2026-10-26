@@ -10,6 +10,7 @@ import { HeatMeter } from '@/components/flavour/heat-meter'
 import { NutritionTable } from '@/components/flavour/nutrition-table'
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { JsonLd } from '@/components/seo/json-ld'
+import { ComingSoonBadge } from '@/components/ui/coming-soon-badge'
 import { Reveal, RevealText } from '@/components/ui/reveal'
 import { flavours, getFlavour } from '@/data/flavours'
 import { isLive, NOTIFY_HREF } from '@/data/site'
@@ -55,6 +56,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
           </Reveal>
 
           <div>
+            {!isLive && <ComingSoonBadge className="mb-5" />}
             <HeatMeter level={flavour.heat} />
             <RevealText
               as="h1"

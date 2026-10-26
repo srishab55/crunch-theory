@@ -1,6 +1,7 @@
 import { NewsletterForm } from '@/components/forms/newsletter-form'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { Reveal, RevealText } from '@/components/ui/reveal'
+import { isLive } from '@/data/site'
 
 export function NewsletterBand({ location }: { location: string }) {
   return (
@@ -15,13 +16,16 @@ export function NewsletterBand({ location }: { location: string }) {
             <p className="eyebrow !text-paper/80">The Crunch Club</p>
             <RevealText
               id="newsletter-title"
-              text="New flavours drop here *first.*"
+              text={
+                isLive ? 'New flavours drop here *first.*' : 'Get notified the day we *launch.*'
+              }
               accentClassName="text-forest-deep"
               className="mt-4 text-4xl leading-[1.02] font-extrabold tracking-[-0.035em] text-paper sm:text-5xl"
             />
             <p className="mt-4 max-w-md text-paper/80">
-              One email a month: flavour launches, member-only trial offers and the occasional snack
-              hack.
+              {isLive
+                ? 'One email a month: flavour launches, member-only trial offers and the occasional snack hack.'
+                : 'One email when we go live — plus member-only trial offers and the occasional snack hack.'}
             </p>
           </div>
           <Reveal delay={0.15}>

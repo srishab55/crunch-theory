@@ -4,6 +4,8 @@
  */
 export const site = {
   name: 'Crunch Theory',
+  /** Canonical origin for every page, sitemap, OG and schema URL (also see next.config redirects). */
+  url: 'https://www.crunchtheory.store',
   /** Other ways people search for or write the brand; used as schema.org alternateName. */
   alternateNames: ['CrunchTheory', 'Crunch Theory Makhana', 'Crunch Theory Snacks'],
   legalName: 'Crunch Theory Foods',
@@ -20,6 +22,12 @@ export const site = {
    * form emails. Set to '' to hide it everywhere.
    */
   email: 'support@crunchtheory.store' as string,
+  /**
+   * Sales status. 'coming-soon' (pre-launch): store tiles are non-clickable "Coming soon" cards,
+   * buy CTAs become "Get notified" (→ newsletter), copy says "launching soon" and product schema
+   * omits offers. Flip to 'live' at launch and everything switches back.
+   */
+  availability: 'coming-soon' as 'coming-soon' | 'live',
   /** Domain verified in Resend (DKIM + SPF) for sending form notifications. */
   sendingDomain: 'crunchtheory.store',
   social: {
@@ -45,3 +53,9 @@ export const navigation = [
   { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ] as const
+
+/** True once products are on sale (see `site.availability`). */
+export const isLive = site.availability === 'live'
+
+/** Where "Get notified" CTAs point: the footer newsletter form, present on every page. */
+export const NOTIFY_HREF = '#newsletter'

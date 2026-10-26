@@ -1,14 +1,13 @@
+import { site } from '@/data/site'
+
 /**
- * Resolves the canonical site URL. Order: explicit env → Vercel production domain → localhost.
+ * Canonical site URL: NEXT_PUBLIC_SITE_URL if set, otherwise the fixed production origin in
+ * `site.url`. Deliberately not derived from Vercel's domain settings, so canonical tags never
+ * drift to the vercel.app address (or a preview URL) and split rankings across hosts.
  */
 function resolveSiteUrl(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL
-  if (explicit) return explicit.replace(/\/$/, '')
-
-  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  if (vercelProduction) return `https://${vercelProduction}`
-
-  return 'http://localhost:3000'
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  return (explicit || site.url).replace(/\/$/, '')
 }
 
 /** GA4 web-stream ID. Public by design (it ships to every browser), so it is safe to commit. */

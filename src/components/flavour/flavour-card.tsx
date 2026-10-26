@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { PointerEvent } from 'react'
 
 import type { Flavour } from '@/data/flavours'
+import { isLive } from '@/data/site'
 
 import { FlavourVisual } from './flavour-visual'
 import { HeatMeter } from './heat-meter'
@@ -43,7 +44,12 @@ export function FlavourCard({ flavour, index, headingLevel = 'h3' }: Props) {
       onPointerLeave={reset}
       className="group relative rounded-[2rem] bg-paper p-3 shadow-[0_20px_50px_-30px_rgb(36_35_30/0.4)] transition-shadow duration-500 hover:shadow-[0_30px_60px_-25px_rgb(36_35_30/0.45)]"
     >
-      <div className="overflow-hidden rounded-[1.75rem]">
+      <div className="relative overflow-hidden rounded-[1.75rem]">
+        {!isLive && (
+          <span className="absolute top-3 left-3 z-10 rounded-full bg-paper/90 px-3 py-1 text-[0.65rem] font-semibold tracking-wide text-forest uppercase shadow-sm backdrop-blur">
+            Coming soon
+          </span>
+        )}
         <div className="transition-transform duration-700 ease-out-expo group-hover:scale-[1.04]">
           <FlavourVisual
             flavour={flavour}

@@ -72,15 +72,35 @@ loads it automatically for UI work. Humans should read it before adding a sectio
 
 Custom events (`src/lib/analytics.ts`):
 
-| Event           | When                                                                                     |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| `buy_click`     | A visitor clicks through to a marketplace (with `marketplace`, `flavour` and `location`) |
-| `view_item`     | A visitor views a flavour page (GA4 ecommerce event)                                     |
-| `generate_lead` | A visitor submits the newsletter or contact form                                         |
-| `cta_click`     | A visitor clicks a primary button (with `label` and `location`)                          |
-| `faq_open`      | A visitor opens an FAQ                                                                   |
+| Event            | When                                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `buy_click`      | A visitor clicks through to a marketplace (with `marketplace`, `flavour` and `location`)                                    |
+| `view_item`      | A visitor views a flavour page (GA4 ecommerce event)                                                                        |
+| `generate_lead`  | A visitor submits the newsletter or contact form                                                                            |
+| `cta_click`      | A visitor clicks a primary button (with `label` and `location`)                                                             |
+| `faq_open`       | A visitor opens an FAQ                                                                                                      |
+| `interest_click` | Pre-launch: a visitor taps **I'm interested** (`flavour` = slug or `any`, `location`). Counted once per flavour per browser |
+| `spotlight_view` | A visitor changes the flavour slider by hand (`flavour`, `method`)                                                          |
 
 In GA4, mark `generate_lead` and `buy_click` as **Key events** so they appear as conversions.
+
+**Counting "I'm interested" (pre-launch demand):**
+
+1. In GA4, go to **Admin → Custom definitions → Create custom dimension**. Add `flavour` and
+   `location` (scope: Event, parameter names `flavour` / `location`). Reports only show
+   breakdowns after this, and only for data collected afterwards.
+2. Go to **Admin → Events** and mark `interest_click` as a **Key event**.
+3. View the numbers in **Reports → Engagement → Events → `interest_click`**: _Event count_ is
+   taps, _Total users_ is people. For a per-flavour table, use **Explore → Free form** with
+   rows = `flavour` and values = _Event count_ / _Total users_. Realtime shows taps within
+   seconds.
+
+Visitors who decline cookies are counted without cookies under Consent Mode, so GA4 treats the
+totals as a minimum.
+
+**Launch switch:** `availability` in `src/data/site.ts` is `'coming-soon'` before launch: store
+tiles show "Coming soon" (no links), buy CTAs become "Get notified" / "I'm interested", and product
+schema omits prices. Set it to `'live'` on launch day and redeploy; everything switches back.
 Consent defaults to _denied_ (DPDP Act / GDPR friendly) until the visitor accepts the banner.
 
 ## SEO and AI-search optimisation

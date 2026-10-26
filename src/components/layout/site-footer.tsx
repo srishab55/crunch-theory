@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { flavours } from '@/data/flavours'
-import { navigation, site } from '@/data/site'
+import { isLive, navigation, site } from '@/data/site'
 
 import { NewsletterForm } from '../forms/newsletter-form'
 import { Logo } from '../illustrations/logo'
@@ -19,9 +19,11 @@ export function SiteFooter() {
           <p className="mt-6 max-w-sm text-paper/70">
             {site.tagline}. Roasted makhana with big crunch and honest labels — made in India.
           </p>
-          <div className="mt-8">
+          <div id="newsletter" className="mt-8 scroll-mt-32">
             <p className="mb-3 text-sm font-semibold text-mustard">
-              Snack news, new flavours, zero spam.
+              {isLive
+                ? 'Snack news, new flavours, zero spam.'
+                : 'Be first to know when we launch. Zero spam.'}
             </p>
             <NewsletterForm location="footer" inverted />
           </div>

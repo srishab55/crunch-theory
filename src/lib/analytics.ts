@@ -12,6 +12,8 @@ type AnalyticsEvents = {
   /** Primary call-to-action clicks across the site. */
   cta_click: { label: string; location: string }
   faq_open: { question: string }
+  /** Pre-launch demand signal: visitor tapped "I'm interested" (once per flavour per browser). */
+  interest_click: { flavour: string; location: string }
   /** Flavour spotlight slider changed slide. */
   spotlight_view: { flavour: string; method: 'arrow' | 'tab' | 'swipe' | 'key' }
 }

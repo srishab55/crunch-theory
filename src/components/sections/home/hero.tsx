@@ -6,6 +6,7 @@ import { useRef, useState } from 'react'
 
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
 import { Magnetic } from '@/components/ui/magnetic'
+import { isLive } from '@/data/site'
 import { cn } from '@/lib/cn'
 
 const headline = ['The', 'smart', 'way', 'to', 'snack.']
@@ -67,6 +68,15 @@ export function Hero() {
         style={reduceMotion ? undefined : { y: contentY, opacity: contentOpacity }}
         className="relative container-page flex h-full flex-col justify-end pb-24 md:justify-center md:pb-0"
       >
+        {!isLive && (
+          <p
+            className="hero-fade mb-6 inline-flex items-center gap-2 self-start rounded-full bg-paper/80 px-4 py-2 text-sm font-semibold text-forest shadow-[0_8px_30px_-12px_rgb(36_35_30/0.25)] backdrop-blur"
+            style={{ animationDelay: '0.05s' }}
+          >
+            <span aria-hidden="true" className="size-2.5 animate-pulse rounded-full bg-mustard" />
+            Coming soon to Blinkit, Zepto & more
+          </p>
+        )}
         <h1
           id="hero-title"
           className="max-w-3xl text-[clamp(3.4rem,9.5vw,8rem)] leading-[0.9] font-extrabold tracking-[-0.045em]"

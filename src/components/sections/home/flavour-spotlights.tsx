@@ -7,7 +7,9 @@ import { FlavourVisual } from '@/components/flavour/flavour-visual'
 import { Makhana } from '@/components/illustrations/makhana'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
+import { InterestButton } from '@/components/flavour/interest-button'
 import { flavours, type Flavour } from '@/data/flavours'
+import { isLive } from '@/data/site'
 import { trackEvent, type AnalyticsEventParams } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 import { usePrefersReducedMotion } from '@/lib/use-media-query'
@@ -342,17 +344,21 @@ function Slide({ flavour: f, index, total, state }: SlideProps) {
           >
             Ingredients & nutrition <ArrowIcon />
           </ButtonLink>
-          <ButtonLink
-            href={`/flavours/${f.slug}#buy`}
-            variant="secondary"
-            size="lg"
-            draggable={false}
-            className="border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-forest-deep"
-            trackLabel={`Spotlight order: ${f.shortName}`}
-            trackLocation="spotlight"
-          >
-            Order now
-          </ButtonLink>
+          {isLive ? (
+            <ButtonLink
+              href={`/flavours/${f.slug}#buy`}
+              variant="secondary"
+              size="lg"
+              draggable={false}
+              className="border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-forest-deep"
+              trackLabel={`Spotlight order: ${f.shortName}`}
+              trackLocation="spotlight"
+            >
+              Order now
+            </ButtonLink>
+          ) : (
+            <InterestButton flavour={f.slug} location="spotlight" tone="dark" />
+          )}
         </div>
       </motion.div>
     </motion.article>

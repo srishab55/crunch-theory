@@ -1,7 +1,7 @@
 import { faqs } from '@/data/faqs'
 import { flavours, type Flavour } from '@/data/flavours'
 import { marketplaces } from '@/data/marketplaces'
-import { site } from '@/data/site'
+import { isLive, site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
 
 /**
@@ -16,7 +16,10 @@ export function buildLlmsTxt(): string {
     '',
     'Key facts:',
     '- Product: roasted makhana (fox nuts / lotus seeds), roasted not fried, gluten-free.',
-    '- Market: India. Sold on ' + marketplaces.map((m) => m.name).join(', ') + '.',
+    `- Market: India. ${isLive ? 'Sold on' : 'Launching soon on'} ${marketplaces.map((m) => m.name).join(', ')}.`,
+    ...(isLive
+      ? []
+      : ['- Status: coming soon — not yet on sale. Prices below are planned launch prices.']),
     `- Packs: ₹49 trial (30 g), everyday pouch (75 g), family multipack (6 × 30 g).`,
     '- Positioning: a satisfying, better-for-you everyday snack — not a diet or weight-loss product.',
     '',

@@ -162,23 +162,29 @@ for tiny elements like the slider's progress bar.
 
 Check this list before building UI. Paths are under `src/components/`.
 
-| Need                                    | Use                                                                                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Section title block                     | `ui/section-heading` (`eyebrow`, `title` with `*accent*`, `lede`, `align`, `inverted`)                                                            |
-| Inner-page header with breadcrumbs + H1 | `layout/page-hero`                                                                                                                                |
-| Fade-up on scroll / masked word reveal  | `ui/reveal` → `Reveal` (`delay`, `y`), `RevealText` (`text`, `as`, `accentClassName`)                                                             |
-| Buttons and CTAs                        | `ui/button` → `ButtonLink` / `Button`: variants `primary` · `secondary` · `ghost` · `light`; sizes `md` · `lg`; `trackLabel` sends GA `cta_click` |
-| Pointer-magnetic CTA wrapper            | `ui/magnetic`                                                                                                                                     |
-| Count-up stat                           | `ui/counter`                                                                                                                                      |
-| Infinite strip of claims                | `ui/marquee`                                                                                                                                      |
-| Rotating circular sticker               | `ui/spin-sticker`                                                                                                                                 |
-| Accordion (crawlable `<details>`)       | `ui/faq-list`                                                                                                                                     |
-| Pack image with illustrated fallback    | `flavour/flavour-visual`                                                                                                                          |
-| Product card / grid                     | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
-| Store links (tracked `buy_click`)       | `flavour/marketplace-tiles` (`variant="feature"` on dark, `"compact"` on light)                                                                   |
-| Flavour slider                          | `sections/home/flavour-spotlights`                                                                                                                |
-| Logo                                    | `illustrations/logo` (`inverted` on dark, `eager` above the fold)                                                                                 |
-| Decoration                              | `illustrations/makhana`, `illustrations/watercolor-blob`                                                                                          |
+| Need                                           | Use                                                                                                                                               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Section title block                            | `ui/section-heading` (`eyebrow`, `title` with `*accent*`, `lede`, `align`, `inverted`)                                                            |
+| Inner-page header with breadcrumbs + H1        | `layout/page-hero`                                                                                                                                |
+| Fade-up on scroll / masked word reveal         | `ui/reveal` → `Reveal` (`delay`, `y`), `RevealText` (`text`, `as`, `accentClassName`)                                                             |
+| Buttons and CTAs                               | `ui/button` → `ButtonLink` / `Button`: variants `primary` · `secondary` · `ghost` · `light`; sizes `md` · `lg`; `trackLabel` sends GA `cta_click` |
+| Pointer-magnetic CTA wrapper                   | `ui/magnetic`                                                                                                                                     |
+| Count-up stat                                  | `ui/counter`                                                                                                                                      |
+| Infinite strip of claims                       | `ui/marquee`                                                                                                                                      |
+| Rotating circular sticker                      | `ui/spin-sticker`                                                                                                                                 |
+| Accordion (crawlable `<details>`)              | `ui/faq-list`                                                                                                                                     |
+| Pack image with illustrated fallback           | `flavour/flavour-visual`                                                                                                                          |
+| Product card / grid                            | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
+| Store links (tracked `buy_click`)              | `flavour/marketplace-tiles` (`variant="feature"` on dark, `"compact"` on light)                                                                   |
+| Flavour slider                                 | `sections/home/flavour-spotlights`                                                                                                                |
+| Pre-launch demand button (GA `interest_click`) | `flavour/interest-button` (`flavour` slug or `'any'`, `location`, `tone`)                                                                         |
+| Logo                                           | `illustrations/logo` (`inverted` on dark, `eager` above the fold)                                                                                 |
+| Decoration                                     | `illustrations/makhana`, `illustrations/watercolor-blob`                                                                                          |
+
+**Launch state.** `site.availability` (`src/data/site.ts`) is `'coming-soon'` until products are
+on sale. Use the exported `isLive` / `NOTIFY_HREF` for anything that sells: links to stores, "Order
+now", prices in schema. Pre-launch, show "Coming soon", "Get notified" (→ `#newsletter`) or
+`InterestButton` instead, and never invent availability.
 
 If you need something new, build it from these parts and tokens. Put copy and product facts in
 `src/data/*`, not in components. Pages, structured data and `llms.txt` all read from there.

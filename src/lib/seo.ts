@@ -13,7 +13,7 @@ import type {
 import brandMark from '@/assets/brand/mark.png'
 import type { Faq } from '@/data/faqs'
 import type { Flavour } from '@/data/flavours'
-import { site } from '@/data/site'
+import { isLive, site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
 
 type PageMetaInput = {
@@ -97,14 +97,17 @@ export function productSchema(flavour: Flavour): WithContext<Product> {
       { '@type': 'PropertyValue', name: 'Preparation', value: 'Roasted, not fried' },
       { '@type': 'PropertyValue', name: 'Gluten-free', value: 'Yes' },
     ],
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'INR',
-      lowPrice: Math.min(...flavour.packs.map((p) => p.priceInr)),
-      highPrice: Math.max(...flavour.packs.map((p) => p.priceInr)),
-      offerCount: flavour.packs.length,
-      availability: 'https://schema.org/InStock',
-    },
+    // Pre-launch there is nothing to buy, so no offer is claimed (schema.org has no "coming soon").
+    ...(isLive && {
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'INR',
+        lowPrice: Math.min(...flavour.packs.map((p) => p.priceInr)),
+        highPrice: Math.max(...flavour.packs.map((p) => p.priceInr)),
+        offerCount: flavour.packs.length,
+        availability: 'https://schema.org/InStock',
+      },
+    }),
   }
 }
 

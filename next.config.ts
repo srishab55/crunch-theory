@@ -23,6 +23,19 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        // One canonical host for SEO: send the vercel.app copy to the real domain (keeps the path).
+        // The Search Console verification file stays reachable for the old property.
+        // Keep in sync with `site.url` in src/data/site.ts.
+        source: '/:path((?!googlecb2cce3dd9aa96c6\\.html$).*)',
+        has: [{ type: 'host', value: 'crunch-theory.vercel.app' }],
+        destination: 'https://www.crunchtheory.store/:path',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },

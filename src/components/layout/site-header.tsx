@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
-import { navigation } from '@/data/site'
+import { isLive, navigation, NOTIFY_HREF } from '@/data/site'
 import { cn } from '@/lib/cn'
 
 import { Logo } from '../illustrations/logo'
@@ -71,12 +71,12 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ButtonLink
-            href="/flavours"
+            href={isLive ? '/flavours' : NOTIFY_HREF}
             className="hidden sm:inline-flex"
-            trackLabel="Shop now"
+            trackLabel={isLive ? 'Shop now' : 'Get notified'}
             trackLocation="header"
           >
-            Shop now
+            {isLive ? 'Shop now' : 'Get notified'}
           </ButtonLink>
           <button
             type="button"

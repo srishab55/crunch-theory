@@ -5,7 +5,10 @@ import { PouchFan } from '@/components/flavour/pouch-fan'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { Reveal, RevealText } from '@/components/ui/reveal'
 import { SpinSticker } from '@/components/ui/spin-sticker'
+import { InterestButton } from '@/components/flavour/interest-button'
+import { ButtonLink } from '@/components/ui/button'
 import { flavours } from '@/data/flavours'
+import { isLive, NOTIFY_HREF } from '@/data/site'
 
 const trialPrice = Math.min(...flavours.flatMap((f) => f.packs.map((p) => p.priceInr)))
 
@@ -40,10 +43,25 @@ export function WhereToBuy() {
             />
             <Reveal delay={0.15}>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-paper/70">
-                Order on your favourite quick-commerce app and it’s at your desk before the meeting
-                ends. Stocking up? Grab multipacks online.
+                {isLive
+                  ? 'Order on your favourite quick-commerce app and it’s at your desk before the meeting ends. Stocking up? Grab multipacks online.'
+                  : 'We’re launching soon on your favourite quick-commerce apps — then it’s at your desk before the meeting ends. Tap “I’m interested” so we know you’re waiting.'}
               </p>
             </Reveal>
+            {!isLive && (
+              <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3">
+                <InterestButton flavour="any" location="home-where-to-buy" tone="dark" />
+                <ButtonLink
+                  href={NOTIFY_HREF}
+                  variant="light"
+                  size="lg"
+                  trackLabel="Get notified"
+                  trackLocation="home-where-to-buy"
+                >
+                  Get notified at launch
+                </ButtonLink>
+              </Reveal>
+            )}
             <Reveal delay={0.25} className="mt-10 flex items-center gap-5">
               <SpinSticker
                 text="Try the trial pack • Roasted, not fried • "
@@ -64,12 +82,12 @@ export function WhereToBuy() {
         />
 
         <p className="mt-8 text-center text-sm text-paper/50">
-          Availability varies by city.{' '}
+          {isLive ? 'Availability varies by city.' : 'Launching city by city.'}{' '}
           <Link
             href="/contact"
             className="font-semibold text-paper/80 underline underline-offset-4 hover:text-mustard"
           >
-            Can’t find us near you? Tell us your pin code.
+            {isLive ? 'Can’t find us near you?' : 'Want us in your city?'} Tell us your pin code.
           </Link>
         </p>
       </div>

@@ -1,3 +1,5 @@
+import { isLive } from './site'
+
 export type Faq = {
   question: string
   /** Answer-first: the first sentence should fully answer the question on its own. */
@@ -51,8 +53,9 @@ export const faqs: Faq[] = [
   {
     category: 'Buying',
     question: 'Where can I buy Crunch Theory?',
-    answer:
-      'You can buy Crunch Theory on Amazon, Blinkit, Zepto, Swiggy Instamart and BigBasket. Every flavour page has direct buy links for each store.',
+    answer: isLive
+      ? 'You can buy Crunch Theory on Amazon, Blinkit, Zepto, Swiggy Instamart and BigBasket. Every flavour page has direct buy links for each store.'
+      : 'Crunch Theory isn’t on sale yet — we’re launching soon on Blinkit, Zepto, Swiggy Instamart, Amazon and BigBasket. Join the newsletter to hear the day it goes live, or tap “I’m interested” on your favourite flavour.',
   },
   {
     category: 'Buying',

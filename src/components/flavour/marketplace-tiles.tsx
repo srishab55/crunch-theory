@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
 
 import { marketplaces, type Marketplace } from '@/data/marketplaces'
+import { isLive } from '@/data/site'
 import { trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 
@@ -18,8 +19,9 @@ type Props = {
 }
 
 /**
- * Outbound marketplace tiles. Each fills with its store's colour on hover/focus and shows the
- * delivery time big — quick commerce first, because that's where snack cravings convert.
+ * Marketplace tiles — delivery time big, quick commerce first. When live, each is an outbound
+ * link that fills with its store's colour on hover/focus; pre-launch (`site.availability`),
+ * they're static "Coming soon" cards with no link.
  */
 export function MarketplaceTiles({ flavour, location, variant = 'feature', className }: Props) {
   const feature = variant === 'feature'
@@ -74,26 +76,15 @@ function Tile({
   // Words like "Same" need a smaller size than numerals to fit the tile.
   const numeric = /\d/.test(m.speed.value)
 
-  return (
-    <a
-      href={m.url(flavour)}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => trackEvent('buy_click', { marketplace: m.id, flavour, location })}
-      style={{ '--brand-bg': m.brand.bg, '--brand-fg': m.brand.fg } as CSSProperties}
-      className={cn(
-        'group relative isolate flex h-full flex-col overflow-hidden border transition-[color,border-color,transform] duration-500 ease-out-expo hover:-translate-y-1 hover:border-transparent hover:text-[var(--brand-fg)] focus-visible:border-transparent focus-visible:text-[var(--brand-fg)]',
-        feature
-          ? 'min-h-[12.5rem] rounded-[1.75rem] border-paper/12 bg-paper/[0.05] p-5 text-paper sm:min-h-[15rem] sm:rounded-[2rem] sm:p-7'
-          : 'min-h-[9.5rem] rounded-3xl border-forest/12 bg-paper p-4 text-forest sm:p-5',
-      )}
-    >
-      {/* Brand-colour fill that rises from the bottom on hover */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 origin-bottom scale-y-0 bg-[var(--brand-bg)] transition-transform duration-500 ease-out-expo group-hover:scale-y-100 group-focus-visible:scale-y-100"
-      />
+  const shell = cn(
+    'relative isolate flex h-full flex-col overflow-hidden border',
+    feature
+      ? 'min-h-[12.5rem] rounded-[1.75rem] border-paper/12 bg-paper/[0.05] p-5 text-paper sm:min-h-[15rem] sm:rounded-[2rem] sm:p-7'
+      : 'min-h-[9.5rem] rounded-3xl border-forest/12 bg-paper p-4 text-forest sm:p-5',
+  )
 
+  const content = (
+    <>
       <span className="flex flex-wrap items-start justify-between gap-2">
         <span
           className={cn(
@@ -135,7 +126,55 @@ function Tile({
         </span>
         <span className={cn('font-semibold', feature ? 'text-xl' : 'text-sm')}>{m.speed.unit}</span>
       </span>
+    </>
+  )
 
+  // Pre-launch: same card, but not a link — a "Coming soon" label replaces the arrow.
+  if (!isLive) {
+    return (
+      <div className={shell}>
+        {content}
+        <span className={cn('flex items-end justify-between gap-3', feature ? 'mt-4' : 'mt-3')}>
+          {/* Compact tiles are too narrow for both the note and the label — keep just the label. */}
+          {feature && (
+            <span className="text-xs opacity-75 sm:text-sm">
+              <span className="sm:hidden">Launching soon</span>
+              <span className="max-sm:hidden">Launching here soon.</span>
+            </span>
+          )}
+          <span
+            className={cn(
+              'shrink-0 rounded-full font-semibold tracking-wide whitespace-nowrap uppercase',
+              feature
+                ? 'border border-paper/25 px-3 py-1.5 text-[0.65rem] text-paper/85'
+                : 'bg-sand/70 px-2.5 py-1 text-[0.6rem] text-forest',
+            )}
+          >
+            Coming soon
+          </span>
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <a
+      href={m.url(flavour)}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => trackEvent('buy_click', { marketplace: m.id, flavour, location })}
+      style={{ '--brand-bg': m.brand.bg, '--brand-fg': m.brand.fg } as CSSProperties}
+      className={cn(
+        shell,
+        'group transition-[color,border-color,transform] duration-500 ease-out-expo hover:-translate-y-1 hover:border-transparent hover:text-[var(--brand-fg)] focus-visible:border-transparent focus-visible:text-[var(--brand-fg)]',
+      )}
+    >
+      {/* Brand-colour fill that rises from the bottom on hover */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 origin-bottom scale-y-0 bg-[var(--brand-bg)] transition-transform duration-500 ease-out-expo group-hover:scale-y-100 group-focus-visible:scale-y-100"
+      />
+      {content}
       <span className={cn('flex items-end justify-between gap-4', feature ? 'mt-4' : 'mt-2')}>
         <span className={cn('opacity-75', feature ? 'text-xs sm:text-sm' : 'text-xs')}>
           {feature ? (

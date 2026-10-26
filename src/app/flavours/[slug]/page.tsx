@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { TrackViewItem } from '@/components/analytics/track-view-item'
+import { InterestButton } from '@/components/flavour/interest-button'
 import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
 import { FlavourGrid } from '@/components/flavour/flavour-grid'
 import { FlavourVisual } from '@/components/flavour/flavour-visual'
@@ -11,6 +12,7 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Reveal, RevealText } from '@/components/ui/reveal'
 import { flavours, getFlavour } from '@/data/flavours'
+import { isLive, NOTIFY_HREF } from '@/data/site'
 import { buildMetadata, productSchema } from '@/lib/seo'
 
 export function generateStaticParams() {
@@ -79,9 +81,26 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
                 <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
                   Get it in <span className="accent text-terracotta">10 minutes</span>
                 </h2>
-                <p className="text-sm text-muted">Pick your app ↓</p>
+                {isLive ? (
+                  <p className="text-sm text-muted">Pick your app ↓</p>
+                ) : (
+                  <p className="rounded-full bg-mustard/40 px-3 py-1 text-xs font-semibold tracking-wide text-forest-deep uppercase">
+                    Coming soon
+                  </p>
+                )}
               </div>
               <MarketplaceTiles flavour={flavour.name} location="flavour-page" variant="compact" />
+              {!isLive && (
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-1 pt-5">
+                  <InterestButton flavour={flavour.slug} location="flavour-page" size="md" />
+                  <a
+                    href={NOTIFY_HREF}
+                    className="text-sm font-semibold text-forest underline underline-offset-4 hover:text-forest-deep"
+                  >
+                    Get notified at launch
+                  </a>
+                </div>
+              )}
             </div>
 
             <div className="mt-12 grid gap-8 sm:grid-cols-2">

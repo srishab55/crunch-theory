@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { readConsent, updateConsent, type ConsentChoice } from '@/lib/analytics'
+import { CONSENT_OPEN_EVENT, readConsent, updateConsent, type ConsentChoice } from '@/lib/analytics'
 
 import { Button } from '../ui/button'
 
@@ -15,7 +15,13 @@ export function ConsentBanner() {
   useEffect(() => {
     // Read after mount: localStorage is unavailable during prerendering.
     const id = window.setTimeout(() => setOpen(readConsent() === null), 1200)
-    return () => window.clearTimeout(id)
+    // "Cookie settings" in the footer reopens the banner so a choice can be changed later.
+    const reopen = () => setOpen(true)
+    window.addEventListener(CONSENT_OPEN_EVENT, reopen)
+    return () => {
+      window.clearTimeout(id)
+      window.removeEventListener(CONSENT_OPEN_EVENT, reopen)
+    }
   }, [])
 
   const choose = (choice: ConsentChoice) => {

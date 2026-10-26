@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { flavours } from '@/data/flavours'
 import { isLive, navigation, site } from '@/data/site'
 
+import { CookieSettingsButton } from '../analytics/cookie-settings-button'
 import { NewsletterForm } from '../forms/newsletter-form'
 import { Logo } from '../illustrations/logo'
 import { Makhana } from '../illustrations/makhana'
@@ -78,6 +79,9 @@ export function SiteFooter() {
             <Link href="/privacy" className="hover:text-paper">
               Privacy
             </Link>
+          </li>
+          <li>
+            <CookieSettingsButton className="hover:text-paper" />
           </li>
           {Object.entries(site.social).map(([name, url]) => (
             <li key={name}>

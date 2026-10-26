@@ -84,19 +84,22 @@ Custom events (`src/lib/analytics.ts`):
 
 In GA4, mark `generate_lead` and `buy_click` as **Key events** so they appear as conversions.
 
-**Counting "I'm interested" (pre-launch demand):**
+**Counting "I'm interested" (pre-launch demand):** taps are sent to GA4 **from the server**
+(Measurement Protocol), so ad-blockers and declined cookies don't hide them. Each event is
+anonymous: no cookie, a random ID per tap, and the visitor's IP isn't forwarded. Each browser is
+counted once per flavour.
 
-1. In GA4, go to **Admin → Custom definitions → Create custom dimension**. Add `flavour` and
-   `location` (scope: Event, parameter names `flavour` / `location`). Reports only show
-   breakdowns after this, and only for data collected afterwards.
-2. Go to **Admin → Events** and mark `interest_click` as a **Key event**.
-3. View the numbers in **Reports → Engagement → Events → `interest_click`**: _Event count_ is
-   taps, _Total users_ is people. For a per-flavour table, use **Explore → Free form** with
-   rows = `flavour` and values = _Event count_ / _Total users_. Realtime shows taps within
-   seconds.
-
-Visitors who decline cookies are counted without cookies under Consent Mode, so GA4 treats the
-totals as a minimum.
+1. **Turn on server-side counting (once):** go to GA4 → **Admin → Data streams →** your web stream →
+   **Measurement Protocol API secrets → Create**. Copy the secret value into Vercel as
+   `GA_API_SECRET` (Production), then redeploy. Until then, taps fall back to the browser tag,
+   which ad-blockers and declined cookies can hide.
+2. **Admin → Custom definitions → Create custom dimension** twice (scope: Event). Type the event
+   parameters `flavour` and `location` by hand if they aren't suggested yet.
+3. **Admin → Events:** mark `interest_click` as a **Key event**.
+4. **Read the numbers:** **Reports → Realtime** (within about 30 seconds), or **Reports →
+   Engagement → Events → `interest_click`**. With server-side counting, _Event count_ is the number
+   of people: every tap gets a fresh anonymous ID, so _Total users_ equals taps. For a per-flavour
+   table, use **Explore → Free form** with rows = `flavour`.
 
 **Launch switch:** `availability` in `src/data/site.ts` is `'coming-soon'` before launch: store
 tiles show "Coming soon" (no links), buy CTAs become "Get notified" / "I'm interested", and product

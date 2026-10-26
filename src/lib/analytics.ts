@@ -65,6 +65,8 @@ export function trackPageView() {
 }
 
 export const CONSENT_STORAGE_KEY = 'ct-consent'
+/** Dispatch on window to reopen the cookie banner (footer "Cookie settings"). */
+export const CONSENT_OPEN_EVENT = 'ct:consent-open'
 export type ConsentChoice = 'granted' | 'denied'
 
 export function updateConsent(choice: ConsentChoice) {

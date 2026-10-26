@@ -3,14 +3,17 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useSyncExternalStore } from 'react'
 
+import { recordInterest } from '@/actions/interest'
 import { buttonStyles } from '@/components/ui/button'
 import { trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
+import type { InterestLocation } from '@/lib/interest'
 
 /**
- * Pre-launch demand counter: "I'm interested" sends one GA4 `interest_click` per flavour per
- * browser (remembered in localStorage, with an in-memory fallback), so GA's event count and
- * "Total users" reflect real people rather than repeat taps.
+ * Pre-launch demand counter: "I'm interested" records one GA4 `interest_click` per flavour per
+ * browser (remembered in localStorage, with an in-memory fallback), so the count reflects people,
+ * not repeat taps. It's sent server-side (`recordInterest`) so ad-blockers and declined cookies
+ * don't hide demand; if server tracking isn't configured, it falls back to the browser's gtag.
  */
 const STORAGE_KEY = 'ct-interest'
 const memory = new Set<string>()
@@ -49,7 +52,7 @@ function remember(flavour: string) {
 type Props = {
   /** Flavour slug, or 'any' for general interest in the brand. */
   flavour: string
-  location: string
+  location: InterestLocation
   tone?: 'light' | 'dark'
   size?: 'md' | 'lg'
   className?: string
@@ -68,8 +71,13 @@ export function InterestButton({
 
   const onClick = () => {
     if (interested) return
-    trackEvent('interest_click', { flavour, location })
-    remember(flavour)
+    remember(flavour) // instant feedback; tracking happens in the background
+    const viaBrowser = () => trackEvent('interest_click', { flavour, location })
+    recordInterest(flavour, location)
+      .then(({ handled }) => {
+        if (!handled) viaBrowser()
+      })
+      .catch(viaBrowser)
   }
 
   return (

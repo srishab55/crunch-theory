@@ -5,17 +5,10 @@ import { useActionState, useEffect, type ReactNode } from 'react'
 import { submitContactForm } from '@/actions/forms'
 import { trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
-import { initialFormState } from '@/lib/validation'
+import { contactTopics, initialFormState } from '@/lib/validation'
 
 import { Button } from '../ui/button'
 import { Honeypot } from './honeypot'
-
-const topics = [
-  { value: 'general', label: 'General question' },
-  { value: 'feedback', label: 'Product feedback' },
-  { value: 'retail', label: 'Retail & wholesale' },
-  { value: 'press', label: 'Press & collaborations' },
-] as const
 
 const fieldClass =
   'w-full rounded-2xl border border-forest/15 bg-paper px-5 py-4 text-base text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-forest aria-[invalid=true]:border-terracotta'
@@ -71,7 +64,7 @@ export function ContactForm() {
           defaultValue="general"
           className={cn(fieldClass, 'appearance-none')}
         >
-          {topics.map((t) => (
+          {contactTopics.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
             </option>

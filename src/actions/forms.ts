@@ -2,11 +2,30 @@
 
 import { z } from 'zod'
 
-import { sendNotification } from '@/lib/mailer'
-import { contactSchema, newsletterSchema, type FormState } from '@/lib/validation'
+import { contactConfirmationEmail, contactNotificationEmail } from '@/lib/emails/contact'
+import { sendNotification, sendToVisitor } from '@/lib/mailer'
+import { contactSchema, newsletterSchema, topicLabel, type FormState } from '@/lib/validation'
 
 /** Bots fill every field; humans never see this one. */
 const isBot = (formData: FormData) => Boolean(formData.get('company_website'))
+
+/**
+ * Caps confirmation emails per recipient so the form can't be used to flood someone's inbox.
+ * In-memory, so it's per server instance — a speed bump, not a guarantee (use Vercel Firewall
+ * rate limiting if abuse ever appears).
+ */
+const CONFIRMATIONS_PER_HOUR = 2
+const confirmationLog = new Map<string, number[]>()
+
+function mayConfirm(email: string): boolean {
+  const now = Date.now()
+  const key = email.toLowerCase()
+  const recent = (confirmationLog.get(key) ?? []).filter((t) => now - t < 60 * 60 * 1000)
+  if (recent.length >= CONFIRMATIONS_PER_HOUR) return false
+  confirmationLog.set(key, [...recent, now])
+  if (confirmationLog.size > 1000) confirmationLog.clear() // keep memory bounded
+  return true
+}
 
 export async function subscribeToNewsletter(
   _prev: FormState,
@@ -43,16 +62,34 @@ export async function submitContactForm(_prev: FormState, formData: FormData): P
     }
   }
 
-  const { name, email, topic, message } = parsed.data
+  const { name, email, message } = parsed.data
+  const topic = topicLabel(parsed.data.topic)
+
+  // 1. The owner's copy is the critical email: if it fails, tell the visitor to retry.
   try {
     await sendNotification({
-      subject: `[${topic}] Message from ${name}`,
-      text: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}`,
+      ...contactNotificationEmail({ name, email, topic, message }),
       replyTo: email,
     })
-    return { status: 'success', message: 'Thanks — we reply within two working days.' }
   } catch (error) {
     console.error('[contact] delivery failed', error)
     return { status: 'error', message: 'Something went wrong. Please try again in a minute.' }
+  }
+
+  // 2. The visitor's receipt is best-effort: a failure here must not lose the enquiry.
+  let confirmed = false
+  if (mayConfirm(email)) {
+    try {
+      confirmed = await sendToVisitor({ to: email, ...contactConfirmationEmail({ name, topic }) })
+    } catch (error) {
+      console.error('[contact] confirmation email failed', error)
+    }
+  }
+
+  return {
+    status: 'success',
+    message: confirmed
+      ? 'We’ve emailed you a confirmation — a real person replies within two working days.'
+      : 'Thanks — we reply within two working days.',
   }
 }

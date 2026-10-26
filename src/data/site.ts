@@ -15,11 +15,11 @@ export const site = {
   language: 'en-IN',
   country: 'IN',
   /**
-   * Public inbox shown on the site and in structured data. Leave empty until a real mailbox exists
-   * (crunchtheory.store has no email/MX set up yet) — the contact form is the main channel and is
-   * delivered by Resend. Set e.g. 'hello@crunchtheory.store' and it appears everywhere.
+   * Public support inbox (receives via Resend inbound — MX on crunchtheory.store). Shown on the
+   * contact page, footer, privacy page and in structured data; also the sender and reply-to of
+   * form emails. Set to '' to hide it everywhere.
    */
-  email: '' as string,
+  email: 'support@crunchtheory.store' as string,
   /** Domain verified in Resend (DKIM + SPF) for sending form notifications. */
   sendingDomain: 'crunchtheory.store',
   social: {

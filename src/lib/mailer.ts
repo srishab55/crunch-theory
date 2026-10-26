@@ -1,12 +1,17 @@
 import 'server-only'
 
+import { site } from '@/data/site'
+
 type Mail = { subject: string; text: string; replyTo?: string }
 
+/** Default sender on our Resend-verified domain; CONTACT_FROM_EMAIL overrides it. */
+const DEFAULT_SENDER = `${site.name} <noreply@${site.sendingDomain}>`
+
 /**
- * Resend's built-in sender. It works without verifying a domain, but can only deliver to the
- * email address that owns the Resend account — which is exactly the contact-form use case.
+ * Resend's built-in sender, used only as a fallback if the domain sender is rejected (e.g.
+ * verification lapsed). It can only deliver to the email address that owns the Resend account.
  */
-const RESEND_TEST_SENDER = 'Crunch Theory <onboarding@resend.dev>'
+const RESEND_TEST_SENDER = `${site.name} <onboarding@resend.dev>`
 
 async function postToResend(apiKey: string, payload: Record<string, unknown>) {
   return fetch('https://api.resend.com/emails', {
@@ -20,14 +25,14 @@ async function postToResend(apiKey: string, payload: Record<string, unknown>) {
  * Delivers a form notification to CONTACT_TO_EMAIL via Resend. Without RESEND_API_KEY and
  * CONTACT_TO_EMAIL it only logs (visible in Vercel → Logs, kept ~1 hour on the free plan).
  *
- * CONTACT_FROM_EMAIL is optional: it needs a domain verified in Resend. If Resend rejects it
- * (e.g. the domain isn't verified yet) the message is retried from Resend's test sender, so a
- * misconfigured sender never silently drops enquiries.
+ * Mail is sent from noreply@<sendingDomain> (or CONTACT_FROM_EMAIL). If Resend rejects that sender
+ * (e.g. domain verification lapsed) the message is retried from Resend's test sender, so a
+ * misconfigured sender never silently drops enquiries. Replies go to the visitor (reply_to).
  */
 export async function sendNotification({ subject, text, replyTo }: Mail): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY?.trim()
   const to = process.env.CONTACT_TO_EMAIL?.trim()
-  const from = process.env.CONTACT_FROM_EMAIL?.trim() || RESEND_TEST_SENDER
+  const from = process.env.CONTACT_FROM_EMAIL?.trim() || DEFAULT_SENDER
 
   if (!apiKey || !to) {
     console.info(`[form] ${subject}\n${text}`)

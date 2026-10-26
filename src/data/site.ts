@@ -20,6 +20,8 @@ export const site = {
    * delivered by Resend. Set e.g. 'hello@crunchtheory.store' and it appears everywhere.
    */
   email: '' as string,
+  /** Domain verified in Resend (DKIM + SPF) for sending form notifications. */
+  sendingDomain: 'crunchtheory.store',
   social: {
     instagram: 'https://www.instagram.com/crunchtheory',
     youtube: 'https://www.youtube.com/@crunchtheory',

@@ -48,6 +48,7 @@ export const site = {
 } as const
 
 export const navigation = [
+  { label: 'Products', href: '/products' },
   { label: 'Flavours', href: '/flavours' },
   { label: 'Our Story', href: '/our-story' },
   { label: 'FAQ', href: '/faq' },

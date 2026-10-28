@@ -3,10 +3,16 @@
 import { headers } from 'next/headers'
 
 import { flavours } from '@/data/flavours'
+import { productLines } from '@/data/products'
 import { sendServerEvent } from '@/lib/ga-server'
 import { interestLocations } from '@/lib/interest'
 
-const validFlavours = new Set<string>([...flavours.map((f) => f.slug), 'any'])
+/** Makhana flavour slugs, product-line slugs (e.g. 'roasted-chana') or 'any'. */
+const validFlavours = new Set<string>([
+  ...flavours.map((f) => f.slug),
+  ...productLines.map((p) => p.slug),
+  'any',
+])
 const validLocations = new Set<string>(interestLocations)
 
 /** Per-IP cap so a script can't inflate the counts. Per server instance — a speed bump. */

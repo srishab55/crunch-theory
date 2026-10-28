@@ -46,6 +46,12 @@ export const faqs: Faq[] = [
   },
   {
     category: 'Product',
+    question: 'Does Crunch Theory make anything besides makhana?',
+    answer:
+      'Yes. Alongside roasted makhana we are launching roasted chana, masala vegetable chips (sweet potato, beetroot, okra and taro) and baked ragi chips, each from ₹49. See the whole range on our Products page.',
+  },
+  {
+    category: 'Product',
     question: 'Will my kids actually eat it?',
     answer:
       'Most likely — Cheese & Herbs is our most kid-approved flavour. It tastes familiar, has no chilli heat and fits a lunchbox in the 30 g pack.',

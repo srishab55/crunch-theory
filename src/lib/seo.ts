@@ -13,6 +13,7 @@ import type {
 import brandMark from '@/assets/brand/mark.png'
 import type { Faq } from '@/data/faqs'
 import type { Flavour } from '@/data/flavours'
+import type { ProductLine } from '@/data/products'
 import { site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
 
@@ -123,6 +124,21 @@ export function productListSchema(flavours: Flavour[]): WithContext<ItemList> {
       position: i + 1,
       url: absoluteUrl(`/flavours/${f.slug}`),
       name: f.name,
+    })),
+  }
+}
+
+/** The product range; each line links to its own page, or to its section on /products. */
+export function productRangeSchema(lines: ProductLine[]): WithContext<ItemList> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${site.name} products`,
+    itemListElement: lines.map((l, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: absoluteUrl(l.href ?? `/products#${l.slug}`),
+      name: l.name,
     })),
   }
 }

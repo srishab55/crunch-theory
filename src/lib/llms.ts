@@ -1,6 +1,7 @@
 import { faqs } from '@/data/faqs'
 import { flavours, type Flavour } from '@/data/flavours'
 import { marketplaces } from '@/data/marketplaces'
+import { productLines } from '@/data/products'
 import { isLive, site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
 
@@ -16,6 +17,7 @@ export function buildLlmsTxt(): string {
     '',
     'Key facts:',
     '- Product: roasted makhana (fox nuts / lotus seeds), roasted not fried, gluten-free.',
+    '- Also launching: roasted chana, masala vegetable chips and baked ragi chips (see Product range).',
     `- Market: India. ${isLive ? 'Sold on' : 'Launching soon on'} ${marketplaces.map((m) => m.name).join(', ')}.`,
     ...(isLive
       ? []
@@ -26,7 +28,14 @@ export function buildLlmsTxt(): string {
     '## Flavours',
     ...flavours.map((f) => `- [${f.name}](${absoluteUrl(`/flavours/${f.slug}`)}): ${f.hook}`),
     '',
+    '## Product range',
+    ...productLines.map(
+      (l) =>
+        `- [${l.name}](${absoluteUrl(l.href ?? `/products#${l.slug}`)}): ${l.method}; ${l.flavours.join(', ')}; from ₹${l.fromPriceInr}${l.live ? '' : ' (coming soon)'}.`,
+    ),
+    '',
     '## Pages',
+    `- [Products](${absoluteUrl('/products')}): The whole range — makhana, chana, vegetable chips and ragi chips.`,
     `- [Our story](${absoluteUrl('/our-story')}): Why the brand exists and how makhana is made.`,
     `- [FAQ](${absoluteUrl('/faq')}): Nutrition, ingredients, allergens, pricing and buying.`,
     `- [Contact](${absoluteUrl('/contact')}): Customer support, taste tests, retail enquiries.`,

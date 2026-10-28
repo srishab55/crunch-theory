@@ -94,3 +94,6 @@ Desktop.ini
 *.tmp
 *.bak
 .cache/
+
+# Raw AI originals (~55 MB). The cleaned, cropped sources the site uses live in content/products/.
+content/generic/

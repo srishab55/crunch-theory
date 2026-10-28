@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { flavours } from '@/data/flavours'
+import { productLines } from '@/data/products'
 import { absoluteUrl } from '@/lib/env'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'weekly' | 'monthly' | 'yearly'
   }[] = [
     { path: '/', priority: 1, changeFrequency: 'weekly' },
+    { path: '/products', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/flavours', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/our-story', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },
@@ -22,6 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absoluteUrl(r.path),
       changeFrequency: r.changeFrequency,
       priority: r.priority,
+      ...(r.path === '/products' && {
+        images: productLines.map((l) => absoluteUrl(l.image.src)),
+      }),
     })),
     ...flavours.map((f) => ({
       url: absoluteUrl(`/flavours/${f.slug}`),

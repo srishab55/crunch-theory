@@ -21,7 +21,7 @@ npm run dev                   # http://localhost:3000
 | `npm run lint`                | Runs ESLint (Next core-web-vitals and TypeScript rules)             |
 | `npm run format`              | Formats with Prettier (with Tailwind class sorting)                 |
 | `npm run check`               | Runs typecheck, lint and the format check, as CI would              |
-| `npm run images`              | Rebuilds site and share-image crops from `content/pouches/*.png`    |
+| `npm run images`              | Rebuilds pack shots from `content/pouches/` and `content/products/` |
 | `npm run logo`                | Rebuilds logo, wordmark, favicon and app icons from `content/logo/` |
 
 ## Project structure
@@ -33,6 +33,7 @@ docs/               IMAGE_PROMPTS.md (AI prompts for the remaining photography)
 public/media        Hero video (watermark removed, webm + mp4) and poster
 public/images       Lifestyle / story images (served as-is)
 src/assets/pouches  Pack shots, imported for hashed URLs (generate with npm run images)
+src/assets/products Product-line photos for /products (generate with npm run images)
 src/assets/brand    Transparent logo mark + wordmarks (generate with npm run logo)
 src/
   app/              Routes, metadata routes (sitemap, robots, manifest, OG images, llms.txt)
@@ -43,7 +44,7 @@ src/
     forms/          Newsletter and contact forms
     illustrations/  SVG makhana, watercolour blobs, illustrated pouch, logo
     layout/         Header, footer, breadcrumbs, page hero, providers
-    sections/       Home page sections
+    sections/       Home page and /products sections
     seo/            JSON-LD renderer
     ui/             Primitives (button, reveal, marquee, counter, FAQ list…)
   data/             Single source of truth for all copy and product data
@@ -144,6 +145,7 @@ Vercel, custom domain, Search Console and troubleshooting.
 - [ ] Replace the indicative nutrition values in `src/data/flavours.ts` with lab-tested figures from the
       printed pack, then set `nutritionIsIndicative: false`.
 - [ ] Confirm flavours, ingredients, allergens and prices. Peri Peri, Cheese & Herbs and Pudina are proposals.
+- [ ] Confirm the new lines' flavours and prices in `src/data/products.ts` (read off the poster packs).
 - [ ] Replace marketplace search URLs in `src/data/marketplaces.ts` with the real listing URLs.
 - [ ] Update the email address and social handles in `src/data/site.ts`.
 - [ ] Generate and add the photography in `docs/IMAGE_PROMPTS.md`.

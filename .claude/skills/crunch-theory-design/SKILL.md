@@ -177,6 +177,7 @@ Check this list before building UI. Paths are under `src/components/`.
 | Product card / grid                            | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
 | Store links (tracked `buy_click`)              | `flavour/marketplace-tiles` (`variant="feature"` on dark, `"compact"` on light)                                                                   |
 | Flavour slider                                 | `sections/home/flavour-spotlights`                                                                                                                |
+| Product-line row (photo, sticker, story, CTA)  | `sections/products/product-line` (data in `src/data/products.ts`; alternates sides by index)                                                      |
 | Pre-launch demand button (GA `interest_click`) | `flavour/interest-button` (`flavour` slug or `'any'`, `location`, `tone`)                                                                         |
 | Logo                                           | `illustrations/logo` (`inverted` on dark, `eager` above the fold)                                                                                 |
 | Decoration                                     | `illustrations/makhana`, `illustrations/watercolor-blob`                                                                                          |

@@ -36,6 +36,10 @@ export default function PrivacyPage() {
             address isn’t passed on. You can change your choice anytime via “Cookie settings” in the
             footer.
           </p>
+          <p className="mt-3">
+            We also use Vercel Web Analytics to count page views. It uses no cookies, doesn’t track
+            you across sites and only reports aggregated numbers, so it runs without consent.
+          </p>
         </section>
         <section>
           <h2>Forms</h2>

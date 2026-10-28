@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Bricolage_Grotesque, Fraunces, Manrope } from 'next/font/google'
 
@@ -112,6 +113,8 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </Providers>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <GoogleAnalytics />
+        {/* Vercel Web Analytics: cookieless page views/visitors, alongside GA4 (no consent needed). */}
+        <Analytics />
       </body>
     </html>
   )

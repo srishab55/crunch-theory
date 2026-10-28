@@ -19,7 +19,7 @@ type Props = {
 }
 
 /**
- * Marketplace tiles — delivery time big, quick commerce first. When live, each is an outbound
+ * Marketplace tiles — each store's promise big, quick commerce first. When live, each is an outbound
  * link that fills with its store's colour on hover/focus; pre-launch (`site.availability`),
  * they're static "Coming soon" cards with no link.
  */
@@ -73,8 +73,6 @@ function Tile({
 }) {
   const feature = variant === 'feature'
   const quick = m.kind === 'quick-commerce'
-  // Words like "Same" need a smaller size than numerals to fit the tile.
-  const numeric = /\d/.test(m.speed.value)
 
   const shell = cn(
     'relative isolate flex h-full flex-col overflow-hidden border',
@@ -107,24 +105,16 @@ function Tile({
           ))}
       </span>
 
+      {/* Wraps onto two lines in narrow tiles; hyphenates rather than overflowing the card. */}
       <span
-        className={cn('flex items-baseline gap-1.5', feature ? 'mt-auto pt-8' : 'mt-auto pt-4')}
+        className={cn(
+          'mt-auto font-display font-extrabold text-balance hyphens-auto',
+          feature
+            ? 'pt-8 text-2xl leading-[0.9] tracking-[-0.045em] sm:text-5xl xl:text-6xl'
+            : 'pt-4 text-xl leading-[0.95] tracking-[-0.03em] lg:text-base xl:text-xl',
+        )}
       >
-        <span
-          className={cn(
-            'font-display leading-[0.85] font-extrabold tracking-[-0.05em] whitespace-nowrap',
-            feature
-              ? numeric
-                ? 'text-5xl sm:text-8xl'
-                : 'text-4xl sm:text-6xl'
-              : numeric
-                ? 'text-4xl'
-                : 'text-3xl',
-          )}
-        >
-          {m.speed.value}
-        </span>
-        <span className={cn('font-semibold', feature ? 'text-xl' : 'text-sm')}>{m.speed.unit}</span>
+        {m.promise}
       </span>
     </>
   )
@@ -135,12 +125,9 @@ function Tile({
       <div className={shell}>
         {content}
         <span className={cn('flex items-end justify-between gap-3', feature ? 'mt-4' : 'mt-3')}>
-          {/* Compact tiles are too narrow for both the note and the label — keep just the label. */}
+          {/* Compact and phone-width tiles are too narrow for the note and the label — keep the label. */}
           {feature && (
-            <span className="text-xs opacity-75 sm:text-sm">
-              <span className="sm:hidden">Launching soon</span>
-              <span className="max-sm:hidden">Launching here soon.</span>
-            </span>
+            <span className="text-sm opacity-75 max-sm:hidden">Launching here soon.</span>
           )}
           <span
             className={cn(
@@ -204,9 +191,7 @@ function Tile({
           </svg>
         </span>
       </span>
-      <span className="sr-only">
-        — order Crunch Theory on {m.name}, delivery in {m.delivery} (opens in a new tab)
-      </span>
+      <span className="sr-only">— order Crunch Theory on {m.name} (opens in a new tab)</span>
     </a>
   )
 }

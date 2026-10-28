@@ -37,7 +37,7 @@ export function WhereToBuy() {
             </Reveal>
             <RevealText
               id="buy-title"
-              text="Crunch is *10 minutes* away."
+              text="Crunch, *lightning* fast."
               accentClassName="text-mustard"
               className="mt-4 text-5xl leading-[0.95] font-extrabold tracking-[-0.045em] text-paper sm:text-7xl"
             />

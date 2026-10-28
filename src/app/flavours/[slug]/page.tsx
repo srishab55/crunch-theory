@@ -81,7 +81,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
             <div id="buy" className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2 px-1 pb-4">
                 <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
-                  Get it in <span className="accent text-terracotta">10 minutes</span>
+                  Get it <span className="accent text-terracotta">lightning fast</span>
                 </h2>
                 {isLive ? (
                   <p className="text-sm text-muted">Pick your app ↓</p>

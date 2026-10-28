@@ -197,6 +197,9 @@ If you need something new, build it from these parts and tokens. Put copy and pr
   engines and AI answers quote it.
 - **Keep claims honest:** no fabricated reviews, ratings or health promises. Prices and nutrition
   come from data.
+- **No exact delivery times** ("10 minutes", "same day"). They vary by city, store and hour, so
+  say "lightning fast" instead. The store tiles show each store's `promise` from
+  `src/data/marketplaces.ts`.
 - **Contrast.** `paper` on any `forest`/flavour panel and `forest` on `cream`/`paper` are the safe
   pairs. Accent colours are for large text, not small body copy (see `references/tokens.md`).
 - **Tap targets** are at least 44 px (`size-11`, `h-11`). Every icon-only button gets an

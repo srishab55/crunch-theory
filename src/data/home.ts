@@ -26,7 +26,7 @@ export const theorySteps = [
   {
     step: '03',
     title: 'Convenience builds the habit',
-    body: 'Trial packs for your bag, pouches for your desk, multipacks for the pantry — delivered in 10 minutes.',
+    body: 'Trial packs for your bag, pouches for your desk, multipacks for the pantry — delivered lightning fast.',
   },
   {
     step: '04',

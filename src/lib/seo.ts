@@ -128,7 +128,7 @@ export function productListSchema(flavours: Flavour[]): WithContext<ItemList> {
   }
 }
 
-/** The product range; each line links to its own page, or to its section on /products. */
+/** The product range; each line links to its own page (makhana's is /flavours). */
 export function productRangeSchema(lines: ProductLine[]): WithContext<ItemList> {
   return {
     '@context': 'https://schema.org',
@@ -137,7 +137,7 @@ export function productRangeSchema(lines: ProductLine[]): WithContext<ItemList> 
     itemListElement: lines.map((l, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      url: absoluteUrl(l.href ?? `/products#${l.slug}`),
+      url: absoluteUrl(l.href),
       name: l.name,
     })),
   }

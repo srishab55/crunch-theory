@@ -1,7 +1,7 @@
 import { faqs } from '@/data/faqs'
 import { flavours, type Flavour } from '@/data/flavours'
 import { marketplaces } from '@/data/marketplaces'
-import { productLines } from '@/data/products'
+import { flavourNames, productLines } from '@/data/products'
 import { isLive, site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
 
@@ -31,7 +31,7 @@ export function buildLlmsTxt(): string {
     '## Product range',
     ...productLines.map(
       (l) =>
-        `- [${l.name}](${absoluteUrl(l.href ?? `/products#${l.slug}`)}): ${l.method}; ${l.flavours.join(', ')}; from ₹${l.fromPriceInr}${l.live ? '' : ' (coming soon)'}.`,
+        `- [${l.name}](${absoluteUrl(l.href)}): ${l.method}; ${flavourNames(l).join(', ')}; from ₹${l.fromPriceInr}${l.live ? '' : ' (coming soon)'}.`,
     ),
     '',
     '## Pages',

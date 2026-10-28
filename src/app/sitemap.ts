@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { flavours } from '@/data/flavours'
-import { productLines } from '@/data/products'
+import { productLines, productPageLines } from '@/data/products'
 import { absoluteUrl } from '@/lib/env'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -27,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ...(r.path === '/products' && {
         images: productLines.map((l) => absoluteUrl(l.image.src)),
       }),
+    })),
+    ...productPageLines.map((l) => ({
+      url: absoluteUrl(l.href),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+      images: [absoluteUrl(l.image.src)],
     })),
     ...flavours.map((f) => ({
       url: absoluteUrl(`/flavours/${f.slug}`),

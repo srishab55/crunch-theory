@@ -40,7 +40,8 @@ src/
   actions/          Server Actions (newsletter, contact)
   components/
     analytics/      GA4 loader, consent banner, view_item tracker
-    flavour/        Product cards, nutrition table, buy links
+    flavour/        Makhana flavour cards, nutrition table, buy links
+    product/        Product-line cards, grid and pack shot (home, /products, /products/<slug>)
     forms/          Newsletter and contact forms
     illustrations/  SVG makhana, watercolour blobs, illustrated pouch, logo
     layout/         Header, footer, breadcrumbs, page hero, providers
@@ -76,12 +77,12 @@ Custom events (`src/lib/analytics.ts`):
 | Event            | When                                                                                                                        |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `buy_click`      | A visitor clicks through to a marketplace (with `marketplace`, `flavour` and `location`)                                    |
-| `view_item`      | A visitor views a flavour page (GA4 ecommerce event)                                                                        |
+| `view_item`      | A visitor views a flavour or product page (GA4 ecommerce event; `item_category` = product line)                             |
 | `generate_lead`  | A visitor submits the newsletter or contact form                                                                            |
 | `cta_click`      | A visitor clicks a primary button (with `label` and `location`)                                                             |
 | `faq_open`       | A visitor opens an FAQ                                                                                                      |
-| `interest_click` | Pre-launch: a visitor taps **I'm interested** (`flavour` = slug or `any`, `location`). Counted once per flavour per browser |
-| `spotlight_view` | A visitor changes the flavour slider by hand (`flavour`, `method`)                                                          |
+| `interest_click` | Pre-launch: a visitor taps **I'm interested** (`flavour` = flavour or product slug, or `any`; `location`). Once per browser |
+| `spotlight_view` | A visitor changes the home product slider by hand (`flavour` = product slug, `method`)                                      |
 
 In GA4, mark `generate_lead` and `buy_click` as **Key events** so they appear as conversions.
 

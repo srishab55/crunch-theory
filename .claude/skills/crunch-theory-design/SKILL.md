@@ -133,7 +133,7 @@ The feel comes from three constraints. Keeping to them is what makes new work ma
 decoration only. It's slow, `aria-hidden`, never on text a user has to read, and hidden on mobile
 (`hidden lg:block`) if it might sit on top of buttons.
 
-**Autoplay** (the flavour slider is the model):
+**Autoplay** (the home product slider is the model):
 
 - Advance every 4 s, with a visible progress indicator.
 - Pause on hover, on keyboard focus (`:focus-visible` only, so a mouse click on an arrow doesn't
@@ -174,9 +174,11 @@ Check this list before building UI. Paths are under `src/components/`.
 | Rotating circular sticker                      | `ui/spin-sticker`                                                                                                                                 |
 | Accordion (crawlable `<details>`)              | `ui/faq-list`                                                                                                                                     |
 | Pack image with illustrated fallback           | `flavour/flavour-visual`                                                                                                                          |
-| Product card / grid                            | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
+| Flavour card / grid (makhana)                  | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
+| Product-line card / grid                       | `product/product-card`, `product/product-grid` (whole card links to the line page)                                                                |
+| Product pack shot + sticker                    | `product/product-photo`                                                                                                                           |
 | Store links (tracked `buy_click`)              | `flavour/marketplace-tiles` (`variant="feature"` on dark, `"compact"` on light)                                                                   |
-| Flavour slider                                 | `sections/home/flavour-spotlights`                                                                                                                |
+| Product slider (home)                          | `sections/home/product-spotlights`                                                                                                                |
 | Product-line row (photo, sticker, story, CTA)  | `sections/products/product-line` (data in `src/data/products.ts`; alternates sides by index)                                                      |
 | Pre-launch demand button (GA `interest_click`) | `flavour/interest-button` (`flavour` slug or `'any'`, `location`, `tone`)                                                                         |
 | Logo                                           | `illustrations/logo` (`inverted` on dark, `eager` above the fold)                                                                                 |
@@ -192,6 +194,9 @@ If you need something new, build it from these parts and tokens. Put copy and pr
 
 ## 4. Content and accessibility rules that affect design
 
+- **Site structure:** Home → Products (`/products`) → a line's page → its flavours. Makhana's line
+  page is `/flavours` (flavours at `/flavours/<slug>`); the other lines are `/products/<slug>`.
+  Product data lives in `src/data/products.ts`; the home page shows lines, not flavours.
 - **One `h1` per page.** Sections use `h2`; cards and slides use `h3`. Decorative headings
   elsewhere use `<p>`.
 - **Write ledes and FAQ answers answer-first.** The first sentence should stand alone; search

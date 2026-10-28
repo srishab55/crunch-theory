@@ -1,9 +1,9 @@
-import { FlavourGrid } from '@/components/flavour/flavour-grid'
+import { ProductGrid } from '@/components/product/product-grid'
 import { CrunchTest } from '@/components/sections/home/crunch-test'
-import { FlavourSpotlights } from '@/components/sections/home/flavour-spotlights'
 import { Hero } from '@/components/sections/home/hero'
 import { HomeFaq } from '@/components/sections/home/home-faq'
 import { Moments } from '@/components/sections/home/moments'
+import { ProductSpotlights } from '@/components/sections/home/product-spotlights'
 import { Stats } from '@/components/sections/home/stats'
 import { Theory } from '@/components/sections/home/theory'
 import { WhereToBuy } from '@/components/sections/home/where-to-buy'
@@ -13,9 +13,9 @@ import { ArrowIcon, ButtonLink } from '@/components/ui/button'
 import { Marquee } from '@/components/ui/marquee'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { faqs } from '@/data/faqs'
-import { flavours } from '@/data/flavours'
 import { proofPoints } from '@/data/home'
-import { productListSchema } from '@/lib/seo'
+import { productLines } from '@/data/products'
+import { productRangeSchema } from '@/lib/seo'
 
 const homeFaqs = faqs.slice(0, 4)
 
@@ -29,28 +29,29 @@ export default function HomePage() {
       </div>
 
       <Theory />
-      <FlavourSpotlights />
+      <ProductSpotlights />
       <Stats />
 
-      <section aria-labelledby="flavours-title" className="bg-sand/40 py-28 sm:py-36">
+      <section aria-labelledby="range-title" className="bg-sand/40 py-28 sm:py-36">
         <div className="container-page">
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <SectionHeading
-              eyebrow="The lineup"
-              title="Four flavours. *Zero* boring."
-              lede="From clean pink salt to smoky peri peri — pick your crunch."
+              id="range-title"
+              eyebrow="The range"
+              title="Four snacks. *Zero* boring."
+              lede="Roasted makhana, roasted chana, veggie chips and baked ragi chips. Tap one to see its flavours."
             />
             <ButtonLink
-              href="/flavours"
+              href="/products"
               variant="secondary"
-              trackLabel="All flavours"
-              trackLocation="home-lineup"
+              trackLabel="All products"
+              trackLocation="home-range"
             >
-              Compare flavours <ArrowIcon />
+              See the full range <ArrowIcon />
             </ButtonLink>
           </div>
           <div className="mt-14">
-            <FlavourGrid flavours={flavours} />
+            <ProductGrid lines={productLines} />
           </div>
         </div>
       </section>
@@ -61,7 +62,7 @@ export default function HomePage() {
       <HomeFaq items={homeFaqs} />
       <NewsletterBand location="home" />
 
-      <JsonLd data={productListSchema(flavours)} />
+      <JsonLd data={productRangeSchema(productLines)} />
     </>
   )
 }

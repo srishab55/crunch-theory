@@ -1,22 +1,22 @@
 'use client'
 
 import { motion, useDragControls, useInView, type PanInfo, type Variants } from 'motion/react'
+import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 
-import { FlavourVisual } from '@/components/flavour/flavour-visual'
+import { InterestButton } from '@/components/flavour/interest-button'
 import { Makhana } from '@/components/illustrations/makhana'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
-import { InterestButton } from '@/components/flavour/interest-button'
-import { flavours, type Flavour } from '@/data/flavours'
-import { isLive } from '@/data/site'
+import { flavourNames, productLines, type ProductLine } from '@/data/products'
 import { trackEvent, type AnalyticsEventParams } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
 import { usePrefersReducedMotion } from '@/lib/use-media-query'
 
-/** Time each flavour stays on screen while autoplaying. */
+/** Time each product stays on screen while autoplaying. */
 const AUTOPLAY_MS = 4000
 const SWIPE_THRESHOLD_PX = 60
+const lines = productLines
 
 type Method = AnalyticsEventParams<'spotlight_view'>['method']
 type SlideState = 'active' | 'before' | 'after'
@@ -46,12 +46,13 @@ const badgeVariants: Variants = {
 }
 
 /**
- * Auto-playing flavour slider with arrows, pills, swipe and ←/→ keys. Autoplay pauses on hover,
- * focus, when off-screen or in a hidden tab, via the pause button, and is off entirely for
- * reduced-motion users (WCAG 2.2.2). Every slide stays in the DOM (inactive ones are inert), so
- * the height never jumps and crawlers see all four flavours.
+ * Auto-playing product-range slider with arrows, pills, swipe and ←/→ keys. Each slide links to
+ * the line's page, where its flavours live. Autoplay pauses on hover, focus, when off-screen or
+ * in a hidden tab, via the pause button, and is off entirely for reduced-motion users
+ * (WCAG 2.2.2). Every slide stays in the DOM (inactive ones are inert), so the height never jumps
+ * and crawlers see every product.
  */
-export function FlavourSpotlights() {
+export function ProductSpotlights() {
   const rootRef = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
   const [userPaused, setUserPaused] = useState(false)
@@ -64,8 +65,8 @@ export function FlavourSpotlights() {
   // Set while a swipe is in progress so the release doesn't also "click" a link under the finger.
   const swiping = useRef(false)
 
-  const total = flavours.length
-  const current = flavours[active]
+  const total = lines.length
+  const current = lines[active]
   const autoplay = !reduceMotion
   const running = autoplay && !userPaused && !hovered && !focused && !tabHidden && inView
 
@@ -79,7 +80,7 @@ export function FlavourSpotlights() {
     (index: number, method?: Method) => {
       const next = (index + total) % total
       setActive(next)
-      if (method) trackEvent('spotlight_view', { flavour: flavours[next].slug, method })
+      if (method) trackEvent('spotlight_view', { flavour: lines[next].slug, method })
     },
     [total],
   )
@@ -113,7 +114,7 @@ export function FlavourSpotlights() {
       }}
     >
       <h2 id="spotlights-title" className="sr-only">
-        Meet the flavours
+        Meet the range
       </h2>
 
       {/* Ambient makhana */}
@@ -151,10 +152,10 @@ export function FlavourSpotlights() {
             }
           }}
         >
-          {flavours.map((f, i) => (
+          {lines.map((line, i) => (
             <Slide
-              key={f.slug}
-              flavour={f}
+              key={line.slug}
+              line={line}
               index={i}
               total={total}
               state={i === active ? 'active' : i < active ? 'before' : 'after'}
@@ -167,17 +168,17 @@ export function FlavourSpotlights() {
           <div
             className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
             role="group"
-            aria-label="Choose a flavour"
+            aria-label="Choose a product"
           >
-            {flavours.map((f, i) => {
+            {lines.map((line, i) => {
               const isActive = i === active
               return (
                 <button
-                  key={f.slug}
+                  key={line.slug}
                   type="button"
                   onClick={() => goTo(i, 'tab')}
                   aria-current={isActive ? 'true' : undefined}
-                  aria-label={`Show ${f.name}`}
+                  aria-label={`Show ${line.name}`}
                   className={cn(
                     'relative shrink-0 overflow-hidden rounded-full border px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors duration-300',
                     isActive
@@ -185,7 +186,7 @@ export function FlavourSpotlights() {
                       : 'border-paper/25 text-paper/75 hover:border-paper/60 hover:text-paper',
                   )}
                 >
-                  <span className="relative z-10">{f.shortName}</span>
+                  <span className="relative z-10">{line.name}</span>
                   {/* Autoplay progress — its animation end advances the slider */}
                   {isActive && autoplay && (
                     <span
@@ -223,12 +224,12 @@ export function FlavourSpotlights() {
             )}
             <ArrowButton
               direction="prev"
-              label={`Previous flavour: ${flavours[(active - 1 + total) % total].name}`}
+              label={`Previous product: ${lines[(active - 1 + total) % total].name}`}
               onClick={() => goTo(active - 1, 'arrow')}
             />
             <ArrowButton
               direction="next"
-              label={`Next flavour: ${flavours[(active + 1) % total].name}`}
+              label={`Next product: ${lines[(active + 1) % total].name}`}
               onClick={() => goTo(active + 1, 'arrow')}
             />
           </div>
@@ -248,13 +249,11 @@ const badgeSpots = [
   'bottom-[10%] left-[6%]',
 ] as const
 
-type SlideProps = { flavour: Flavour; index: number; total: number; state: SlideState }
+type SlideProps = { line: ProductLine; index: number; total: number; state: SlideState }
 
-function Slide({ flavour: f, index, total, state }: SlideProps) {
+function Slide({ line, index, total, state }: SlideProps) {
   const isActive = state === 'active'
-  const badges = [...f.spotlight.badges, `${f.ingredients.length} ingredients`]
-  const stats = f.nutrition.filter((n) => ['Energy', 'Protein', 'Dietary fibre'].includes(n.label))
-  const titleId = `spotlight-${f.slug}`
+  const titleId = `spotlight-${line.slug}`
 
   return (
     <motion.article
@@ -272,26 +271,29 @@ function Slide({ flavour: f, index, total, state }: SlideProps) {
       )}
     >
       {/* Pack shot */}
-      <div className="relative mx-auto w-full max-w-[min(26rem,80vw)]">
+      <div className="relative mx-auto w-full max-w-[min(24rem,78vw)]">
         <WatercolorBlob
-          color={f.palette.primary}
-          className="absolute -top-10 -left-10 w-3/4 opacity-60"
+          color={line.spotlight.accent}
+          className="absolute -top-10 -left-10 w-3/4 opacity-40"
         />
         <WatercolorBlob
-          color={f.palette.secondary}
+          color={line.spotlight.accent}
           variant={1}
-          className="absolute -right-8 -bottom-8 w-2/3 opacity-50"
+          className="absolute -right-8 -bottom-8 w-2/3 opacity-30"
         />
         <motion.div variants={packVariants} className="relative">
           <div className="animate-float">
-            <FlavourVisual
-              flavour={f}
-              sizes="(min-width: 1024px) 26rem, 80vw"
-              className="pointer-events-none rounded-[2rem] shadow-[0_40px_80px_-20px_rgb(0_0_0/0.55)] select-none"
+            <Image
+              src={line.image}
+              alt={line.imageAlt}
+              sizes="(min-width: 1024px) 24rem, 78vw"
+              placeholder="blur"
+              draggable={false}
+              className="pointer-events-none aspect-[4/5] w-full rounded-[2rem] object-cover shadow-[0_40px_80px_-20px_rgb(0_0_0/0.55)] select-none"
             />
           </div>
         </motion.div>
-        {badges.map((label, i) => (
+        {line.highlights.map((label, i) => (
           <motion.span
             key={label}
             variants={badgeVariants}
@@ -307,8 +309,8 @@ function Slide({ flavour: f, index, total, state }: SlideProps) {
 
       {/* Copy */}
       <motion.div variants={copyVariants}>
-        <p className="flex items-center gap-3 eyebrow" style={{ color: f.spotlight.accent }}>
-          {f.spotlight.label}
+        <p className="flex items-center gap-3 eyebrow" style={{ color: line.spotlight.accent }}>
+          {line.sticker}
           <span aria-hidden="true" className="text-paper/40">
             {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
@@ -317,48 +319,37 @@ function Slide({ flavour: f, index, total, state }: SlideProps) {
           id={titleId}
           className="mt-4 text-5xl leading-[0.95] font-extrabold tracking-[-0.04em] text-paper sm:text-6xl xl:text-7xl"
         >
-          {f.name}
+          {line.name}
         </h3>
-        <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">{f.description}</p>
-        <dl className="mt-8 grid max-w-lg grid-cols-3 divide-x divide-paper/15 overflow-hidden rounded-2xl border border-paper/15">
-          {stats.map((n) => (
-            <div key={n.label} className="px-3 py-4 sm:px-4">
-              <dt className="text-[0.65rem] tracking-wider text-paper/60 uppercase sm:text-xs">
-                {n.label}
-              </dt>
-              <dd className="mt-1 font-display text-xl font-bold whitespace-nowrap text-paper sm:text-2xl">
-                {n.perServing}
-              </dd>
-            </div>
-          ))}
+        <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">{line.description}</p>
+        <dl className="mt-8 grid max-w-lg grid-cols-[1fr_auto] divide-x divide-paper/15 overflow-hidden rounded-2xl border border-paper/15">
+          <div className="px-4 py-4">
+            <dt className="text-[0.65rem] tracking-wider text-paper/60 uppercase sm:text-xs">
+              {line.flavours.length} flavours
+            </dt>
+            <dd className="mt-1 font-semibold text-paper">{flavourNames(line).join(' · ')}</dd>
+          </div>
+          <div className="px-4 py-4 sm:px-6">
+            <dt className="text-[0.65rem] tracking-wider text-paper/60 uppercase sm:text-xs">
+              From
+            </dt>
+            <dd className="mt-1 font-display text-2xl font-bold whitespace-nowrap text-paper">
+              ₹{line.fromPriceInr}
+            </dd>
+          </div>
         </dl>
-        <p className="mt-3 text-xs text-paper/50">Per {f.servingSize} serving.</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <ButtonLink
-            href={`/flavours/${f.slug}`}
+            href={line.href}
             variant="light"
             size="lg"
             draggable={false}
-            trackLabel={`Spotlight details: ${f.shortName}`}
+            trackLabel={`Spotlight explore: ${line.name}`}
             trackLocation="spotlight"
           >
-            Ingredients & nutrition <ArrowIcon />
+            Explore the flavours <ArrowIcon />
           </ButtonLink>
-          {isLive ? (
-            <ButtonLink
-              href={`/flavours/${f.slug}#buy`}
-              variant="secondary"
-              size="lg"
-              draggable={false}
-              className="border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-forest-deep"
-              trackLabel={`Spotlight order: ${f.shortName}`}
-              trackLocation="spotlight"
-            >
-              Order now
-            </ButtonLink>
-          ) : (
-            <InterestButton flavour={f.slug} location="spotlight" tone="dark" />
-          )}
+          {!line.live && <InterestButton flavour={line.slug} location="spotlight" tone="dark" />}
         </div>
       </motion.div>
     </motion.article>

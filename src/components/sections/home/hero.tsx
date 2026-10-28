@@ -77,7 +77,7 @@ export function Hero() {
             className="hero-fade mb-5 block font-sans eyebrow leading-normal"
             style={{ animationDelay: '0.1s' }}
           >
-            Crunch Theory · Roasted makhana · Made in India
+            Crunch Theory · Healthy Indian snacks · Made in India
           </span>
           {headline.map((word, i) => (
             <span
@@ -104,8 +104,8 @@ export function Hero() {
           className="hero-fade mt-6 max-w-md text-lg leading-relaxed text-ink/75 sm:text-xl"
           style={{ animationDelay: '0.75s' }}
         >
-          Big crunch, honest labels. Slow-roasted fox nuts in bold Indian flavours — never fried,
-          always gluten-free.
+          Big crunch, honest labels. Roasted makhana, roasted chana, veggie chips and baked ragi
+          chips, all in bold Indian flavours.
         </p>
         <div
           className="hero-fade mt-9 flex flex-wrap items-center gap-4"
@@ -113,12 +113,12 @@ export function Hero() {
         >
           <Magnetic>
             <ButtonLink
-              href="/flavours"
+              href="/products"
               size="lg"
-              trackLabel="Explore flavours"
+              trackLabel="Explore the range"
               trackLocation="hero"
             >
-              Explore flavours <ArrowIcon />
+              Explore the range <ArrowIcon />
             </ButtonLink>
           </Magnetic>
           <ButtonLink

@@ -4,6 +4,7 @@ export const interestLocations = [
   'flavour-page',
   'home-where-to-buy',
   'products-page',
+  'product-page',
 ] as const
 
 export type InterestLocation = (typeof interestLocations)[number]

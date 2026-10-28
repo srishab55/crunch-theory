@@ -3,6 +3,8 @@ import { cn } from '@/lib/cn'
 import { Reveal, RevealText } from './reveal'
 
 type Props = {
+  /** Heading id, for a section's aria-labelledby. */
+  id?: string
   eyebrow: string
   title: string
   lede?: string
@@ -13,6 +15,7 @@ type Props = {
 }
 
 export function SectionHeading({
+  id,
   eyebrow,
   title,
   lede,
@@ -27,6 +30,7 @@ export function SectionHeading({
         <p className={cn('eyebrow', inverted && 'text-mustard')}>{eyebrow}</p>
       </Reveal>
       <RevealText
+        id={id}
         as={as}
         text={title}
         accentClassName={inverted ? 'text-mustard' : undefined}

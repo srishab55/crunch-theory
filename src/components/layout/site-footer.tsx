@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { flavours } from '@/data/flavours'
+import { productLines } from '@/data/products'
 import { isLive, navigation, site } from '@/data/site'
 
 import { CookieSettingsButton } from '../analytics/cookie-settings-button'
@@ -18,7 +18,8 @@ export function SiteFooter() {
         <div className="lg:col-span-5">
           <Logo inverted className="text-4xl" />
           <p className="mt-6 max-w-sm text-paper/70">
-            {site.tagline}. Roasted makhana with big crunch and honest labels — made in India.
+            {site.tagline}. Roasted makhana, chana and chips with big crunch and honest labels —
+            made in India.
           </p>
           <div id="newsletter" className="mt-8 scroll-mt-32">
             <p className="mb-3 text-sm font-semibold text-mustard">
@@ -30,16 +31,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <nav aria-label="Flavours" className="lg:col-span-3 lg:col-start-7">
-          <h2 className="eyebrow !text-mustard">Flavours</h2>
+        <nav aria-label="Products" className="lg:col-span-3 lg:col-start-7">
+          <h2 className="eyebrow !text-mustard">Products</h2>
           <ul className="mt-5 space-y-3">
-            {flavours.map((f) => (
-              <li key={f.slug}>
-                <Link
-                  href={`/flavours/${f.slug}`}
-                  className="text-paper/75 transition-colors hover:text-paper"
-                >
-                  {f.name}
+            {productLines.map((l) => (
+              <li key={l.slug}>
+                <Link href={l.href} className="text-paper/75 transition-colors hover:text-paper">
+                  {l.name}
                 </Link>
               </li>
             ))}
@@ -49,13 +47,18 @@ export function SiteFooter() {
         <nav aria-label="Company" className="lg:col-span-3">
           <h2 className="eyebrow !text-mustard">Company</h2>
           <ul className="mt-5 space-y-3">
-            {navigation.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="text-paper/75 transition-colors hover:text-paper">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {navigation
+              .filter((item) => item.href !== '/products')
+              .map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-paper/75 transition-colors hover:text-paper"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             {site.email && (
               <li>
                 <a

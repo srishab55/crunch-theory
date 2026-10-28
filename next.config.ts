@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
       { source: '/sitemap_index.xml', destination: '/sitemap.xml', permanent: true },
       // Full URL pasted into a URL-prefix property: /https:/www.crunchtheory.store/sitemap.xml
       { source: '/:prefix(https?:.*)/sitemap.xml', destination: '/sitemap.xml', permanent: true },
+      // Makhana's product page is /flavours (its flavours have long-standing URLs there).
+      { source: '/products/roasted-makhana', destination: '/flavours', permanent: true },
       {
         // One canonical host for SEO: send the vercel.app copy to the real domain (keeps the path).
         // The Search Console verification file stays reachable for the old property.

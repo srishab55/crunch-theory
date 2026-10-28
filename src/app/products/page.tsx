@@ -1,9 +1,11 @@
+import Link from 'next/link'
+
 import { PageHero } from '@/components/layout/page-hero'
 import { ProductLineRow } from '@/components/sections/products/product-line'
 import { NewsletterBand } from '@/components/sections/newsletter-band'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Reveal } from '@/components/ui/reveal'
-import { productLines } from '@/data/products'
+import { flavourNames, productLines } from '@/data/products'
 import { buildMetadata, productRangeSchema } from '@/lib/seo'
 
 export const metadata = buildMetadata({
@@ -74,12 +76,12 @@ export default function ProductsPage() {
                 {productLines.map((l) => (
                   <tr key={l.slug}>
                     <th scope="row" className="px-6 py-4 font-semibold text-forest">
-                      <a href={`#${l.slug}`} className="hover:underline">
+                      <Link href={l.href} className="hover:underline">
                         {l.name}
-                      </a>
+                      </Link>
                     </th>
                     <td className="px-6 py-4">{l.method}</td>
-                    <td className="px-6 py-4 text-muted">{l.flavours.join(', ')}</td>
+                    <td className="px-6 py-4 text-muted">{flavourNames(l).join(', ')}</td>
                     <td className="px-6 py-4">₹{l.fromPriceInr}</td>
                   </tr>
                 ))}

@@ -45,7 +45,8 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
       <section className="container-page pt-32 pb-20 sm:pt-40">
         <Breadcrumbs
           crumbs={[
-            { name: 'Flavours', path: '/flavours' },
+            { name: 'Products', path: '/products' },
+            { name: 'Roasted Makhana', path: '/flavours' },
             { name: flavour.name, path: `/flavours/${flavour.slug}` },
           ]}
         />

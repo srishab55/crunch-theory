@@ -24,7 +24,9 @@ export function SiteHeader() {
     setHidden(y > 400 && y > previous && !menuOpen)
   })
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
+  // Makhana's flavour pages (/flavours/*) sit under Products in the nav.
+  const navPath = pathname.startsWith('/flavours') ? '/products' : pathname
+  const isActive = (href: string) => navPath === href || navPath.startsWith(`${href}/`)
 
   return (
     <motion.header

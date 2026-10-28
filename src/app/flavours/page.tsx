@@ -17,10 +17,13 @@ export default function FlavoursPage() {
   return (
     <>
       <PageHero
-        eyebrow="Shop the lineup"
+        eyebrow="Roasted makhana"
         title="Pick your *crunch.*"
         lede="Crunch Theory comes in four roasted makhana flavours, each in ₹49 trial packs, 75 g everyday pouches and family multipacks. All are roasted, never fried, and gluten-free."
-        crumbs={[{ name: 'Flavours', path: '/flavours' }]}
+        crumbs={[
+          { name: 'Products', path: '/products' },
+          { name: 'Roasted Makhana', path: '/flavours' },
+        ]}
       />
 
       <section aria-label="All flavours" className="container-page pb-24">

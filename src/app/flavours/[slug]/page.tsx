@@ -152,7 +152,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
         </div>
       </section>
 
-      <JsonLd data={productSchema(flavour)} />
+      {isLive && <JsonLd data={productSchema(flavour)} />}
       <TrackViewItem id={flavour.slug} name={flavour.name} />
     </>
   )

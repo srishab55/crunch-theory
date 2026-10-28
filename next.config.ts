@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Forgiving sitemap URLs: common Search Console slips would otherwise hit the HTML 404 page
+      // ("Your Sitemap appears to be an HTML page").
+      { source: '/sitemap', destination: '/sitemap.xml', permanent: true },
+      { source: '/sitemap_index.xml', destination: '/sitemap.xml', permanent: true },
+      // Full URL pasted into a URL-prefix property: /https:/www.crunchtheory.store/sitemap.xml
+      { source: '/:prefix(https?:.*)/sitemap.xml', destination: '/sitemap.xml', permanent: true },
       {
         // One canonical host for SEO: send the vercel.app copy to the real domain (keeps the path).
         // The Search Console verification file stays reachable for the old property.

@@ -220,7 +220,9 @@ If you need something new, build it from these parts and tokens. Put copy and pr
   `aria-label`.
 - **Carousels:** `aria-roledescription`, inactive slides `inert` + `aria-hidden`, and a polite
   live region.
-- **Analytics.** New CTAs use `ButtonLink` with `trackLabel`. Google Ads conversions fire through `trackAdsConversion()`, and only on genuine lead actions. New interaction events are added to
+- **Analytics.** New page sections get `data-track-section="name"` (picked up by
+  `SectionViewTracker`); product/flavour grids pass a `listName` for `select_item`. New CTAs use
+  `ButtonLink` with `trackLabel`. Google Ads conversions fire through `trackAdsConversion()`, and only on genuine lead actions. New interaction events are added to
   the typed `AnalyticsEvents` map in `src/lib/analytics.ts`, using GA4 recommended names where
   one exists.
 

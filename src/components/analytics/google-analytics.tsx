@@ -1,6 +1,7 @@
 import Script from 'next/script'
 
 import { PageViewTracker } from './page-view-tracker'
+import { SectionViewTracker } from './section-view-tracker'
 
 import { CONSENT_STORAGE_KEY, consentState, GA_READY_EVENT } from '@/lib/analytics'
 import { env } from '@/lib/env'
@@ -49,6 +50,7 @@ window.dispatchEvent(new Event('${GA_READY_EVENT}'));
         src={`https://www.googletagmanager.com/gtag/js?id=${loaderId}`}
       />
       <PageViewTracker />
+      <SectionViewTracker />
     </>
   )
 }

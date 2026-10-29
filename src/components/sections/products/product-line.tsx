@@ -23,6 +23,7 @@ export function ProductLineRow({ line, index, eager }: Props) {
 
   return (
     <section
+      data-track-section={line.slug}
       id={line.slug}
       aria-labelledby={titleId}
       className="container-page scroll-mt-28 py-14 sm:py-20"

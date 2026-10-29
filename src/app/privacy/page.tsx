@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import { PageHero } from '@/components/layout/page-hero'
 import { site } from '@/data/site'
+import { env } from '@/lib/env'
 import { buildMetadata } from '@/lib/seo'
 
 export const metadata = buildMetadata({
@@ -36,9 +37,17 @@ export default function PrivacyPage() {
             address isn’t passed on. You can change your choice anytime via “Cookie settings” in the
             footer.
           </p>
+          {env.clarityProjectId && (
+            <p className="mt-3">
+              With your consent we also use Microsoft Clarity to see how visitors use our pages,
+              through heatmaps and anonymised session replays. Clarity masks anything you type,
+              isn’t loaded at all if you decline, and stops recording if you change your mind.
+            </p>
+          )}
           <p className="mt-3">
-            We also use Vercel Web Analytics to count page views. It uses no cookies, doesn’t track
-            you across sites and only reports aggregated numbers, so it runs without consent.
+            We also use Vercel Web Analytics to count page views and Vercel Speed Insights to
+            measure how fast pages load for real visitors. Both use no cookies, don’t track you
+            across sites and only report aggregated numbers, so they run without consent.
           </p>
         </section>
         <section>

@@ -87,7 +87,7 @@ export default function InternationalPage() {
             .
           </p>
           <div className="mt-14">
-            <ProductGrid lines={productLines} />
+            <ProductGrid lines={productLines} listName="international" />
           </div>
         </div>
       </section>

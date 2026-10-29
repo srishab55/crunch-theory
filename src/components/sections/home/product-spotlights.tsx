@@ -93,6 +93,7 @@ export function ProductSpotlights() {
 
   return (
     <motion.section
+      data-track-section="product-slider"
       ref={rootRef}
       aria-roledescription="carousel"
       aria-labelledby="spotlights-title"

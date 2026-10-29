@@ -6,11 +6,18 @@ import Link from 'next/link'
 import type { PointerEvent } from 'react'
 
 import { flavourNames, type ProductLine } from '@/data/products'
+import { trackEvent } from '@/lib/analytics'
 
-type Props = { line: ProductLine; index: number; headingLevel?: 'h2' | 'h3' }
+type Props = {
+  line: ProductLine
+  index: number
+  /** Which list the card sits in, for GA4 `select_item` (e.g. "home-range"). */
+  listName: string
+  headingLevel?: 'h2' | 'h3'
+}
 
 /** Product-line card (same tilt and hover as FlavourCard); the whole card opens the line's page. */
-export function ProductCard({ line, index, headingLevel = 'h3' }: Props) {
+export function ProductCard({ line, index, listName, headingLevel = 'h3' }: Props) {
   const Heading = headingLevel
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
@@ -65,7 +72,23 @@ export function ProductCard({ line, index, headingLevel = 'h3' }: Props) {
           </span>
         </div>
         <Heading className="mt-3 text-2xl leading-tight">
-          <Link href={line.href} className="after:absolute after:inset-0 after:rounded-[2rem]">
+          <Link
+            href={line.href}
+            onClick={() =>
+              trackEvent('select_item', {
+                item_list_name: listName,
+                items: [
+                  {
+                    item_id: line.slug,
+                    item_name: line.name,
+                    item_category: 'Product line',
+                    index,
+                  },
+                ],
+              })
+            }
+            className="after:absolute after:inset-0 after:rounded-[2rem]"
+          >
             {line.name}
           </Link>
         </Heading>

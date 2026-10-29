@@ -8,7 +8,7 @@ import { cn } from '@/lib/cn'
 /** "Why makhana" bento grid. Includes an answer-first definition block for search & AI engines. */
 export function Stats() {
   return (
-    <section aria-labelledby="why-title" className="py-28 sm:py-36">
+    <section data-track-section="why-us" aria-labelledby="why-title" className="py-28 sm:py-36">
       <div className="container-page">
         <SectionHeading
           eyebrow="Why makhana?"

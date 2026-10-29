@@ -1,4 +1,5 @@
 import { Makhana } from '@/components/illustrations/makhana'
+import { TrackNotFound } from '@/components/analytics/track-not-found'
 import { ButtonLink } from '@/components/ui/button'
 
 export default function NotFound() {
@@ -11,10 +12,11 @@ export default function NotFound() {
         <p className="mx-auto mt-4 max-w-md text-lg text-muted">
           We couldn’t find what you were looking for — but the snacks are right where we left them.
         </p>
-        <ButtonLink href="/flavours" size="lg" className="mt-10">
-          Browse flavours
+        <ButtonLink href="/products" size="lg" className="mt-10">
+          Browse our snacks
         </ButtonLink>
       </div>
+      <TrackNotFound />
     </section>
   )
 }

@@ -5,7 +5,11 @@ import { isLive } from '@/data/site'
 
 export function NewsletterBand({ location }: { location: string }) {
   return (
-    <section aria-labelledby="newsletter-title" className="container-page pb-28 sm:pb-36">
+    <section
+      data-track-section="newsletter-band"
+      aria-labelledby="newsletter-title"
+      className="container-page pb-28 sm:pb-36"
+    >
       <div className="grain relative isolate overflow-hidden rounded-[2.5rem] bg-terracotta px-6 py-16 text-paper sm:px-14 sm:py-20">
         <WatercolorBlob
           color="var(--color-mustard)"

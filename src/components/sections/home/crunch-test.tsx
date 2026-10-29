@@ -7,6 +7,7 @@ import { Reveal, RevealText } from '@/components/ui/reveal'
 export function CrunchTest() {
   return (
     <section
+      data-track-section="crunch-test"
       aria-labelledby="crunch-test-title"
       className="relative overflow-hidden bg-mustard/30 py-28 sm:py-36"
     >

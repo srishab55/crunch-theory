@@ -58,6 +58,7 @@ git push -u origin main
    | `NEXT_PUBLIC_SITE_URL`                 | `https://<your-project>.vercel.app`, or your custom domain later   | Yes      |
    | `NEXT_PUBLIC_GA_MEASUREMENT_ID`        | Already built in (`G-T0HTG7NX71`); set only to override            | No       |
    | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Token from step 7                                                  | Optional |
+   | `NEXT_PUBLIC_CLARITY_PROJECT_ID`       | Microsoft Clarity project ID (heatmaps + recordings)               | Optional |
    | `RESEND_API_KEY`                       | Your Resend API key                                                | Optional |
    | `CONTACT_TO_EMAIL`                     | The inbox that receives form messages                              | Optional |
    | `CONTACT_FROM_EMAIL`                   | `Crunch Theory <noreply@yourdomain>` (a domain verified in Resend) | Optional |

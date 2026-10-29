@@ -16,6 +16,7 @@ const trialPrice = Math.min(...flavours.flatMap((f) => f.packs.map((p) => p.pric
 export function WhereToBuy() {
   return (
     <section
+      data-track-section="where-to-buy"
       id="where-to-buy"
       aria-labelledby="buy-title"
       className="grain relative isolate scroll-mt-20 overflow-hidden bg-forest-deep py-28 text-paper sm:py-36"

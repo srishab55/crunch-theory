@@ -7,6 +7,21 @@ const securityHeaders = [
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
 ]
 
+/**
+ * Short, shareable links that land on the home page with UTM tags, so GA4 attributes visits and
+ * sign-ups to each channel (Reports → Acquisition → Traffic acquisition). Temporary redirects,
+ * so a channel's tags can change later without browsers caching the old ones.
+ */
+const campaignLinks = [
+  { slug: 'whatsapp', source: 'whatsapp', medium: 'social' },
+  { slug: 'instagram', source: 'instagram', medium: 'social' },
+  { slug: 'youtube', source: 'youtube', medium: 'social' },
+  { slug: 'linkedin', source: 'linkedin', medium: 'social' },
+  { slug: 'email', source: 'newsletter', medium: 'email' },
+  { slug: 'qr', source: 'qr', medium: 'print' },
+]
+const CAMPAIGN = 'prelaunch'
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
@@ -31,6 +46,11 @@ const nextConfig: NextConfig = {
       { source: '/sitemap_index.xml', destination: '/sitemap.xml', permanent: true },
       // Full URL pasted into a URL-prefix property: /https:/www.crunchtheory.store/sitemap.xml
       { source: '/:prefix(https?:.*)/sitemap.xml', destination: '/sitemap.xml', permanent: true },
+      ...campaignLinks.map((c) => ({
+        source: `/go/${c.slug}`,
+        destination: `/?utm_source=${c.source}&utm_medium=${c.medium}&utm_campaign=${CAMPAIGN}`,
+        permanent: false,
+      })),
       // Makhana's product page is /flavours (its flavours have long-standing URLs there).
       { source: '/products/roasted-makhana', destination: '/flavours', permanent: true },
       {

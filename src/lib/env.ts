@@ -35,6 +35,15 @@ function resolveAdsId(): string {
 }
 
 /**
+ * Microsoft Clarity project ID (heatmaps + session recordings), from NEXT_PUBLIC_CLARITY_PROJECT_ID.
+ * Production builds only, so local and preview sessions are never recorded. Empty = off.
+ */
+function resolveClarityId(): string {
+  const id = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim() ?? ''
+  return process.env.VERCEL_ENV === 'production' ? id : ''
+}
+
+/**
  * Google Search Console ownership tokens (public: they're rendered into every page's <head>).
  * Add the `content` value of each Search Console "HTML tag", or the part after
  * `google-site-verification=` for a DNS-style code. NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
@@ -57,6 +66,7 @@ export const env = {
   /** `send_to` for the Google Ads conversion action ("Page view (1)"). */
   googleAdsConversion: resolveAdsId() ? `${resolveAdsId()}/${GOOGLE_ADS_CONVERSION_LABEL}` : '',
   googleSiteVerification: resolveGoogleVerification(),
+  clarityProjectId: resolveClarityId(),
 } as const
 
 export const absoluteUrl = (path = '/') => new URL(path, env.siteUrl).toString()

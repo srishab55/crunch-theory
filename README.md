@@ -83,8 +83,40 @@ Custom events (`src/lib/analytics.ts`):
 | `faq_open`       | A visitor opens an FAQ                                                                                                      |
 | `interest_click` | Pre-launch: a visitor taps **I'm interested** (`flavour` = flavour or product slug, or `any`; `location`). Once per browser |
 | `spotlight_view` | A visitor changes the home product slider by hand (`flavour` = product slug, `method`)                                      |
+| `select_item`    | A visitor clicks a product or flavour card (GA4 ecommerce event; `item_list_name` says which list, e.g. `home-range`)       |
+| `section_view`   | A tagged section (`data-track-section`) scrolls into view, once per page view (`section`, `page_path`): how far people get  |
+| `page_not_found` | The 404 page is shown (`page_path`, `page_referrer`), so broken shared links surface                                        |
 
 In GA4, mark `generate_lead` and `buy_click` as **Key events** so they appear as conversions.
+Register `section` as a custom dimension (Admin → Custom definitions, scope Event) to see how far
+people scroll; `select_item` reports appear under **Monetization → Ecommerce** (Item list name).
+Leave **Enhanced measurement** on: it adds outbound clicks, form starts and 90% scroll for free.
+
+**Campaign links:** share these instead of the bare domain, so GA4 shows which channel each visit
+and sign-up came from (**Reports → Acquisition → Traffic acquisition**, by session source / medium):
+
+| Short link                        | Tags                                                    |
+| --------------------------------- | ------------------------------------------------------- |
+| `crunchtheory.store/go/whatsapp`  | `whatsapp / social`, `prelaunch`                        |
+| `crunchtheory.store/go/instagram` | `instagram / social`, `prelaunch`                       |
+| `crunchtheory.store/go/youtube`   | `youtube / social`, `prelaunch`                         |
+| `crunchtheory.store/go/linkedin`  | `linkedin / social`, `prelaunch`                        |
+| `crunchtheory.store/go/email`     | `newsletter / email`, `prelaunch`                       |
+| `crunchtheory.store/go/qr`        | `qr / print`, `prelaunch` (QR codes on flyers or packs) |
+
+Add more in `campaignLinks` in `next.config.ts`, or tag any URL by hand with
+`?utm_source=…&utm_medium=…&utm_campaign=…`.
+
+**Heatmaps and session recordings (Microsoft Clarity, free):** create a project at
+[clarity.microsoft.com](https://clarity.microsoft.com), copy its project ID into Vercel as
+`NEXT_PUBLIC_CLARITY_PROJECT_ID` (Production) and redeploy. Clarity's script loads only after a
+visitor clicks "Sounds good" on the cookie banner, and stops if they later decline. In Clarity →
+Settings → Masking, choose **Strict**. The privacy page mentions Clarity automatically once it's
+configured.
+
+**Real-visitor speed (Vercel Speed Insights):** enable it in Vercel → the project → **Speed
+Insights**. It reports Core Web Vitals (LCP, INP, CLS) from real visits, cookieless; the free tier
+covers 10,000 events a month.
 
 **Counting "I'm interested" (pre-launch demand):** taps are sent to GA4 **from the server**
 (Measurement Protocol), so ad-blockers and declined cookies don't hide them. Each event is

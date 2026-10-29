@@ -6,14 +6,21 @@ import type { PointerEvent } from 'react'
 
 import type { Flavour } from '@/data/flavours'
 import { isLive } from '@/data/site'
+import { trackEvent } from '@/lib/analytics'
 
 import { FlavourVisual } from './flavour-visual'
 import { HeatMeter } from './heat-meter'
 
-type Props = { flavour: Flavour; index: number; headingLevel?: 'h2' | 'h3' }
+type Props = {
+  flavour: Flavour
+  index: number
+  /** Which list the card sits in, for GA4 `select_item` (e.g. "makhana-flavours"). */
+  listName: string
+  headingLevel?: 'h2' | 'h3'
+}
 
 /** Product card with a subtle 3D tilt that follows the pointer. */
-export function FlavourCard({ flavour, index, headingLevel = 'h3' }: Props) {
+export function FlavourCard({ flavour, index, listName, headingLevel = 'h3' }: Props) {
   const Heading = headingLevel
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
@@ -65,6 +72,19 @@ export function FlavourCard({ flavour, index, headingLevel = 'h3' }: Props) {
         <Heading className="mt-3 text-2xl leading-tight">
           <Link
             href={`/flavours/${flavour.slug}`}
+            onClick={() =>
+              trackEvent('select_item', {
+                item_list_name: listName,
+                items: [
+                  {
+                    item_id: flavour.slug,
+                    item_name: flavour.name,
+                    item_category: 'Roasted Makhana',
+                    index,
+                  },
+                ],
+              })
+            }
             className="after:absolute after:inset-0 after:rounded-[2rem]"
           >
             {flavour.name}

@@ -13,7 +13,11 @@ export function Theory() {
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
-    <section aria-labelledby="theory-title" className="relative py-28 sm:py-36">
+    <section
+      data-track-section="theory"
+      aria-labelledby="theory-title"
+      className="relative py-28 sm:py-36"
+    >
       <div ref={ref} className="container-page grid gap-16 lg:grid-cols-12">
         <div className="lg:sticky lg:top-32 lg:col-span-5 lg:self-start">
           <p className="eyebrow">The Crunch Theory</p>

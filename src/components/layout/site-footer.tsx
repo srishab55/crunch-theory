@@ -11,7 +11,10 @@ import { CurrentYear } from '../ui/current-year'
 
 export function SiteFooter() {
   return (
-    <footer className="grain relative isolate overflow-hidden bg-forest-deep text-paper">
+    <footer
+      data-track-section="footer"
+      className="grain relative isolate overflow-hidden bg-forest-deep text-paper"
+    >
       <Makhana className="absolute -top-16 -right-10 size-64 animate-spin-slow opacity-[0.07]" />
 
       <div className="container-page grid gap-14 py-20 lg:grid-cols-12">

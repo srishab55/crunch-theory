@@ -32,7 +32,11 @@ export default function HomePage() {
       <ProductSpotlights />
       <Stats />
 
-      <section aria-labelledby="range-title" className="bg-sand/40 py-28 sm:py-36">
+      <section
+        data-track-section="range-grid"
+        aria-labelledby="range-title"
+        className="bg-sand/40 py-28 sm:py-36"
+      >
         <div className="container-page">
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <SectionHeading
@@ -51,7 +55,7 @@ export default function HomePage() {
             </ButtonLink>
           </div>
           <div className="mt-14">
-            <ProductGrid lines={productLines} />
+            <ProductGrid lines={productLines} listName="home-range" />
           </div>
         </div>
       </section>

@@ -5,7 +5,11 @@ import type { Faq } from '@/data/faqs'
 
 export function HomeFaq({ items }: { items: Faq[] }) {
   return (
-    <section aria-labelledby="home-faq-title" className="py-28 sm:py-36">
+    <section
+      data-track-section="home-faq"
+      aria-labelledby="home-faq-title"
+      className="py-28 sm:py-36"
+    >
       <div className="container-page grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <SectionHeading eyebrow="Good questions" title="Snack facts, *straight up.*" />

@@ -85,7 +85,11 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
               ))}
             </ul>
 
-            <div id="buy" className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5">
+            <div
+              id="buy"
+              data-track-section="buy-box"
+              className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5"
+            >
               <div className="flex flex-wrap items-baseline justify-between gap-2 px-1 pb-4">
                 <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
                   Get it <span className="accent text-terracotta">lightning fast</span>
@@ -155,7 +159,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
             Try another crunch
           </h2>
           <div className="mt-12 [&>div]:lg:grid-cols-3">
-            <FlavourGrid flavours={others} />
+            <FlavourGrid flavours={others} listName="more-flavours" />
           </div>
         </div>
       </section>

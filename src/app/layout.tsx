@@ -1,9 +1,11 @@
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
 import { Bricolage_Grotesque, Fraunces, Manrope } from 'next/font/google'
 
 import { ConsentBanner } from '@/components/analytics/consent-banner'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
+import { MicrosoftClarity } from '@/components/analytics/microsoft-clarity'
 import { Providers } from '@/components/layout/providers'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
@@ -113,8 +115,11 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </Providers>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <GoogleAnalytics />
+        {env.clarityProjectId && <MicrosoftClarity projectId={env.clarityProjectId} />}
         {/* Vercel Web Analytics: cookieless page views/visitors, alongside GA4 (no consent needed). */}
         <Analytics />
+        {/* Vercel Speed Insights: real-visitor Core Web Vitals (cookieless). */}
+        <SpeedInsights />
       </body>
     </html>
   )

@@ -43,8 +43,9 @@ export function ConsentBanner() {
           className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-xl rounded-3xl border border-forest/10 bg-paper/95 p-5 shadow-2xl backdrop-blur sm:inset-x-6 sm:p-6"
         >
           <p className="text-sm leading-relaxed text-ink/80">
-            We use cookies to see which snacks and pages people love and to measure how our Google
-            ads perform, so we can make better ones. No ad personalisation, no selling data.{' '}
+            We use cookies to see which snacks and pages people love, how visitors use the site and
+            how our Google ads perform, so we can make better ones. No ad personalisation, no
+            selling data.{' '}
             <Link
               href="/privacy"
               className="font-semibold text-forest underline underline-offset-4"

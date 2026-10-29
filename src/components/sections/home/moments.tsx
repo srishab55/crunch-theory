@@ -45,6 +45,7 @@ export function Moments() {
 
   return (
     <section
+      data-track-section="moments"
       ref={sectionRef}
       aria-labelledby="moments-title"
       className="relative lg:h-[var(--pin-height)]"

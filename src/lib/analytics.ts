@@ -14,8 +14,17 @@ type AnalyticsEvents = {
   faq_open: { question: string }
   /** Pre-launch demand signal: visitor tapped "I'm interested" (once per flavour per browser). */
   interest_click: { flavour: string; location: string }
-  /** Flavour spotlight slider changed slide. */
+  /** Home product slider changed slide by hand (`flavour` = product slug). */
   spotlight_view: { flavour: string; method: 'arrow' | 'tab' | 'swipe' | 'key' }
+  /** GA4 recommended: a product or flavour card was clicked in a list. */
+  select_item: {
+    item_list_name: string
+    items: { item_id: string; item_name: string; item_category: string; index: number }[]
+  }
+  /** A tagged section (`data-track-section`) scrolled into view: how far people get. */
+  section_view: { section: string; page_path: string }
+  /** The 404 page was shown; `page_referrer` points at the broken link's source. */
+  page_not_found: { page_path: string; page_referrer: string }
 }
 
 export type AnalyticsEventName = keyof AnalyticsEvents
@@ -71,6 +80,8 @@ export function trackPageView() {
 export const CONSENT_STORAGE_KEY = 'ct-consent-v2'
 /** Dispatch on window to reopen the cookie banner (footer "Cookie settings"). */
 export const CONSENT_OPEN_EVENT = 'ct:consent-open'
+/** Dispatched on window (detail: the choice) whenever the visitor accepts or declines. */
+export const CONSENT_CHANGE_EVENT = 'ct:consent-change'
 export type ConsentChoice = 'granted' | 'denied'
 
 export function updateConsent(choice: ConsentChoice) {
@@ -80,6 +91,7 @@ export function updateConsent(choice: ConsentChoice) {
     // Storage can be unavailable (private mode); consent then lasts for this page view only.
   }
   window.gtag?.('consent', 'update', consentState(choice))
+  window.dispatchEvent(new CustomEvent(CONSENT_CHANGE_EVENT, { detail: choice }))
 }
 
 /**

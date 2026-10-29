@@ -27,7 +27,7 @@ export default function FlavoursPage() {
       />
 
       <section aria-label="All flavours" className="container-page pb-24">
-        <FlavourGrid flavours={flavours} headingLevel="h2" />
+        <FlavourGrid flavours={flavours} listName="makhana-flavours" headingLevel="h2" />
       </section>
 
       <section aria-labelledby="compare-title" className="container-page pb-28">

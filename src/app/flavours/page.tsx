@@ -7,7 +7,7 @@ import { flavours } from '@/data/flavours'
 import { buildMetadata, productListSchema } from '@/lib/seo'
 
 export const metadata = buildMetadata({
-  title: 'Roasted Makhana Flavours',
+  title: 'Roasted Makhana (Fox Nut) Flavours',
   description:
     'Compare all Crunch Theory roasted makhana flavours — Himalayan Pink Salt & Pepper, Peri Peri, Cheese & Herbs and Pudina. Ingredients, heat level, nutrition and pack prices.',
   path: '/flavours',

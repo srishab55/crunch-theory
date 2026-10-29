@@ -141,6 +141,21 @@ Consent defaults to _denied_ (DPDP Act / GDPR friendly) until the visitor accept
 See **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** for step-by-step instructions covering GitHub, GA4,
 Vercel, custom domain, Search Console and troubleshooting.
 
+## Visitors outside India
+
+The site sells in India only (for now) but is written for everyone:
+
+- **Plain English:** products and flavours carry English names (`englishName`, `english`), and
+  Indian food words are explained in `src/data/glossary.ts` (shown at `/faq#glossary` with
+  DefinedTermSet markup, and in llms.txt).
+- **Units:** weights show grams and ounces; energy shows kcal and kJ (`src/lib/units.ts`). Prices
+  stay in rupees and are labelled as Indian retail prices. There's no currency conversion,
+  because nothing can be bought abroad yet.
+- **A path for everyone else:** `/international` has a waitlist that asks for the visitor's
+  country (the owner notification email includes it) and a route for trade enquiries (contact
+  topic "International & distribution"). Every block of store tiles links to it. There are no
+  geo-redirects, following Google's guidance.
+
 ## Content checklist before launch
 
 - [ ] Replace the indicative nutrition values in `src/data/flavours.ts` with lab-tested figures from the

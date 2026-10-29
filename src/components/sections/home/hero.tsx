@@ -104,8 +104,8 @@ export function Hero() {
           className="hero-fade mt-6 max-w-md text-lg leading-relaxed text-ink/75 sm:text-xl"
           style={{ animationDelay: '0.75s' }}
         >
-          Big crunch, honest labels. Roasted makhana, roasted chana, veggie chips and baked ragi
-          chips, all in bold Indian flavours.
+          Big crunch, honest labels. Roasted makhana (puffed lotus seeds), crunchy chickpeas, veggie
+          chips and baked millet chips, all in bold Indian flavours.
         </p>
         <div
           className="hero-fade mt-9 flex flex-wrap items-center gap-4"

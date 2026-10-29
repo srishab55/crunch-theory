@@ -4,12 +4,13 @@ import { notFound } from 'next/navigation'
 import { TrackViewItem } from '@/components/analytics/track-view-item'
 import { InterestButton } from '@/components/flavour/interest-button'
 import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
+import { OutsideIndiaNote } from '@/components/flavour/outside-india-note'
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { ProductGrid } from '@/components/product/product-grid'
 import { ProductPhoto } from '@/components/product/product-photo'
 import { ComingSoonBadge } from '@/components/ui/coming-soon-badge'
 import { Reveal, RevealText } from '@/components/ui/reveal'
-import { flavourNames, getProductPageLine, productLines, productPageLines } from '@/data/products'
+import { getProductPageLine, productLines, productPageLines } from '@/data/products'
 import { NOTIFY_HREF } from '@/data/site'
 import { buildMetadata } from '@/lib/seo'
 
@@ -24,7 +25,7 @@ export async function generateMetadata({
   const line = getProductPageLine(slug)
   if (!line) return {}
   return buildMetadata({
-    title: `${line.name}: ${flavourNames(line).join(' & ')}`,
+    title: `${line.name}: ${line.englishName}`,
     description: line.description,
     path: line.href,
   })
@@ -61,7 +62,8 @@ export default async function ProductLinePage({ params }: PageProps<'/products/[
               text={line.title}
               className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-6xl"
             />
-            <p className="mt-6 text-lg leading-relaxed text-muted">{line.description}</p>
+            <p className="mt-3 text-lg font-semibold text-olive">{line.englishName}</p>
+            <p className="mt-4 text-lg leading-relaxed text-muted">{line.description}</p>
             <ul className="mt-6 flex flex-wrap gap-2" aria-label="Highlights">
               {line.highlights.map((h) => (
                 <li
@@ -80,6 +82,9 @@ export default async function ProductLinePage({ params }: PageProps<'/products/[
               {line.flavours.map((f) => (
                 <li key={f.name} className="rounded-2xl border border-forest/10 bg-paper p-5">
                   <h3 className="text-xl leading-tight">{f.name}</h3>
+                  {f.english && (
+                    <p className="mt-1 text-sm font-semibold text-olive">{f.english}</p>
+                  )}
                   <p className="mt-2 text-sm leading-relaxed text-muted">{f.hook}</p>
                   <p className="mt-3 text-sm font-semibold text-olive">from ₹{line.fromPriceInr}</p>
                 </li>
@@ -111,6 +116,7 @@ export default async function ProductLinePage({ params }: PageProps<'/products/[
                   </a>
                 </div>
               )}
+              <OutsideIndiaNote className="px-1 pt-4" />
             </div>
 
             <p className="mt-8 text-sm text-muted">

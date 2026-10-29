@@ -11,6 +11,8 @@ import { isLive } from './site'
 
 export type ProductFlavour = {
   name: string
+  /** Plain-English meaning, for names that aren't English (e.g. Hing-Jeera → Asafoetida & cumin). */
+  english?: string
   /** One taste-first line for the flavour card. */
   hook: string
   /** The flavour's own page, for lines that have them (makhana). */
@@ -20,6 +22,8 @@ export type ProductFlavour = {
 export type ProductLine = {
   slug: string
   name: string
+  /** What it is in plain English, for visitors who don't know the Indian name. */
+  englishName: string
   /** Heading with one *accent* word. */
   title: string
   /** Short, playful callout: the sticker on the photo and the slider eyebrow. */
@@ -54,6 +58,7 @@ export const productLines: ProductLine[] = [
   {
     slug: 'roasted-makhana',
     name: 'Roasted Makhana',
+    englishName: 'Puffed lotus seeds (fox nuts)',
     title: 'Roasted *makhana*',
     sticker: 'The original',
     description:
@@ -62,6 +67,7 @@ export const productLines: ProductLine[] = [
     highlights: ['Roasted, never fried', 'Gluten-free', `${flavours.length} flavours`],
     flavours: flavours.map((f) => ({
       name: f.shortName,
+      english: f.english,
       hook: f.hook,
       href: `/flavours/${f.slug}`,
     })),
@@ -76,6 +82,7 @@ export const productLines: ProductLine[] = [
   {
     slug: 'roasted-chana',
     name: 'Roasted Chana',
+    englishName: 'Crunchy roasted chickpeas',
     title: 'Roasted *chana*',
     sticker: 'Teatime hero',
     description:
@@ -85,7 +92,8 @@ export const productLines: ProductLine[] = [
     flavours: [
       {
         name: 'Hing-Jeera',
-        hook: 'Roasted cumin and a pinch of hing: the tadka flavour every Indian kitchen knows.',
+        english: 'Asafoetida & cumin',
+        hook: 'Roasted cumin and a pinch of hing (asafoetida): the tadka, or tempered-spice, flavour every Indian kitchen knows.',
       },
       { name: 'Tandoori BBQ', hook: 'Smoky, tangy tandoori spice with a barbecue finish.' },
     ],
@@ -100,6 +108,7 @@ export const productLines: ProductLine[] = [
   {
     slug: 'masala-vegetable-chips',
     name: 'Masala Vegetable Chips',
+    englishName: 'Spiced mixed-vegetable chips',
     title: 'Masala *veggie* chips',
     sticker: 'Real veg, real crunch',
     description:
@@ -107,7 +116,11 @@ export const productLines: ProductLine[] = [
     method: 'Vacuum-cooked',
     highlights: ['Vacuum-cooked', 'Real vegetables', 'No palm oil'],
     flavours: [
-      { name: 'Chatpata Chaat', hook: 'Tangy, spicy chaat masala: street-food zing in a chip.' },
+      {
+        name: 'Chatpata Chaat',
+        english: 'Tangy street-food spice',
+        hook: 'Tangy, spicy chaat masala: the zing of Indian street food, in a chip.',
+      },
       { name: 'Smoked Paprika', hook: 'Gently smoky, mildly sweet paprika with a warm finish.' },
     ],
     fromPriceInr: 49,
@@ -122,6 +135,7 @@ export const productLines: ProductLine[] = [
   {
     slug: 'baked-ragi-chips',
     name: 'Baked Ragi Chips',
+    englishName: 'Baked finger-millet chips',
     title: 'Baked *ragi* chips',
     sticker: 'Millet magic',
     description:
@@ -133,7 +147,11 @@ export const productLines: ProductLine[] = [
         name: 'Aged Cheddar & Onion',
         hook: 'Sharp, savoury cheddar with sweet onion: a cheesy classic.',
       },
-      { name: 'Zesty Pudina', hook: 'Cool mint with a zesty kick, fresh and moreish.' },
+      {
+        name: 'Zesty Pudina',
+        english: 'Zesty mint',
+        hook: 'Cool mint with a zesty kick, fresh and moreish.',
+      },
     ],
     fromPriceInr: 49,
     image: bakedRagiChips,
@@ -151,3 +169,7 @@ export const productPageLines = productLines.filter((l) => l.href === `/products
 export const getProductPageLine = (slug: string) => productPageLines.find((l) => l.slug === slug)
 
 export const flavourNames = (line: ProductLine) => line.flavours.map((f) => f.name)
+
+/** Flavour names with their English meaning where needed: "Hing-Jeera (asafoetida & cumin)". */
+export const flavourLabels = (line: ProductLine) =>
+  line.flavours.map((f) => (f.english ? `${f.name} (${f.english.toLowerCase()})` : f.name))

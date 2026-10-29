@@ -9,9 +9,33 @@ import { initialFormState } from '@/lib/validation'
 
 import { Honeypot } from './honeypot'
 
-type Props = { location: string; inverted?: boolean; className?: string }
+type Props = {
+  location: string
+  inverted?: boolean
+  /** International waitlist: also ask for the visitor's country (optional field). */
+  withCountry?: boolean
+  className?: string
+}
 
-export function NewsletterForm({ location, inverted = false, className }: Props) {
+/** Suggestions only; any country can be typed. */
+const waitlistCountries = [
+  'United States',
+  'United Kingdom',
+  'United Arab Emirates',
+  'Canada',
+  'Australia',
+  'Singapore',
+  'Germany',
+  'Netherlands',
+  'Saudi Arabia',
+  'Qatar',
+  'New Zealand',
+  'Ireland',
+  'Malaysia',
+  'Japan',
+]
+
+export function NewsletterForm({ location, inverted = false, withCountry, className }: Props) {
   const [state, action, pending] = useActionState(subscribeToNewsletter, initialFormState)
   const id = useId()
   const error =
@@ -41,6 +65,32 @@ export function NewsletterForm({ location, inverted = false, className }: Props)
   return (
     <form action={action} className={cn('relative w-full max-w-md', className)} noValidate>
       <Honeypot />
+      {withCountry && (
+        <>
+          <label htmlFor={`${id}-country`} className="sr-only">
+            Your country (optional)
+          </label>
+          <input
+            id={`${id}-country`}
+            name="country"
+            list={`${id}-countries`}
+            autoComplete="country-name"
+            maxLength={60}
+            placeholder="Your country (optional)"
+            className={cn(
+              'mb-3 h-14 w-full rounded-full border px-5 text-base transition-colors outline-none placeholder:opacity-50 focus:border-mustard',
+              inverted
+                ? 'border-paper/25 bg-paper/5 text-paper'
+                : 'border-forest/20 bg-paper text-ink',
+            )}
+          />
+          <datalist id={`${id}-countries`}>
+            {waitlistCountries.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+        </>
+      )}
       <label htmlFor={`${id}-email`} className="sr-only">
         Email address
       </label>

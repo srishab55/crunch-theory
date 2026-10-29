@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/flavours', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/our-story', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/international', priority: 0.6, changeFrequency: 'monthly' },
     { path: '/contact', priority: 0.5, changeFrequency: 'yearly' },
     { path: '/privacy', priority: 0.2, changeFrequency: 'yearly' },
   ]

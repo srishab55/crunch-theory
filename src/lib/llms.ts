@@ -1,9 +1,11 @@
 import { faqs } from '@/data/faqs'
+import { glossary } from '@/data/glossary'
 import { flavours, type Flavour } from '@/data/flavours'
 import { marketplaces } from '@/data/marketplaces'
-import { flavourNames, productLines } from '@/data/products'
+import { flavourLabels, productLines } from '@/data/products'
 import { isLive, site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
+import { withKilojoules, withOunces } from '@/lib/units'
 
 /**
  * Builds llms.txt (https://llmstxt.org) — a Markdown summary that AI assistants and answer engines
@@ -18,6 +20,7 @@ export function buildLlmsTxt(): string {
     'Key facts:',
     '- Product: roasted makhana (fox nuts / lotus seeds), roasted not fried, gluten-free.',
     '- Also launching: roasted chana, masala vegetable chips and baked ragi chips (see Product range).',
+    `- Outside India: ${isLive ? 'sold only in India for now' : 'launching in India first'}; no international shipping yet. International waitlist: ${absoluteUrl('/international')}`,
     `- Market: India. ${isLive ? 'Sold on' : 'Launching soon on'} ${marketplaces.map((m) => m.name).join(', ')}.`,
     ...(isLive
       ? []
@@ -31,7 +34,7 @@ export function buildLlmsTxt(): string {
     '## Product range',
     ...productLines.map(
       (l) =>
-        `- [${l.name}](${absoluteUrl(l.href)}): ${l.method}; ${flavourNames(l).join(', ')}; from ₹${l.fromPriceInr}${l.live ? '' : ' (coming soon)'}.`,
+        `- [${l.name}](${absoluteUrl(l.href)}) — ${l.englishName.toLowerCase()}: ${l.method}; ${flavourLabels(l).join(', ')}; from ₹${l.fromPriceInr}${l.live ? '' : ' (coming soon)'}.`,
     ),
     '',
     '## Pages',
@@ -39,6 +42,12 @@ export function buildLlmsTxt(): string {
     `- [Our story](${absoluteUrl('/our-story')}): Why the brand exists and how makhana is made.`,
     `- [FAQ](${absoluteUrl('/faq')}): Nutrition, ingredients, allergens, pricing and buying.`,
     `- [Contact](${absoluteUrl('/contact')}): Customer support, taste tests, retail enquiries.`,
+    `- [International](${absoluteUrl('/international')}): For visitors outside India — waitlist, trade enquiries, Indian snack words explained.`,
+    '',
+    '## Glossary',
+    ...glossary.map(
+      (t) => `- ${t.term}${t.alsoKnownAs ? ` (${t.alsoKnownAs.join(', ')})` : ''}: ${t.meaning}`,
+    ),
     '',
     '## Optional',
     `- [Full details](${absoluteUrl('/llms-full.txt')}): Every flavour's ingredients, nutrition and all FAQs.`,
@@ -56,9 +65,9 @@ const flavourDetail = (f: Flavour) =>
     `- Heat: ${['none', 'mild', 'medium', 'hot'][f.heat]}`,
     `- Ingredients: ${f.ingredients.join(', ')}`,
     `- Allergens: ${f.allergens}`,
-    `- Packs: ${f.packs.map((p) => `${p.label} ${p.weight} ₹${p.priceInr}`).join('; ')}`,
+    `- Packs (Indian retail prices, INR): ${f.packs.map((p) => `${p.label} ${withOunces(p.weight)} ₹${p.priceInr}`).join('; ')}`,
     `- Nutrition per ${f.servingSize}${f.nutritionIsIndicative ? ' (indicative)' : ''}: ${f.nutrition
-      .map((n) => `${n.label} ${n.perServing}`)
+      .map((n) => `${n.label} ${withKilojoules(n.perServing)}`)
       .join(', ')}`,
     '',
   ].join('\n')

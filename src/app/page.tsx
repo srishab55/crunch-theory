@@ -39,7 +39,7 @@ export default function HomePage() {
               id="range-title"
               eyebrow="The range"
               title="Four snacks. *Zero* boring."
-              lede="Roasted makhana, roasted chana, veggie chips and baked ragi chips. Tap one to see its flavours."
+              lede="Puffed lotus seeds, roasted chickpeas, veggie chips and baked millet chips. Tap one to see its flavours."
             />
             <ButtonLink
               href="/products"

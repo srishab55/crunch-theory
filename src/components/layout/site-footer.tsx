@@ -59,6 +59,14 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
+            <li>
+              <Link
+                href="/international"
+                className="text-paper/75 transition-colors hover:text-paper"
+              >
+                Outside India?
+              </Link>
+            </li>
             {site.email && (
               <li>
                 <a

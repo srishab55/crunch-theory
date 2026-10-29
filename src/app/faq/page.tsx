@@ -2,17 +2,19 @@ import { PageHero } from '@/components/layout/page-hero'
 import { JsonLd } from '@/components/seo/json-ld'
 import { ButtonLink } from '@/components/ui/button'
 import { FaqList } from '@/components/ui/faq-list'
+import { GlossaryList } from '@/components/ui/glossary-list'
 import { faqs, type Faq } from '@/data/faqs'
-import { buildMetadata, faqSchema } from '@/lib/seo'
+import { glossary } from '@/data/glossary'
+import { buildMetadata, faqSchema, glossarySchema } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'FAQ — Makhana, Nutrition & Buying',
   description:
-    'Answers about Crunch Theory roasted makhana: what makhana is, whether it is fried, gluten-free status, protein and calories, kids, pricing and where to buy in India.',
+    'Answers about Crunch Theory roasted makhana (puffed lotus seeds): what it is and tastes like, whether it is fried, nutrition, pricing, buying in India and outside it, plus a glossary of Indian snack words.',
   path: '/faq',
 })
 
-const categories: Faq['category'][] = ['Product', 'Nutrition', 'Buying', 'Brand']
+const categories: Faq['category'][] = ['Product', 'Nutrition', 'Buying', 'International', 'Brand']
 
 export default function FaqPage() {
   return (
@@ -34,6 +36,21 @@ export default function FaqPage() {
             </div>
           </section>
         ))}
+        <section
+          id="glossary"
+          aria-labelledby="glossary-title"
+          className="grid scroll-mt-28 gap-8 lg:grid-cols-12"
+        >
+          <div className="lg:col-span-3">
+            <h2 id="glossary-title" className="text-3xl">
+              Glossary
+            </h2>
+            <p className="mt-3 text-muted">
+              New to Indian snacks? Here’s what the words on our packs mean.
+            </p>
+          </div>
+          <GlossaryList terms={glossary} className="lg:col-span-8 lg:col-start-5" />
+        </section>
         <div className="rounded-[2rem] bg-sand/60 p-10 text-center">
           <p className="font-display text-3xl font-bold text-forest">Still curious?</p>
           <ButtonLink href="/contact" className="mt-6" trackLabel="FAQ contact" trackLocation="faq">
@@ -42,6 +59,7 @@ export default function FaqPage() {
         </div>
       </div>
       <JsonLd data={faqSchema(faqs)} />
+      <JsonLd data={glossarySchema(glossary)} />
     </>
   )
 }

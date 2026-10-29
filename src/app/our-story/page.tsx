@@ -9,7 +9,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { aboutPageSchema, buildMetadata } from '@/lib/seo'
 
 const summary =
-  'Crunch Theory is an Indian snack brand that makes roasted, never-fried makhana in bold flavours. We started with one question: why should a better snack feel like a compromise?'
+  'Crunch Theory is an Indian snack brand that makes roasted, never-fried makhana (puffed lotus seeds) in bold flavours. We started with one question: why should a better snack feel like a compromise?'
 
 export const metadata = buildMetadata({
   title: 'Our Story',
@@ -20,7 +20,7 @@ export const metadata = buildMetadata({
 const journey = [
   {
     title: 'Harvested',
-    body: 'Fox-lotus seeds are hand-gathered from the ponds of Mithila, Bihar.',
+    body: 'Fox-lotus seeds are hand-gathered from the ponds of Mithila, in the eastern Indian state of Bihar.',
   },
   {
     title: 'Sun-dried & popped',
@@ -79,8 +79,8 @@ export default function OurStoryPage() {
         <Reveal delay={0.1} className="space-y-6 text-lg leading-relaxed text-muted">
           <p>
             It’s 4 pm. You’re hungry, a little stressed, and the office pantry has chips, biscuits
-            and namkeen. You know the “healthy” options exist — but they taste like cardboard, cost
-            too much and make big promises nobody believes.
+            and namkeen (fried savoury snack mixes). You know the “healthy” options exist — but they
+            taste like cardboard, cost too much and make big promises nobody believes.
           </p>
           <p>
             Crunch Theory exists to close that gap between{' '}

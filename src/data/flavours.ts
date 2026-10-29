@@ -17,6 +17,8 @@ export type Flavour = {
   slug: string
   name: string
   shortName: string
+  /** Plain-English meaning, for names that aren't English (e.g. Pudina Chatpata → Tangy mint). */
+  english?: string
   /** One-line hook used on cards. */
   hook: string
   /** Answer-first description; also used for meta description and structured data. */
@@ -168,6 +170,7 @@ export const flavours: Flavour[] = [
   {
     slug: 'pudina-chatpata',
     name: 'Pudina Chatpata',
+    english: 'Tangy mint',
     shortName: 'Pudina',
     hook: 'Cool mint, tangy chaat masala. Desi and dangerously moreish.',
     description:

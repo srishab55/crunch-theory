@@ -14,7 +14,8 @@ export const site = {
     'Crunch Theory makes roasted, never-fried makhana (fox nuts) for people who love to snack but want better everyday choices. Bold flavour, honest labels, made in India.',
   shortDescription: 'Roasted makhana snacks — big crunch, honest labels.',
   locale: 'en_IN',
-  language: 'en-IN',
+  /** Plain English for every reader (Google ignores `lang` for targeting; screen readers use it). */
+  language: 'en',
   country: 'IN',
   /**
    * Public support inbox (receives via Resend inbound — MX on crunchtheory.store). Shown on the
@@ -40,6 +41,14 @@ export const site = {
     'healthy snacks India',
     'fox nuts',
     'lotus seeds snack',
+    'puffed lotus seeds',
+    'phool makhana',
+    'roasted chickpeas',
+    'roasted chana',
+    'finger millet chips',
+    'ragi chips',
+    'vegetable chips',
+    'Indian snacks',
     'gluten-free snacks',
     'office snacks',
     'better-for-you snacks',

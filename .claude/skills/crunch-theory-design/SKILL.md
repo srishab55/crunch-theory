@@ -177,6 +177,8 @@ Check this list before building UI. Paths are under `src/components/`.
 | Flavour card / grid (makhana)                  | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
 | Product-line card / grid                       | `product/product-card`, `product/product-grid` (whole card links to the line page)                                                                |
 | Product pack shot + sticker                    | `product/product-photo`                                                                                                                           |
+| Glossary of Indian food words                  | `ui/glossary-list` (data in `src/data/glossary.ts`)                                                                                               |
+| "Outside India?" link beside store tiles       | `flavour/outside-india-note`                                                                                                                      |
 | Store links (tracked `buy_click`)              | `flavour/marketplace-tiles` (`variant="feature"` on dark, `"compact"` on light)                                                                   |
 | Product slider (home)                          | `sections/home/product-spotlights`                                                                                                                |
 | Product-line row (photo, sticker, story, CTA)  | `sections/products/product-line` (data in `src/data/products.ts`; alternates sides by index)                                                      |
@@ -197,6 +199,12 @@ If you need something new, build it from these parts and tokens. Put copy and pr
 - **Site structure:** Home → Products (`/products`) → a line's page → its flavours. Makhana's line
   page is `/flavours` (flavours at `/flavours/<slug>`); the other lines are `/products/<slug>`.
   Product data lives in `src/data/products.ts`; the home page shows lines, not flavours.
+- **Write for readers outside India too.** Give every Indian food word a plain-English meaning
+  on first use ("makhana (puffed lotus seeds)", "hing (asafoetida)"): use `englishName` /
+  `english` in the product and flavour data, and add new words to `src/data/glossary.ts`. Show
+  weights with `withOunces()` and energy with `withKilojoules()` (`src/lib/units.ts`), and label
+  prices as Indian rupees. Every block of store tiles gets `OutsideIndiaNote`. Never redirect or
+  swap content by visitor location.
 - **One `h1` per page.** Sections use `h2`; cards and slides use `h3`. Decorative headings
   elsewhere use `<p>`.
 - **Write ledes and FAQ answers answer-first.** The first sentence should stand alone; search

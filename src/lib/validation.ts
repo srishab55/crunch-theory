@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 export const newsletterSchema = z.object({
   email: z.email('Please enter a valid email address.').max(254),
+  /** Only on the international waitlist; tells us where demand is. */
+  country: z.string().trim().max(60).optional(),
 })
 
 /** Contact topics — shared by the form's <select>, validation and the emails. */
@@ -9,6 +11,7 @@ export const contactTopics = [
   { value: 'general', label: 'General question' },
   { value: 'feedback', label: 'Product feedback' },
   { value: 'retail', label: 'Retail & wholesale' },
+  { value: 'international', label: 'International & distribution' },
   { value: 'press', label: 'Press & collaborations' },
 ] as const
 

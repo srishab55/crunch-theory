@@ -1,5 +1,6 @@
 import type { Flavour } from '@/data/flavours'
 import { cn } from '@/lib/cn'
+import { withKilojoules, withOunces } from '@/lib/units'
 
 export function NutritionTable({ flavour }: { flavour: Flavour }) {
   return (
@@ -7,7 +8,9 @@ export function NutritionTable({ flavour }: { flavour: Flavour }) {
       <table className="w-full text-left text-sm">
         <caption className="border-b border-forest/10 px-6 py-4 text-left">
           <span className="font-display text-xl font-bold text-forest">Nutrition information</span>
-          <span className="mt-1 block text-xs text-muted">Serving size {flavour.servingSize}</span>
+          <span className="mt-1 block text-xs text-muted">
+            Serving size {withOunces(flavour.servingSize)}
+          </span>
         </caption>
         <thead className="text-xs tracking-wider text-muted uppercase">
           <tr>
@@ -34,8 +37,10 @@ export function NutritionTable({ flavour }: { flavour: Flavour }) {
               >
                 {row.label}
               </th>
-              <td className="px-6 py-3 text-right tabular-nums">{row.perServing}</td>
-              <td className="px-6 py-3 text-right tabular-nums">{row.per100g}</td>
+              <td className="px-6 py-3 text-right tabular-nums">
+                {withKilojoules(row.perServing)}
+              </td>
+              <td className="px-6 py-3 text-right tabular-nums">{withKilojoules(row.per100g)}</td>
             </tr>
           ))}
         </tbody>

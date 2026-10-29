@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import type {
   AboutPage,
   BreadcrumbList,
+  DefinedTermSet,
   FAQPage,
   ItemList,
   Organization,
@@ -13,6 +14,7 @@ import type {
 import brandMark from '@/assets/brand/mark.png'
 import type { Faq } from '@/data/faqs'
 import type { Flavour } from '@/data/flavours'
+import type { GlossaryTerm } from '@/data/glossary'
 import type { ProductLine } from '@/data/products'
 import { site } from '@/data/site'
 import { absoluteUrl } from '@/lib/env'
@@ -139,6 +141,23 @@ export function productRangeSchema(lines: ProductLine[]): WithContext<ItemList> 
       position: i + 1,
       url: absoluteUrl(l.href),
       name: l.name,
+    })),
+  }
+}
+
+/** The glossary of Indian snack words on /faq, so search and AI answers can cite the definitions. */
+export function glossarySchema(terms: GlossaryTerm[]): WithContext<DefinedTermSet> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    '@id': absoluteUrl('/faq#glossary'),
+    name: 'Indian snack words, explained',
+    inLanguage: site.language,
+    hasDefinedTerm: terms.map((t) => ({
+      '@type': 'DefinedTerm',
+      name: t.term,
+      description: t.meaning,
+      ...(t.alsoKnownAs && { alternateName: t.alsoKnownAs }),
     })),
   }
 }

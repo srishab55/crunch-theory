@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { TrackViewItem } from '@/components/analytics/track-view-item'
 import { InterestButton } from '@/components/flavour/interest-button'
 import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
+import { OutsideIndiaNote } from '@/components/flavour/outside-india-note'
 import { FlavourGrid } from '@/components/flavour/flavour-grid'
 import { FlavourVisual } from '@/components/flavour/flavour-visual'
 import { HeatMeter } from '@/components/flavour/heat-meter'
@@ -15,6 +16,7 @@ import { Reveal, RevealText } from '@/components/ui/reveal'
 import { flavours, getFlavour } from '@/data/flavours'
 import { isLive, NOTIFY_HREF } from '@/data/site'
 import { buildMetadata, productSchema } from '@/lib/seo'
+import { withOunces } from '@/lib/units'
 
 export function generateStaticParams() {
   return flavours.map((f) => ({ slug: f.slug }))
@@ -27,7 +29,7 @@ export async function generateMetadata({
   const flavour = getFlavour(slug)
   if (!flavour) return {}
   return buildMetadata({
-    title: `${flavour.name} Roasted Makhana`,
+    title: `${flavour.name} Roasted Makhana (Fox Nuts)`,
     description: flavour.description,
     path: `/flavours/${flavour.slug}`,
   })
@@ -64,17 +66,21 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
               text={flavour.name}
               className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-6xl"
             />
+            {flavour.english && (
+              <p className="mt-3 text-lg font-semibold text-olive">{flavour.english}</p>
+            )}
             <p className="mt-6 text-lg leading-relaxed text-muted">{flavour.description}</p>
 
             <h2 className="mt-10 font-sans text-sm font-bold tracking-wider text-forest uppercase">
               Pack sizes
             </h2>
+            <p className="mt-1 text-xs text-muted">Indian retail prices, in rupees (₹ / INR).</p>
             <ul className="mt-4 grid gap-3 sm:grid-cols-3">
               {flavour.packs.map((p) => (
                 <li key={p.label} className="rounded-2xl border border-forest/10 bg-paper p-4">
                   <p className="text-sm text-muted">{p.label}</p>
                   <p className="mt-1 font-display text-2xl font-bold text-forest">₹{p.priceInr}</p>
-                  <p className="text-xs text-muted">{p.weight}</p>
+                  <p className="text-xs text-muted">{withOunces(p.weight)}</p>
                 </li>
               ))}
             </ul>
@@ -104,6 +110,7 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
                   </a>
                 </div>
               )}
+              <OutsideIndiaNote className="px-1 pt-4" />
             </div>
 
             <div className="mt-12 grid gap-8 sm:grid-cols-2">

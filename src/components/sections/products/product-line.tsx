@@ -2,7 +2,7 @@ import { InterestButton } from '@/components/flavour/interest-button'
 import { ProductPhoto } from '@/components/product/product-photo'
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
 import { Reveal, RevealText } from '@/components/ui/reveal'
-import { flavourNames, type ProductLine } from '@/data/products'
+import { flavourLabels, type ProductLine } from '@/data/products'
 import { cn } from '@/lib/cn'
 
 type Props = {
@@ -54,7 +54,8 @@ export function ProductLineRow({ line, index, eager }: Props) {
             className="mt-4 text-4xl leading-[0.98] font-extrabold tracking-[-0.035em] sm:text-6xl"
           />
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{line.description}</p>
+            <p className="mt-3 text-lg font-semibold text-olive">{line.englishName}</p>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">{line.description}</p>
 
             <ul className="mt-6 flex flex-wrap gap-2" aria-label="Highlights">
               {line.highlights.map((h) => (
@@ -72,7 +73,9 @@ export function ProductLineRow({ line, index, eager }: Props) {
                 <dt className="text-sm text-muted">
                   {line.flavours.length > 1 ? 'Flavours' : 'Flavour'}
                 </dt>
-                <dd className="mt-1 font-semibold text-forest">{flavourNames(line).join(' · ')}</dd>
+                <dd className="mt-1 font-semibold text-forest">
+                  {flavourLabels(line).join(' · ')}
+                </dd>
               </div>
               <div className="text-right">
                 <dt className="text-sm text-muted">From</dt>

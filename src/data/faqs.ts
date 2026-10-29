@@ -4,7 +4,7 @@ export type Faq = {
   question: string
   /** Answer-first: the first sentence should fully answer the question on its own. */
   answer: string
-  category: 'Product' | 'Nutrition' | 'Buying' | 'Brand'
+  category: 'Product' | 'Nutrition' | 'Buying' | 'International' | 'Brand'
 }
 
 export const faqs: Faq[] = [
@@ -80,5 +80,28 @@ export const faqs: Faq[] = [
     question: 'How do I know your claims are true?',
     answer:
       'We only print claims we can back up, and every flavour page lists the full ingredients, allergens, serving size and nutrition values. If anything is unclear, email us and we will answer within two working days.',
+  },
+  {
+    category: 'International',
+    question: 'Do you ship outside India?',
+    answer: `Not yet. Crunch Theory ${isLive ? 'is sold only in India for now' : 'is launching in India first'}, on Indian delivery apps and Amazon India. If you live outside India, join the international waitlist on our International page and we will email you when we ship to your country.`,
+  },
+  {
+    category: 'International',
+    question: 'What does makhana taste like?',
+    answer:
+      'Makhana tastes light and gently nutty, with a crunch somewhere between popcorn and a rice cake. On its own it is mild, so it takes on whatever it is roasted with — from pink salt and pepper to peri peri.',
+  },
+  {
+    category: 'International',
+    question: 'Which country will you launch in after India?',
+    answer:
+      'We have not chosen yet, and the international waitlist will decide it: every sign-up tells us where people want Crunch Theory. Importers, distributors and retailers can also reach us through the contact form.',
+  },
+  {
+    category: 'International',
+    question: 'Are your nutrition values in kJ and ounces too?',
+    answer:
+      'Yes. Our website lists energy in both kcal and kJ and pack weights in grams and ounces. Packs sold in India follow Indian (FSSAI) labelling; packs for other countries will follow that country’s labelling rules.',
   },
 ]

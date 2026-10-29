@@ -321,7 +321,8 @@ function Slide({ line, index, total, state }: SlideProps) {
         >
           {line.name}
         </h3>
-        <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/75">{line.description}</p>
+        <p className="mt-3 text-lg font-semibold text-paper/80">{line.englishName}</p>
+        <p className="mt-4 max-w-lg text-lg leading-relaxed text-paper/75">{line.description}</p>
         <dl className="mt-8 grid max-w-lg grid-cols-[1fr_auto] divide-x divide-paper/15 overflow-hidden rounded-2xl border border-paper/15">
           <div className="px-4 py-4">
             <dt className="text-[0.65rem] tracking-wider text-paper/60 uppercase sm:text-xs">

@@ -33,17 +33,30 @@ export async function subscribeToNewsletter(
 ): Promise<FormState> {
   if (isBot(formData)) return { status: 'success', message: 'You’re on the list!' }
 
-  const parsed = newsletterSchema.safeParse({ email: formData.get('email') })
+  const parsed = newsletterSchema.safeParse({
+    email: formData.get('email'),
+    country: formData.get('country') ?? undefined,
+  })
   if (!parsed.success) {
     return { status: 'error', fieldErrors: z.flattenError(parsed.error).fieldErrors }
   }
+  const { email, country } = parsed.data
+  // The country field only exists on the international waitlist form.
+  const international = formData.has('country')
 
   try {
     await sendNotification({
-      subject: 'New newsletter subscriber',
-      text: `Email: ${parsed.data.email}`,
+      subject: international
+        ? `New international waitlist sign-up${country ? ` (${country})` : ''}`
+        : 'New newsletter subscriber',
+      text: `Email: ${email}${international ? `\nCountry: ${country || 'not given'}` : ''}`,
     })
-    return { status: 'success', message: 'You’re on the list! First crunch-worthy email soon.' }
+    return {
+      status: 'success',
+      message: international
+        ? 'You’re on the international waitlist! We’ll email you when we ship to you.'
+        : 'You’re on the list! First crunch-worthy email soon.',
+    }
   } catch (error) {
     console.error('[newsletter] delivery failed', error)
     return { status: 'error', message: 'Something went wrong. Please try again in a minute.' }

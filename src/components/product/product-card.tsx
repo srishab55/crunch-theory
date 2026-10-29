@@ -69,6 +69,7 @@ export function ProductCard({ line, index, headingLevel = 'h3' }: Props) {
             {line.name}
           </Link>
         </Heading>
+        <p className="mt-1 text-sm font-semibold text-olive">{line.englishName}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted">
           {line.flavours.length} flavours: {flavourNames(line).join(', ')}
         </p>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
+import { OutsideIndiaNote } from '@/components/flavour/outside-india-note'
 import { PouchFan } from '@/components/flavour/pouch-fan'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
 import { Reveal, RevealText } from '@/components/ui/reveal'
@@ -87,9 +88,10 @@ export function WhereToBuy() {
             href="/contact"
             className="font-semibold text-paper/80 underline underline-offset-4 hover:text-mustard"
           >
-            {isLive ? 'Can’t find us near you?' : 'Want us in your city?'} Tell us your pin code.
+            {isLive ? 'Can’t find us near you?' : 'Want us in your city?'} Tell us your PIN code.
           </Link>
         </p>
+        <OutsideIndiaNote tone="dark" className="mt-3 text-center" />
       </div>
     </section>
   )

@@ -5,13 +5,13 @@ import { ProductLineRow } from '@/components/sections/products/product-line'
 import { NewsletterBand } from '@/components/sections/newsletter-band'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Reveal } from '@/components/ui/reveal'
-import { flavourNames, productLines } from '@/data/products'
+import { flavourLabels, productLines } from '@/data/products'
 import { buildMetadata, productRangeSchema } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'Our Products: Makhana, Chana, Veggie & Ragi Chips',
   description:
-    'The full Crunch Theory range: roasted makhana, roasted chana, masala vegetable chips and baked ragi chips. Roasted, baked or vacuum-cooked, with no palm oil, from ₹49.',
+    'The full Crunch Theory range: roasted makhana (puffed lotus seeds), roasted chana (chickpeas), masala vegetable chips and baked ragi (finger millet) chips. Roasted, baked or vacuum-cooked, with no palm oil, from ₹49.',
   path: '/products',
 })
 
@@ -23,7 +23,7 @@ export default function ProductsPage() {
       <PageHero
         eyebrow="The range"
         title="One theory. *Four* crunches."
-        lede={`Crunch Theory makes better-for-you Indian snacks: roasted makhana, roasted chana, masala vegetable chips and baked ragi chips. Each one is roasted, baked or vacuum-cooked, and every pack starts at ₹${lowestPrice}.`}
+        lede={`Crunch Theory makes better-for-you Indian snacks: roasted makhana (puffed lotus seeds), roasted chana (chickpeas), masala vegetable chips and baked ragi (finger millet) chips. Each one is roasted, baked or vacuum-cooked, and every pack starts at ₹${lowestPrice}.`}
         crumbs={[{ name: 'Products', path: '/products' }]}
       />
 
@@ -68,7 +68,7 @@ export default function ProductsPage() {
                     Flavours
                   </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
-                    From
+                    From (₹ INR)
                   </th>
                 </tr>
               </thead>
@@ -79,9 +79,10 @@ export default function ProductsPage() {
                       <Link href={l.href} className="hover:underline">
                         {l.name}
                       </Link>
+                      <span className="block text-xs font-normal text-muted">{l.englishName}</span>
                     </th>
                     <td className="px-6 py-4">{l.method}</td>
-                    <td className="px-6 py-4 text-muted">{flavourNames(l).join(', ')}</td>
+                    <td className="px-6 py-4 text-muted">{flavourLabels(l).join(', ')}</td>
                     <td className="px-6 py-4">₹{l.fromPriceInr}</td>
                   </tr>
                 ))}

@@ -33,8 +33,8 @@ Supporting references, read when relevant:
 | Brand text, headings, primary buttons | `forest` (#2f4a2c)                                            |
 | Dark sections, footer                 | `forest-deep` (#1d301c)                                       |
 | Body text / secondary text            | `ink` (#24231e) / `muted` (#69655a)                           |
-| Eyebrows                              | `olive` (#8a7a48)                                             |
-| Accents                               | `terracotta` (#c4755a), `mustard` (#d7a44f), `sage` (#9fb18f) |
+| Eyebrows                              | `olive` (#716335)                                             |
+| Accents                               | `terracotta` (#a85b40), `mustard` (#d7a44f), `sage` (#9fb18f) |
 
 On dark surfaces, text is `text-paper` with `/75` for body and `/60` for meta. The accent becomes
 `mustard`, or the panel's own accent. Flavour-specific panel colours live in data
@@ -131,7 +131,10 @@ The feel comes from three constraints. Keeping to them is what makes new work ma
 
 **Ambient motion** (`animate-float` 6 s, `animate-spin-slow` 24 s, `animate-marquee` 30 s) is
 decoration only. It's slow, `aria-hidden`, never on text a user has to read, and hidden on mobile
-(`hidden lg:block`) if it might sit on top of buttons.
+(`hidden lg:block`) if it might sit on top of buttons. Use only these utility classes for looping
+animations: `PauseOffscreenAnimations` pauses them while off-screen, because Chrome otherwise
+restyles the page every frame for each one (measured: it cost the home page ~4 s of blocking
+time on a mid-range phone). Pause loops on hidden elements too (e.g. inactive slides).
 
 **Autoplay** (the home product slider is the model):
 
@@ -141,8 +144,11 @@ decoration only. It's slow, `aria-hidden`, never on text a user has to read, and
 - Provide a pause/play button, and turn autoplay off entirely for reduced-motion users.
 
 **Above the fold**, animate with **CSS keyframes** (`hero-word`, `hero-fade` in `globals.css`),
-not Motion. Text gated behind JavaScript `opacity: 0` delays the Largest Contentful Paint and
-flashes on slow devices.
+not Motion: use `ui/hero-text` (`HeroText`, the CSS twin of `RevealText`) for the H1 and a
+`hero-fade` class for the lede or main image. Content gated behind JavaScript `opacity: 0` waits
+for hydration (4–5 s on a slow phone), which delays the Largest Contentful Paint. `PageHero` and
+the flavour/product detail pages already follow this. `Reveal`/`RevealText` are for content
+below the fold.
 
 **Reduced motion** is a requirement, not a nicety:
 
@@ -173,9 +179,13 @@ Check this list before building UI. Paths are under `src/components/`.
 | Infinite strip of claims                       | `ui/marquee`                                                                                                                                      |
 | Rotating circular sticker                      | `ui/spin-sticker`                                                                                                                                 |
 | Accordion (crawlable `<details>`)              | `ui/faq-list`                                                                                                                                     |
-| Pack image with illustrated fallback           | `flavour/flavour-visual`                                                                                                                          |
+| Flavour pack photo (square)                    | `flavour/flavour-visual`                                                                                                                          |
 | Flavour card / grid (makhana)                  | `flavour/flavour-card`, `flavour/flavour-grid`                                                                                                    |
 | Product-line card / grid                       | `product/product-card`, `product/product-grid` (whole card links to the line page)                                                                |
+| Card shell (entrance + pointer tilt)           | `ui/tilt-card`; card links use `ui/select-item-link` (GA4 `select_item`), so cards stay server components                                         |
+| "Coming soon" pill on a card or photo          | `ui/coming-soon-pill`                                                                                                                             |
+| `#buy` panel on flavour/product pages          | `flavour/buy-box`                                                                                                                                 |
+| Above-the-fold heading (CSS-only reveal)       | `ui/hero-text`                                                                                                                                    |
 | Product pack shot + sticker                    | `product/product-photo`                                                                                                                           |
 | Glossary of Indian food words                  | `ui/glossary-list` (data in `src/data/glossary.ts`)                                                                                               |
 | "Outside India?" link beside store tiles       | `flavour/outside-india-note`                                                                                                                      |

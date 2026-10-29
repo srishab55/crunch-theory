@@ -1,5 +1,6 @@
 import Script from 'next/script'
 
+import { FaqOpenTracker } from './faq-open-tracker'
 import { PageViewTracker } from './page-view-tracker'
 import { SectionViewTracker } from './section-view-tracker'
 
@@ -51,6 +52,7 @@ window.dispatchEvent(new Event('${GA_READY_EVENT}'));
       />
       <PageViewTracker />
       <SectionViewTracker />
+      <FaqOpenTracker />
     </>
   )
 }

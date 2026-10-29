@@ -12,7 +12,11 @@ export function HomeFaq({ items }: { items: Faq[] }) {
     >
       <div className="container-page grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <SectionHeading eyebrow="Good questions" title="Snack facts, *straight up.*" />
+          <SectionHeading
+            id="home-faq-title"
+            eyebrow="Good questions"
+            title="Snack facts, *straight up.*"
+          />
           <ButtonLink
             href="/faq"
             variant="secondary"

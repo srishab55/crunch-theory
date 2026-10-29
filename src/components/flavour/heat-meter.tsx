@@ -1,6 +1,5 @@
+import { heatLabels } from '@/data/flavours'
 import { cn } from '@/lib/cn'
-
-const labels = ['No heat', 'Mild', 'Medium', 'Hot'] as const
 
 export function HeatMeter({ level, className }: { level: 0 | 1 | 2 | 3; className?: string }) {
   return (
@@ -14,7 +13,7 @@ export function HeatMeter({ level, className }: { level: 0 | 1 | 2 | 3; classNam
         ))}
       </span>
       <span className="text-xs font-semibold tracking-wide text-muted uppercase">
-        {labels[level]}
+        {heatLabels[level]}
       </span>
     </div>
   )

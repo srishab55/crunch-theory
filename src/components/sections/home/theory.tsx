@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useScroll } from 'motion/react'
 import { useRef } from 'react'
 
 import { RevealText } from '@/components/ui/reveal'
@@ -10,7 +10,6 @@ import { theorySteps } from '@/data/home'
 export function Theory() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 60%'] })
-  const progress = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
     <section
@@ -31,38 +30,44 @@ export function Theory() {
           </p>
         </div>
 
-        <ol className="relative lg:col-span-6 lg:col-start-7">
+        {/* The rail sits beside the list (not inside it: <ol> may only contain <li>). */}
+        <div className="relative lg:col-span-6 lg:col-start-7">
           <div
             aria-hidden="true"
             className="absolute top-2 bottom-2 left-[1.15rem] w-px bg-forest/10"
           >
-            <motion.div style={{ scaleY: progress }} className="size-full origin-top bg-forest" />
+            <motion.div
+              style={{ scaleY: scrollYProgress }}
+              className="size-full origin-top bg-forest"
+            />
           </div>
-          {theorySteps.map((s, i) => (
-            <motion.li
-              key={s.step}
-              initial={{ opacity: 0.25 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ margin: '-45% 0px -45% 0px' }}
-              transition={{ duration: 0.5 }}
-              className="relative grid grid-cols-[2.3rem_1fr] gap-6 pb-20 last:pb-0"
-            >
-              <span className="relative z-10 grid size-[2.3rem] place-items-center rounded-full border border-forest/20 bg-cream text-xs font-bold text-forest">
-                {s.step}
-              </span>
-              <div>
-                <h3 className="text-3xl leading-tight sm:text-4xl">{s.title}</h3>
-                <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">{s.body}</p>
-                {i === 0 && (
-                  <p className="mt-4 text-sm text-olive">
-                    94% of Indian snackers want nutrition without compromising on flavour (IBEF,
-                    2025).
-                  </p>
-                )}
-              </div>
-            </motion.li>
-          ))}
-        </ol>
+          <ol className="relative">
+            {theorySteps.map((s, i) => (
+              <motion.li
+                key={s.step}
+                initial={{ opacity: 0.25 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ margin: '-45% 0px -45% 0px' }}
+                transition={{ duration: 0.5 }}
+                className="relative grid grid-cols-[2.3rem_1fr] gap-6 pb-20 last:pb-0"
+              >
+                <span className="relative z-10 grid size-[2.3rem] place-items-center rounded-full border border-forest/20 bg-cream text-xs font-bold text-forest">
+                  {s.step}
+                </span>
+                <div>
+                  <h3 className="text-3xl leading-tight sm:text-4xl">{s.title}</h3>
+                  <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">{s.body}</p>
+                  {i === 0 && (
+                    <p className="mt-4 text-sm text-olive">
+                      94% of Indian snackers want nutrition without compromising on flavour (IBEF,
+                      2025).
+                    </p>
+                  )}
+                </div>
+              </motion.li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   )

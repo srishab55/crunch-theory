@@ -71,7 +71,7 @@ export async function renderOgImage({ eyebrow, title, pouchSlug = featuredFlavou
             fontSize: 22,
             fontWeight: 600,
             letterSpacing: 4,
-            color: '#8a7a48',
+            color: '#716335',
             textTransform: 'uppercase',
           }}
         >

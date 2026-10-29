@@ -5,7 +5,7 @@ import { useActionState, useEffect, useId } from 'react'
 import { subscribeToNewsletter } from '@/actions/forms'
 import { trackAdsConversion, trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
-import { initialFormState } from '@/lib/validation'
+import { initialFormState } from '@/lib/forms'
 
 import { Honeypot } from './honeypot'
 

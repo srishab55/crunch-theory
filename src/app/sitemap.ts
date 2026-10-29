@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absoluteUrl(`/flavours/${f.slug}`),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
-      ...(f.image && { images: [absoluteUrl(f.image.src)] }),
+      images: [absoluteUrl(f.image.src)],
     })),
   ]
 }

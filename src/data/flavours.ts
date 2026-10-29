@@ -13,6 +13,13 @@ export type NutritionRow = {
   sub?: boolean
 }
 
+/** Cheapest pack price for a flavour. */
+export const minPrice = (f: { packs: { priceInr: number }[] }) =>
+  Math.min(...f.packs.map((p) => p.priceInr))
+
+/** Heat level names, indexed by `Flavour.heat`. */
+export const heatLabels = ['No heat', 'Mild', 'Medium', 'Hot'] as const
+
 export type Flavour = {
   slug: string
   name: string
@@ -24,13 +31,8 @@ export type Flavour = {
   /** Answer-first description; also used for meta description and structured data. */
   description: string
   heat: 0 | 1 | 2 | 3
-  /** Tailwind-safe CSS colour tokens for the illustrated pouch and accents. */
-  palette: { primary: string; secondary: string }
-  /**
-   * Pack photo, imported so it gets a content-hashed URL (regenerate with `npm run images`).
-   * When absent, an illustrated pouch is rendered instead.
-   */
-  image?: StaticImageData
+  /** Pack photo, imported so it gets a content-hashed URL (regenerate with `npm run images`). */
+  image: StaticImageData
   ingredients: string[]
   allergens: string
   servingSize: string
@@ -39,15 +41,6 @@ export type Flavour = {
   nutritionIsIndicative: boolean
   packs: { label: string; weight: string; priceInr: number }[]
   pairsWith: string
-  /** Home-page spotlight panel: a dark brand colour, an accent that reads on it, and callouts. */
-  spotlight: {
-    label: string
-    /** Deep panel background; paper-coloured text must stay readable on it. */
-    bg: string
-    accent: string
-    /** Two callouts; the ingredient count is added automatically as a third. */
-    badges: [string, string]
-  }
   featured?: boolean
 }
 
@@ -82,7 +75,6 @@ export const flavours: Flavour[] = [
     description:
       'Roasted makhana seasoned with Himalayan pink salt and freshly cracked black pepper. Roasted, not fried, gluten-free and made with six simple ingredients — the everyday swap for chips at your desk.',
     heat: 1,
-    palette: { primary: 'var(--color-sage)', secondary: 'var(--color-terracotta)' },
     image: pinkSaltPepper,
     ingredients: [
       'Makhana (fox nuts)',
@@ -98,12 +90,6 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Afternoon chai, a long spreadsheet, the 4 pm slump.',
-    spotlight: {
-      label: 'Bestseller',
-      bg: '#2f4a2c',
-      accent: '#d7a44f',
-      badges: ['Roasted, not fried', 'Gluten-free'],
-    },
     featured: true,
   },
   {
@@ -114,7 +100,6 @@ export const flavours: Flavour[] = [
     description:
       'Roasted makhana tossed in a smoky peri peri blend of chilli, garlic and paprika. Bold, shareable heat without the deep-fryer — roasted, gluten-free and portion-friendly.',
     heat: 3,
-    palette: { primary: 'var(--color-terracotta)', secondary: 'var(--color-mustard)' },
     image: periPeriKick,
     ingredients: [
       'Makhana (fox nuts)',
@@ -129,12 +114,6 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Match nights, group study, the friend who says “just one”.',
-    spotlight: {
-      label: 'For heat seekers',
-      bg: '#76301f',
-      accent: '#f2b25c',
-      badges: ['Smoky chilli heat', 'Roasted, not fried'],
-    },
   },
   {
     slug: 'cheese-herbs',
@@ -144,7 +123,6 @@ export const flavours: Flavour[] = [
     description:
       'Roasted makhana with a real cheese seasoning and Italian herbs. A familiar, kid-approved flavour for lunchboxes and evening snacking — roasted, never fried.',
     heat: 0,
-    palette: { primary: 'var(--color-mustard)', secondary: 'var(--color-sage)' },
     image: cheeseHerbs,
     ingredients: [
       'Makhana (fox nuts)',
@@ -160,12 +138,6 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'School lunchboxes, road trips, family movie night.',
-    spotlight: {
-      label: 'Kid-approved',
-      bg: '#5e4a12',
-      accent: '#f4d27a',
-      badges: ['Zero chilli heat', 'Roasted, not fried'],
-    },
   },
   {
     slug: 'pudina-chatpata',
@@ -176,7 +148,6 @@ export const flavours: Flavour[] = [
     description:
       'Roasted makhana with fresh pudina (mint), amchur and chaat masala. A tangy, cooling desi flavour that tastes like a street-side snack — without the frying.',
     heat: 1,
-    palette: { primary: 'var(--color-sage)', secondary: 'var(--color-mustard)' },
     image: pudinaChatpata,
     ingredients: [
       'Makhana (fox nuts)',
@@ -192,12 +163,6 @@ export const flavours: Flavour[] = [
     nutritionIsIndicative: true,
     packs: standardPacks,
     pairsWith: 'Monsoon evenings, post-workout cravings, travel bags.',
-    spotlight: {
-      label: 'Desi classic',
-      bg: '#24493b',
-      accent: '#b9dba6',
-      badges: ['Mint + chaat masala', 'Roasted, not fried'],
-    },
   },
 ]
 

@@ -5,7 +5,7 @@ import { useActionState, useEffect, type ReactNode } from 'react'
 import { submitContactForm } from '@/actions/forms'
 import { trackAdsConversion, trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
-import { contactTopics, initialFormState } from '@/lib/validation'
+import { contactTopics, initialFormState } from '@/lib/forms'
 
 import { Button } from '../ui/button'
 import { Honeypot } from './honeypot'
@@ -43,6 +43,7 @@ export function ContactForm() {
             autoComplete="name"
             required
             aria-invalid={Boolean(err('name'))}
+            aria-describedby={err('name') ? 'contact-name-error' : undefined}
             className={fieldClass}
           />
         </Field>
@@ -54,6 +55,7 @@ export function ContactForm() {
             autoComplete="email"
             required
             aria-invalid={Boolean(err('email'))}
+            aria-describedby={err('email') ? 'contact-email-error' : undefined}
             className={fieldClass}
           />
         </Field>
@@ -63,6 +65,8 @@ export function ContactForm() {
           id="contact-topic"
           name="topic"
           defaultValue="general"
+          aria-invalid={Boolean(err('topic'))}
+          aria-describedby={err('topic') ? 'contact-topic-error' : undefined}
           className={cn(fieldClass, 'appearance-none')}
         >
           {contactTopics.map((t) => (
@@ -79,6 +83,7 @@ export function ContactForm() {
           rows={6}
           required
           aria-invalid={Boolean(err('message'))}
+          aria-describedby={err('message') ? 'contact-message-error' : undefined}
           className={cn(fieldClass, 'resize-y')}
         />
       </Field>
@@ -113,7 +118,11 @@ function Field({
         {label}
       </label>
       {children}
-      {error && <p className="mt-2 text-sm text-terracotta">{error}</p>}
+      {error && (
+        <p id={`${id}-error`} className="mt-2 text-sm text-terracotta">
+          {error}
+        </p>
+      )}
     </div>
   )
 }

@@ -7,7 +7,7 @@ export const contentType = 'image/png'
 
 export default async function Image() {
   return renderOgImage({
-    eyebrow: 'Roasted makhana · Made in India',
+    eyebrow: 'Healthy Indian snacks · Made in India',
     title: 'The smart way to snack.',
   })
 }

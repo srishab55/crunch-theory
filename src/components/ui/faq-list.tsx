@@ -1,24 +1,15 @@
-'use client'
-
 import type { Faq } from '@/data/faqs'
-import { trackEvent } from '@/lib/analytics'
 
 /**
  * Native <details> accordion: answers stay in the HTML (crawlable by search & AI engines) and
  * work without JavaScript. Opening animates via the CSS `::details-content` transition.
+ * Server-rendered; `faq_open` is tracked by FaqOpenTracker via the `data-faq` attribute.
  */
 export function FaqList({ items }: { items: Faq[] }) {
   return (
     <div className="divide-y divide-forest/10 border-y border-forest/10">
       {items.map((faq) => (
-        <details
-          key={faq.question}
-          name="faq"
-          className="faq group py-2"
-          onToggle={(e) => {
-            if (e.currentTarget.open) trackEvent('faq_open', { question: faq.question })
-          }}
-        >
+        <details key={faq.question} name="faq" className="faq group py-2" data-faq={faq.question}>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
             <h3 className="font-display text-xl text-forest sm:text-2xl">{faq.question}</h3>
             <span

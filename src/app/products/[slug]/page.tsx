@@ -2,16 +2,13 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { TrackViewItem } from '@/components/analytics/track-view-item'
-import { InterestButton } from '@/components/flavour/interest-button'
-import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
-import { OutsideIndiaNote } from '@/components/flavour/outside-india-note'
+import { BuyBox } from '@/components/flavour/buy-box'
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { ProductGrid } from '@/components/product/product-grid'
 import { ProductPhoto } from '@/components/product/product-photo'
 import { ComingSoonBadge } from '@/components/ui/coming-soon-badge'
-import { Reveal, RevealText } from '@/components/ui/reveal'
+import { HeroText } from '@/components/ui/hero-text'
 import { getProductPageLine, productLines, productPageLines } from '@/data/products'
-import { NOTIFY_HREF } from '@/data/site'
 import { buildMetadata } from '@/lib/seo'
 
 export function generateStaticParams() {
@@ -50,15 +47,14 @@ export default async function ProductLinePage({ params }: PageProps<'/products/[
         />
 
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal className="lg:sticky lg:top-28 lg:self-start">
+          <div className="hero-fade lg:sticky lg:top-28 lg:self-start">
             <ProductPhoto line={line} sizes="(min-width: 1024px) 50vw, 100vw" priority="preload" />
-          </Reveal>
+          </div>
 
           <div>
             {!line.live && <ComingSoonBadge className="mb-5" />}
             <p className="eyebrow">{line.method}</p>
-            <RevealText
-              as="h1"
+            <HeroText
               text={line.title}
               className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-6xl"
             />
@@ -91,37 +87,13 @@ export default async function ProductLinePage({ params }: PageProps<'/products/[
               ))}
             </ul>
 
-            <div
-              id="buy"
-              data-track-section="buy-box"
-              className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5"
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-2 px-1 pb-4">
-                <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
-                  Get it <span className="accent text-terracotta">lightning fast</span>
-                </h2>
-                {line.live ? (
-                  <p className="text-sm text-muted">Pick your app ↓</p>
-                ) : (
-                  <p className="rounded-full bg-mustard/40 px-3 py-1 text-xs font-semibold tracking-wide text-forest-deep uppercase">
-                    Coming soon
-                  </p>
-                )}
-              </div>
-              <MarketplaceTiles flavour={line.name} location="product-page" variant="compact" />
-              {!line.live && (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-1 pt-5">
-                  <InterestButton flavour={line.slug} location="product-page" size="md" />
-                  <a
-                    href={NOTIFY_HREF}
-                    className="text-sm font-semibold text-forest underline underline-offset-4 hover:text-forest-deep"
-                  >
-                    Get notified at launch
-                  </a>
-                </div>
-              )}
-              <OutsideIndiaNote className="px-1 pt-4" />
-            </div>
+            <BuyBox
+              query={line.name}
+              slug={line.slug}
+              location="product-page"
+              live={line.live}
+              className="mt-10"
+            />
 
             <p className="mt-8 text-sm text-muted">
               Full ingredients, allergens and nutrition for each flavour will be listed here before

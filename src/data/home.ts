@@ -44,6 +44,13 @@ export const stats = [
 
 export type Tone = 'sage' | 'mustard' | 'terracotta'
 
+/** CSS colour for each tone (watercolour washes and similar decoration). */
+export const toneColor: Record<Tone, string> = {
+  sage: 'var(--color-sage)',
+  mustard: 'var(--color-mustard)',
+  terracotta: 'var(--color-terracotta)',
+}
+
 export type Moment = {
   time: string
   title: string

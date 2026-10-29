@@ -2,6 +2,7 @@
 
 import { motion, type HTMLMotionProps } from 'motion/react'
 
+import { parseAccentWords, plainText } from '@/lib/accent-text'
 import { cn } from '@/lib/cn'
 
 type Props = HTMLMotionProps<'div'> & {
@@ -35,23 +36,6 @@ type TextProps = {
   accentClassName?: string
 }
 
-type Word = { text: string; accent: boolean }
-
-/** Splits a heading into words; `*wrapped*` words (one or several) get the accent style. */
-function parseWords(text: string): Word[] {
-  let inAccent = false
-  return text.split(' ').map((raw) => {
-    const opens = raw.startsWith('*')
-    const closes = /\*[^*]*$/.test(opens ? raw.slice(1) : raw)
-    const accent = inAccent || opens
-    inAccent = (inAccent || opens) && !closes
-    return { text: raw.replaceAll('*', ''), accent }
-  })
-}
-
-/** Strips accent markers, e.g. for aria-labels and metadata. */
-export const plainText = (text: string) => text.replaceAll('*', '')
-
 /**
  * Word-by-word masked reveal for headings. The full string stays in the DOM for crawlers.
  * Wrap words in asterisks to highlight them: "Four flavours. *Zero* boring."
@@ -65,7 +49,7 @@ export function RevealText({
   accentClassName = 'text-terracotta',
 }: TextProps) {
   const Tag = motion[as]
-  const words = parseWords(text)
+  const words = parseAccentWords(text)
   return (
     <Tag
       id={id}

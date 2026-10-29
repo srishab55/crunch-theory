@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { TrackViewItem } from '@/components/analytics/track-view-item'
-import { InterestButton } from '@/components/flavour/interest-button'
-import { MarketplaceTiles } from '@/components/flavour/marketplace-tiles'
-import { OutsideIndiaNote } from '@/components/flavour/outside-india-note'
+import { BuyBox } from '@/components/flavour/buy-box'
 import { FlavourGrid } from '@/components/flavour/flavour-grid'
 import { FlavourVisual } from '@/components/flavour/flavour-visual'
 import { HeatMeter } from '@/components/flavour/heat-meter'
@@ -12,9 +10,9 @@ import { NutritionTable } from '@/components/flavour/nutrition-table'
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { JsonLd } from '@/components/seo/json-ld'
 import { ComingSoonBadge } from '@/components/ui/coming-soon-badge'
-import { Reveal, RevealText } from '@/components/ui/reveal'
+import { HeroText } from '@/components/ui/hero-text'
 import { flavours, getFlavour } from '@/data/flavours'
-import { isLive, NOTIFY_HREF } from '@/data/site'
+import { isLive } from '@/data/site'
 import { buildMetadata, productSchema } from '@/lib/seo'
 import { withOunces } from '@/lib/units'
 
@@ -54,15 +52,14 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
         />
 
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal className="lg:sticky lg:top-28 lg:self-start">
+          <div className="hero-fade lg:sticky lg:top-28 lg:self-start">
             <FlavourVisual flavour={flavour} sizes="(min-width: 1024px) 50vw, 100vw" preload />
-          </Reveal>
+          </div>
 
           <div>
             {!isLive && <ComingSoonBadge className="mb-5" />}
             <HeatMeter level={flavour.heat} />
-            <RevealText
-              as="h1"
+            <HeroText
               text={flavour.name}
               className="mt-4 text-5xl leading-[0.98] font-extrabold tracking-[-0.04em] sm:text-6xl"
             />
@@ -85,37 +82,13 @@ export default async function FlavourPage({ params }: PageProps<'/flavours/[slug
               ))}
             </ul>
 
-            <div
-              id="buy"
-              data-track-section="buy-box"
-              className="mt-10 scroll-mt-28 rounded-[2rem] bg-sand/50 p-4 sm:p-5"
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-2 px-1 pb-4">
-                <h2 className="text-2xl font-extrabold tracking-[-0.03em]">
-                  Get it <span className="accent text-terracotta">lightning fast</span>
-                </h2>
-                {isLive ? (
-                  <p className="text-sm text-muted">Pick your app ↓</p>
-                ) : (
-                  <p className="rounded-full bg-mustard/40 px-3 py-1 text-xs font-semibold tracking-wide text-forest-deep uppercase">
-                    Coming soon
-                  </p>
-                )}
-              </div>
-              <MarketplaceTiles flavour={flavour.name} location="flavour-page" variant="compact" />
-              {!isLive && (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-1 pt-5">
-                  <InterestButton flavour={flavour.slug} location="flavour-page" size="md" />
-                  <a
-                    href={NOTIFY_HREF}
-                    className="text-sm font-semibold text-forest underline underline-offset-4 hover:text-forest-deep"
-                  >
-                    Get notified at launch
-                  </a>
-                </div>
-              )}
-              <OutsideIndiaNote className="px-1 pt-4" />
-            </div>
+            <BuyBox
+              query={flavour.name}
+              slug={flavour.slug}
+              location="flavour-page"
+              live={isLive}
+              className="mt-10"
+            />
 
             <div className="mt-12 grid gap-8 sm:grid-cols-2">
               <div>

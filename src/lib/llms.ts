@@ -1,6 +1,6 @@
 import { faqs } from '@/data/faqs'
 import { glossary } from '@/data/glossary'
-import { flavours, type Flavour } from '@/data/flavours'
+import { flavours, heatLabels, type Flavour } from '@/data/flavours'
 import { marketplaces } from '@/data/marketplaces'
 import { flavourLabels, productLines } from '@/data/products'
 import { isLive, site } from '@/data/site'
@@ -62,7 +62,7 @@ const flavourDetail = (f: Flavour) =>
     f.description,
     '',
     `- URL: ${absoluteUrl(`/flavours/${f.slug}`)}`,
-    `- Heat: ${['none', 'mild', 'medium', 'hot'][f.heat]}`,
+    `- Heat: ${heatLabels[f.heat].toLowerCase()}`,
     `- Ingredients: ${f.ingredients.join(', ')}`,
     `- Allergens: ${f.allergens}`,
     `- Packs (Indian retail prices, INR): ${f.packs.map((p) => `${p.label} ${withOunces(p.weight)} ₹${p.priceInr}`).join('; ')}`,

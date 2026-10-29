@@ -4,6 +4,8 @@ import Lenis from 'lenis'
 import { MotionConfig } from 'motion/react'
 import { useEffect, type ReactNode } from 'react'
 
+import { PauseOffscreenAnimations } from './pause-offscreen-animations'
+
 /** App-wide client providers: smooth scrolling (disabled for reduced motion) and motion config. */
 export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -12,5 +14,10 @@ export function Providers({ children }: { children: ReactNode }) {
     return () => lenis.destroy()
   }, [])
 
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>
+  return (
+    <MotionConfig reducedMotion="user">
+      {children}
+      <PauseOffscreenAnimations />
+    </MotionConfig>
+  )
 }

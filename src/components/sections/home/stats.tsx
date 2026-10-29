@@ -11,6 +11,7 @@ export function Stats() {
     <section data-track-section="why-us" aria-labelledby="why-title" className="py-28 sm:py-36">
       <div className="container-page">
         <SectionHeading
+          id="why-title"
           eyebrow="Why makhana?"
           title="A tiny lotus seed with a *big crunch.*"
           lede="Makhana — also called fox nut or lotus seed — is the popped seed of the Euryale fox lotus, grown in the ponds of Bihar. Roasted, it turns light and crisp: the perfect base for a snack that tastes indulgent without the deep-fryer."
@@ -41,7 +42,7 @@ export function Stats() {
                 <h3 className={cn('font-sans text-lg font-bold', i === 0 && 'text-paper')}>
                   {s.label}
                 </h3>
-                <p className={cn('mt-1 text-sm', i === 0 ? 'text-paper/65' : 'text-muted')}>
+                <p className={cn('mt-1 text-sm', i === 0 ? 'text-paper/65' : 'text-ink/75')}>
                   {s.note}
                 </p>
               </div>

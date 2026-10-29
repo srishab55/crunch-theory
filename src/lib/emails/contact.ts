@@ -14,7 +14,7 @@ const C = {
   forest: '#2f4a2c',
   ink: '#24231e',
   muted: '#69655a',
-  terracotta: '#c4755a',
+  terracotta: '#a85b40',
   border: '#e6dccb',
 }
 const FONT = "-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif"

@@ -14,8 +14,8 @@ disagree, the CSS wins. Update this file whenever the CSS changes.
 | `forest-deep` | #1d301c | Footer, "Where to buy", other deep sections; hover state of primary buttons                           | Next to another dark full-bleed section                  |
 | `ink`         | #24231e | Default body text on light                                                                            | —                                                        |
 | `muted`       | #69655a | Ledes, secondary copy, captions on light                                                              | Text on dark (use `text-paper/60–75`)                    |
-| `olive`       | #8a7a48 | `eyebrow` labels, small prices on cards                                                               | Large fills                                              |
-| `terracotta`  | #c4755a | `*accent*` heading words on light; newsletter band; heat meter; error text                            | Small text on `forest`                                   |
+| `olive`       | #716335 | `eyebrow` labels, small prices on cards                                                               | Large fills                                              |
+| `terracotta`  | #a85b40 | `*accent*` heading words on light; newsletter band; heat meter; error text                            | Small text on `forest`                                   |
 | `mustard`     | #d7a44f | Accent on dark (eyebrows, accent words), sticker, quick-commerce badge; `selection` highlight (`/40`) | Small text on cream (low contrast)                       |
 | `sage`        | #9fb18f | Watercolour blobs, soft success panels (`bg-sage/25`)                                                 | Text                                                     |
 

@@ -1,4 +1,5 @@
-# Raw source material — optimised copies live in /public
+# Raw brand sources, the strategy deck and docs. The build never reads them: site images are
+# generated into src/assets by `npm run images` / `npm run logo` and committed.
 content/
 reference/
 docs/

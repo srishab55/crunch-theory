@@ -3,7 +3,7 @@ import { PageHero } from '@/components/layout/page-hero'
 import { NewsletterBand } from '@/components/sections/newsletter-band'
 import { JsonLd } from '@/components/seo/json-ld'
 import { Reveal } from '@/components/ui/reveal'
-import { flavours } from '@/data/flavours'
+import { flavours, heatLabels, minPrice } from '@/data/flavours'
 import { buildMetadata, productListSchema } from '@/lib/seo'
 
 export const metadata = buildMetadata({
@@ -63,12 +63,12 @@ export default function FlavoursPage() {
                     <th scope="row" className="px-6 py-4 font-semibold text-forest">
                       {f.name}
                     </th>
-                    <td className="px-6 py-4">{['None', 'Mild', 'Medium', 'Hot'][f.heat]}</td>
+                    <td className="px-6 py-4">{heatLabels[f.heat]}</td>
                     <td className="px-6 py-4 text-muted">{f.pairsWith}</td>
                     <td className="px-6 py-4">
                       {f.allergens.startsWith('Contains milk') ? 'Yes' : 'No'}
                     </td>
-                    <td className="px-6 py-4">₹{Math.min(...f.packs.map((p) => p.priceInr))}</td>
+                    <td className="px-6 py-4">₹{minPrice(f)}</td>
                   </tr>
                 ))}
               </tbody>

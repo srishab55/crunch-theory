@@ -1,24 +1,41 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { motion, useScroll, useTransform } from 'motion/react'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { ArrowIcon, ButtonLink } from '@/components/ui/button'
 import { Magnetic } from '@/components/ui/magnetic'
 import { cn } from '@/lib/cn'
+import { usePrefersReducedMotion } from '@/lib/use-media-query'
 
 const headline = ['The', 'smart', 'way', 'to', 'snack.']
 
 /**
  * Full-bleed video hero. The poster is rendered with next/image (preload) so it is the LCP
- * element; the video fades in over it once it can play. Headline animation is pure CSS so text
- * is visible before hydration.
+ * element. The video (~1 MB) is only mounted once the page has finished loading, so it never
+ * competes with critical resources, and never for reduced-motion or Save-Data visitors; it fades
+ * in over the poster once it can play. Headline animation is pure CSS so text is visible before
+ * hydration.
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
+  const [loadVideo, setLoadVideo] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+    if (connection?.saveData) return
+    const start = () => window.setTimeout(() => setLoadVideo(true), 0)
+    if (document.readyState === 'complete') {
+      start()
+      return
+    }
+    window.addEventListener('load', start, { once: true })
+    return () => window.removeEventListener('load', start)
+  }, [])
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
@@ -44,21 +61,21 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-[65%_center]"
         />
-        <video
-          className="absolute inset-0 size-full object-cover object-[65%_center] transition-opacity duration-1000 motion-reduce:hidden"
-          style={{ opacity: videoReady ? 1 : 0 }}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/media/hero-poster.jpg"
-          onCanPlay={() => setVideoReady(true)}
-          aria-hidden="true"
-        >
-          <source src="/media/hero.webm" type="video/webm" />
-          <source src="/media/hero.mp4" type="video/mp4" />
-        </video>
+        {loadVideo && !reduceMotion && (
+          <video
+            className="absolute inset-0 size-full object-cover object-[65%_center] transition-opacity duration-1000"
+            style={{ opacity: videoReady ? 1 : 0 }}
+            autoPlay
+            muted
+            loop
+            playsInline
+            onCanPlay={() => setVideoReady(true)}
+            aria-hidden="true"
+          >
+            <source src="/media/hero.webm" type="video/webm" />
+            <source src="/media/hero.mp4" type="video/mp4" />
+          </video>
+        )}
         {/* Readability wash — matches the pouch's paper tone */}
         <div className="absolute inset-0 bg-gradient-to-t from-cream from-35% via-cream/85 via-60% to-cream/20 md:bg-gradient-to-r md:from-cream md:from-0% md:via-cream/70 md:via-50% md:to-transparent" />
       </motion.div>

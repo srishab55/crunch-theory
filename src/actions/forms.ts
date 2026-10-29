@@ -4,7 +4,8 @@ import { z } from 'zod'
 
 import { contactConfirmationEmail, contactNotificationEmail } from '@/lib/emails/contact'
 import { sendNotification, sendToVisitor } from '@/lib/mailer'
-import { contactSchema, newsletterSchema, topicLabel, type FormState } from '@/lib/validation'
+import { topicLabel, type FormState } from '@/lib/forms'
+import { contactSchema, newsletterSchema } from '@/lib/validation'
 
 /** Bots fill every field; humans never see this one. */
 const isBot = (formData: FormData) => Boolean(formData.get('company_website'))

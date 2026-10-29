@@ -257,7 +257,7 @@ function Slide({ line, index, total, state }: SlideProps) {
   const titleId = `spotlight-${line.slug}`
 
   return (
-    <motion.article
+    <motion.div
       role="group"
       aria-roledescription="slide"
       aria-labelledby={titleId}
@@ -283,7 +283,7 @@ function Slide({ line, index, total, state }: SlideProps) {
           className="absolute -right-8 -bottom-8 w-2/3 opacity-30"
         />
         <motion.div variants={packVariants} className="relative">
-          <div className="animate-float">
+          <div className={cn('animate-float', !isActive && '[animation-play-state:paused]')}>
             <Image
               src={line.image}
               alt={line.imageAlt}
@@ -354,7 +354,7 @@ function Slide({ line, index, total, state }: SlideProps) {
           {!line.live && <InterestButton flavour={line.slug} location="spotlight" tone="dark" />}
         </div>
       </motion.div>
-    </motion.article>
+    </motion.div>
   )
 }
 

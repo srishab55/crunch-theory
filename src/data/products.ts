@@ -5,7 +5,7 @@ import bakedRagiChips from '@/assets/products/baked-ragi-chips.jpg'
 import masalaVegetableChips from '@/assets/products/masala-vegetable-chips.jpg'
 import roastedChana from '@/assets/products/roasted-chana.jpg'
 
-import { flavours } from './flavours'
+import { flavours, minPrice } from './flavours'
 import type { Tone } from './home'
 import { isLive } from './site'
 
@@ -71,7 +71,7 @@ export const productLines: ProductLine[] = [
       hook: f.hook,
       href: `/flavours/${f.slug}`,
     })),
-    fromPriceInr: Math.min(...flavours.flatMap((f) => f.packs.map((p) => p.priceInr))),
+    fromPriceInr: Math.min(...flavours.map(minPrice)),
     image: pinkSaltPepper,
     imageAlt: 'Crunch Theory Himalayan Pink Salt & Pepper roasted makhana pouch',
     tone: 'sage',

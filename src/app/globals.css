@@ -9,8 +9,10 @@
   --color-sand: #e6dccb;
   --color-forest: #2f4a2c;
   --color-forest-deep: #1d301c;
-  --color-olive: #8a7a48;
-  --color-terracotta: #c4755a;
+  /* Darkened from #8a7a48 for WCAG AA: 5.1:1 on cream, 4.75:1 on sand panels. */
+  --color-olive: #716335;
+  /* Darkened from #c4755a for WCAG AA: accent words 4.3:1 on cream; paper text on it 4.7:1. */
+  --color-terracotta: #a85b40;
   --color-sage: #9fb18f;
   --color-mustard: #d7a44f;
   --color-ink: #24231e;
@@ -91,6 +93,11 @@
 
 @utility eyebrow {
   @apply text-xs font-semibold tracking-[0.22em] text-olive uppercase;
+}
+
+/* Looping animations pause off-screen (set by PauseOffscreenAnimations). */
+[data-offscreen] {
+  animation-play-state: paused !important;
 }
 
 /* Subtle film grain to give flat colour the pouch's paper texture. */

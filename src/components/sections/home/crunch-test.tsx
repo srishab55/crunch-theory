@@ -20,7 +20,7 @@ export function CrunchTest() {
         className="absolute -right-10 bottom-0 size-72 animate-spin-slow opacity-60 [animation-direction:reverse]"
       />
       <div className="relative container-page text-center">
-        <p className="eyebrow">The blind crunch test</p>
+        <p className="eyebrow !text-forest">The blind crunch test</p>
         <RevealText
           id="crunch-test-title"
           text="Think healthy snacks taste bland? Prove us *wrong.*"

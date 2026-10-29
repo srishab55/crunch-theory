@@ -73,7 +73,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ButtonLink
-            href={isLive ? '/flavours' : NOTIFY_HREF}
+            href={isLive ? '/products' : NOTIFY_HREF}
             className="hidden sm:inline-flex"
             trackLabel={isLive ? 'Shop now' : 'Get notified'}
             trackLocation="header"

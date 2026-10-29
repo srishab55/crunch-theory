@@ -6,14 +6,8 @@ import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 
 import { Makhana } from '@/components/illustrations/makhana'
 import { WatercolorBlob } from '@/components/illustrations/watercolor-blob'
-import { moments, type Moment, type Tone } from '@/data/home'
+import { moments, toneColor, type Moment } from '@/data/home'
 import { cn } from '@/lib/cn'
-
-const toneColor: Record<Tone, string> = {
-  sage: 'var(--color-sage)',
-  mustard: 'var(--color-mustard)',
-  terracotta: 'var(--color-terracotta)',
-}
 
 /**
  * Pinned horizontal-scroll gallery on desktop; native swipe carousel on touch/small screens.

@@ -25,6 +25,11 @@ const CAMPAIGN = 'prelaunch'
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    // Tailwind CSS is small (~14 KB); inlining it removes the render-blocking stylesheet request,
+    // which matters most for first-time visitors arriving from shared links.
+    inlineCss: true,
+  },
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],

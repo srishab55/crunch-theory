@@ -95,9 +95,10 @@ export default function OurStoryPage() {
         </Reveal>
       </section>
 
-      <section aria-labelledby="process-title" className="bg-forest py-28 text-paper">
+      <section aria-labelledby="process-title" className="bg-forest-deep py-28 text-paper">
         <div className="container-page">
           <SectionHeading
+            id="process-title"
             eyebrow="From pond to pouch"
             title="How makhana becomes *Crunch Theory.*"
             inverted
@@ -122,7 +123,11 @@ export default function OurStoryPage() {
       </section>
 
       <section aria-labelledby="promises-title" className="container-page py-28">
-        <SectionHeading eyebrow="Our promises" title="Four things we’ll *never* compromise on." />
+        <SectionHeading
+          id="promises-title"
+          eyebrow="Our promises"
+          title="Four things we’ll *never* compromise on."
+        />
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {promises.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.06} className="rounded-[2rem] bg-paper p-8 sm:p-10">

@@ -8,10 +8,10 @@ import { Reveal, RevealText } from '@/components/ui/reveal'
 import { SpinSticker } from '@/components/ui/spin-sticker'
 import { InterestButton } from '@/components/flavour/interest-button'
 import { ButtonLink } from '@/components/ui/button'
-import { flavours } from '@/data/flavours'
+import { flavours, minPrice } from '@/data/flavours'
 import { isLive, NOTIFY_HREF } from '@/data/site'
 
-const trialPrice = Math.min(...flavours.flatMap((f) => f.packs.map((p) => p.priceInr)))
+const trialPrice = Math.min(...flavours.map(minPrice))
 
 export function WhereToBuy() {
   return (

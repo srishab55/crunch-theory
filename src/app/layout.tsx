@@ -16,11 +16,14 @@ import { organizationSchema, websiteSchema } from '@/lib/seo'
 
 import './globals.css'
 
-/** Display + logo: a characterful grotesque with optical sizing for punchy headlines. */
+/**
+ * Display + logo: a characterful grotesque with optical sizing for punchy headlines. Only the
+ * `opsz` axis is loaded (the width axis was unused and roughly doubled the file).
+ */
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   variable: '--font-bricolage',
-  axes: ['opsz', 'wdth'],
+  axes: ['opsz'],
   display: 'swap',
 })
 
@@ -41,7 +44,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(env.siteUrl),
   title: {
-    default: `${site.name} — Roasted Makhana | ${site.tagline}`,
+    default: `${site.name} — Healthy Indian Snacks & Roasted Makhana`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

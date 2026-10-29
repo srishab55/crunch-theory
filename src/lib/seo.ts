@@ -13,7 +13,7 @@ import type {
 
 import brandMark from '@/assets/brand/mark.png'
 import type { Faq } from '@/data/faqs'
-import type { Flavour } from '@/data/flavours'
+import { minPrice, type Flavour } from '@/data/flavours'
 import type { GlossaryTerm } from '@/data/glossary'
 import type { ProductLine } from '@/data/products'
 import { site } from '@/data/site'
@@ -94,7 +94,7 @@ export function productSchema(flavour: Flavour): WithContext<Product> {
     name: `${site.name} Roasted Makhana — ${flavour.name}`,
     description: flavour.description,
     url,
-    image: absoluteUrl(flavour.image?.src ?? `/flavours/${flavour.slug}/opengraph-image`),
+    image: absoluteUrl(flavour.image.src),
     brand: { '@type': 'Brand', name: site.name },
     category: 'Snacks > Roasted Makhana',
     sku: `CT-${flavour.slug}`,
@@ -108,7 +108,7 @@ export function productSchema(flavour: Flavour): WithContext<Product> {
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'INR',
-      lowPrice: Math.min(...flavour.packs.map((p) => p.priceInr)),
+      lowPrice: minPrice(flavour),
       highPrice: Math.max(...flavour.packs.map((p) => p.priceInr)),
       offerCount: flavour.packs.length,
       availability: 'https://schema.org/InStock',

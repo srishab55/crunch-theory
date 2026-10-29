@@ -31,10 +31,12 @@ export const site = {
   availability: 'coming-soon' as 'coming-soon' | 'live',
   /** Domain verified in Resend (DKIM + SPF) for sending form notifications. */
   sendingDomain: 'crunchtheory.store',
+  /**
+   * Official profiles only: shown in the footer and as schema.org `sameAs`, which tells Google
+   * these accounts are the brand's. Add others here once they exist.
+   */
   social: {
-    instagram: 'https://www.instagram.com/crunchtheory',
-    youtube: 'https://www.youtube.com/@crunchtheory',
-    linkedin: 'https://www.linkedin.com/company/crunchtheory',
+    instagram: 'https://www.instagram.com/crunchtheory.store/',
   },
   keywords: [
     'roasted makhana',
